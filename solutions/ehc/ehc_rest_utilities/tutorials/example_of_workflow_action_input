@@ -1,0 +1,110 @@
+-----------SIMPLE-EXAMPLE-----------
+{
+    "parameters":
+    [
+        {
+        	"value": {"string":{ "value": "true"}},
+            "type": "string",
+            "name": "loginRequired"
+        }
+    ]
+}
+
+-----------COMPLEX-EXAMPLE-----------
+{
+	"parameters":
+	[
+		{
+			"name": "cafeHost",
+			"value":
+			{
+				"sdk-object":
+				{
+					"href": "https://192.168.3.166:8281/vco/api/catalog/vCACCAFE/VCACHost/a0a162aa-3f52-42c3-8dfa-7399c9bde924/",
+					"id": "a0a162aa-3f52-42c3-8dfa-7399c9bde924"
+					}
+				}
+			},
+			{
+				"name": "useSSO",
+				"value":
+				{
+					"boolean":
+					{
+						"value": false
+						}
+					}
+				},
+				{
+					"name": "username",
+					"value":
+					{
+						"string":
+						{
+							"value": "luw@vlab"
+							}
+						}
+					},
+					{
+						"name": "name",
+						"value":
+						{
+							"string":
+							{
+								"value": "dev066-vro"
+								}
+							}
+						},
+						{
+							"name": "orchestratorHost",
+							"value":
+							{
+								"string":
+								{
+									"value": "192.168.3.166"
+								}
+							}
+						},
+						{
+							"name": "useDefault",
+							"value":
+							{
+								"boolean":
+								{
+									"value": false
+								}
+							}
+						},
+						{
+							"name": "password",
+							"type": "SecureString",
+							"value":
+							{
+								"string":
+								{
+									"value":"Password123!"
+									}
+								}
+							},
+							{
+								"name": "port",
+								"value":
+								{
+									"string":
+									{
+										"value": "8281"
+									}
+								}
+							},
+							{
+								"name": "description",
+								"value":
+								{
+									"string":
+									{
+										"value": "dev066 vro server"
+									}
+								}
+							}
+						]
+}

@@ -1,0 +1,342 @@
+mandatory:
+    Cluster:
+        1-protected_cluster_name:                          &protected_cluster      LON-WSW-RP-C1
+        2-recovery_cluster_name:                           &recovery_cluster       WSW-LON-RP-C1
+    vCenter:
+        1-Protected_vCenter_fqdn:     &vcs01_fqdn             vcs02.vlab.local
+        2-Protected_vCenter_datacenter:       &vcs01_dc               London
+        3-Recovery_vCenter_fqdn:              &vcs02_fqdn             vcs04.vlab.local
+        4-Recovery_vCenter_datacenter:        &vcs02_dc               Warsaw
+    vCenter Relationship:
+        1-Vcs_username:           &vcs_user                  administrator@vsphere.local
+        2-Vcs_password:           &vcs_pwd                   Password123!
+        3-Protected_nsx_url:  &protected_nsx_url        nsx-mgr02.vlab.local
+        4-Recovery_nsx_url:   &recovery_nsx_url         nsx-mgr04.vlab.local
+        5-protected_nsx_username:             &nsx_active_user            'admin'
+        6-protected_nsx_password:             &nsx_active_password        'Password123!'
+        7-recovery_nsx_username:             &nsx_passive_user           'admin'
+        8-recovery_nsx_password:             &nsx_passive_password       'Password123!'
+    Storage:
+        1-protected_vipr_varray:                           &vArray_a               LON-HWI-1-vArray1
+        2-recovery_vipr_varray:                           &vArray_b               WSW-HWI-1-vArray1
+        3-protected_storage_tier:                     &storage_tier_a         'LON-Local-VP; available'
+        4-recovery_storage_tier:                     &storage_tier_b         'WSW-Local; available'
+    Reservation:
+        1-Reservation_computer_resource_A:    &res_a_cr               'LON-WSW-RP-C1 (VCS02)'
+        2-Reservation_network_path_A:         &res_a_np               'VM Network'
+        3-Reservation_computer_resource_B:    &res_b_cr               'WSW-LON-RP-C1 (VCS04)'
+        4-Reservation_network_path_B:         &res_b_np               'VM Network'
+    Virtual machine blueprint:
+        1-blueprint_name_A:         &bp_a_name              'No-RP4VM'
+        2-vSphere_Machine_ID_A:     &bp_a_id                'vSphere_Machine_1'
+        3-blueprint_name_rp:        &bp_b_name              'RP4VM-No-DP'
+        4-vSphere_Machine_ID_rp:    &bp_b_id                'vSphere_Machine_1'
+    RP4VM VRPA:
+        1-vrpa_primary_ip:                    &vrpa_a_ip              '192.168.1.57'
+        2-vrpa_secondary_ip:                  &vrpa_b_ip              '192.168.1.58'
+        3-vrpa_admin_user:                    &vrpa_admin             'admin'
+        4-vrpa_admin_password:                &vrpa_pwd               'admin'
+    RP4VM Policy:
+        1-replication_type:                  &rp_policy_type         'Synchronous'
+        2-rpo_number:                      &rpo_number          2
+        3-rpo_units:                       &rpo_units          'GB'
+#################################################################################################################
+optional:
+    vRA:
+        email:                &vra_email          ehc_sysadmin@vlab.local
+    vCenters:
+        protected_vCenter:
+            name:             &vcs01_name         LonCenter
+        recovery_vCenter:
+            name:             &vcs02_name         WswCenter
+    sites:
+        protected_site:       &site_a             LonSite
+        recovery_site:        &site_b             WswSite
+
+    hardware_islands:
+        local_HWI:            &hwi_a              LON-HWI-1
+        remote_HWI:           &hwi_b              WSW-HWI-1
+        storage_typea:        &storage_type_a     BLOCK
+        storage_typeb:        &storage_type_b     BLOCK
+        new_hwiname:          &new_hwi_name       LON-HWI-11
+
+    avamar_grids:
+        Grid for protected_site:
+            name:             &grid_a             101-RP4VM-London-ave02
+        Grid for recovery_site:
+            name:             &grid_b             101-RP4VM-Warsaw-ave02
+    Reservation:
+        Reservation A:
+            name:               &res_a              RP4VM-101-RP-a
+        Reservation B:
+            name:               &res_b              RP4VM-101-RP-b
+    reservation_policy:
+        names:                &res_policy_names    [RP4VM-101-LON-WSW-RP-C2,RP4VM-101-WSW-LON-RP-C2]
+    rp4vm:
+        rp4vm_policy_name:      &rp_policy_name     AutoPolicy-For-RP4VM
+        journal_size:           &journal_size      10
+
+shared:
+    current_browser:
+        type:
+        instance:
+        launched: False
+        current_user:
+        is_login: False
+    RP4VM_related_vCenters:
+        protected_vCenter: *vcs01_name
+        recovery_vCenter: *vcs02_name
+    RP4VM_vRPA_clusters:
+        primary:
+            ip:
+            user: *vrpa_admin
+            password: *vrpa_pwd
+            port: 443
+        secondary:
+            ip:
+            user: *vrpa_admin
+            password: *vrpa_pwd
+            port: 443
+    RP4VM_Failover:
+        consistency_group_name:
+
+add_sites:
+  - *site_a
+  - *site_b
+
+added_sites:
+  []
+
+delete_sites:
+    description: deletesite
+    action_to_be_performed: Delete Site
+    please_pick_a_site_to_delete:
+    please_confirm_that_you_wish_to_delete_this_site: Confirm
+
+add_vcenter:
+  -
+    description: vCenter_1
+    reasons: Add_vCenter_1
+    select_operation: Add vCenter
+    name_for_vcenter_endpoint: *vcs01_name
+    select_vc_fqdn_to_add: *vcs01_fqdn
+    new_vcenter_associated_sites:
+      -  *site_a
+    select_datacenter_to_add:  *vcs01_dc
+    request: unknown
+  -
+    description: vCenter_2
+    reasons: Add_vCenter_2
+    select_operation: Add vCenter
+    name_for_vcenter_endpoint: *vcs02_name
+    select_vc_fqdn_to_add: *vcs02_fqdn
+    new_vcenter_associated_sites:
+      -  *site_b
+    select_datacenter_to_add:  *vcs02_dc
+    request: unknown
+
+added_vcenter:
+  []
+
+delete_vcenter:
+    description: delete vcenter
+    reasons: test
+    select_operation: Delete vCenter
+    ensure_delete_info: Confirm
+
+delete_datastore:
+    - description: Delete Logic
+      reasons: del logic
+      request: unknow
+
+add_hwi:
+  -
+    hwi_name: *hwi_a
+    performed_active: Add VxRack(Flex)/VxBlock based Hardware Island
+    vcenter_name_active:  *vcs01_name
+    site_name_active: *site_a
+    storage_type: *storage_type_a
+    vipr_active: ViPR
+    vipr_active_check:
+      - *vArray_a
+    request: unknown
+  -
+    hwi_name: *hwi_b
+    performed_active: Add VxRack(Flex)/VxBlock based Hardware Island
+    vcenter_name_active:  *vcs02_name
+    site_name_active: *site_b
+    storage_type: *storage_type_b
+    vipr_active: ViPR
+    vipr_active_check:
+      - *vArray_b
+    request: unknown
+
+added_hwi:
+  []
+
+update_hwi:
+  -
+    performed_active: Edit VxRack(Flex)/VxBlock based Hardware Island
+    old_hwi_name: *hwi_a
+    edit_hwi_name: *new_hwi_name
+    edit_vcenter_name_active: *vcs01_name
+    edit_site_name_active: *site_a
+    vipr_active: ViPR
+    vipr_active_check:
+       - *vArray_a
+
+delete_hwi:
+    del_reasons: delete_hwi
+    del_description: delete_hwi
+    del_performed_active: Delete Hardware Island
+    isdel_obj: Confirm
+
+onboard_cluster_type: LC2S
+
+cluster_maintenance:
+  onboard_local_cluster_for_rp4vm:
+    local_cluster_hardware_island: *hwi_a
+    local_cluster_name: *protected_cluster
+    partner_cluster_hardware_island: *hwi_b
+    partner_cluster_name: *recovery_cluster
+
+existed_clusters:
+   []
+
+#delete_cluster: []
+
+provision_cloud_storage:
+    - description: Provision Cloud Storage
+      reasons: pcs
+      cluster_name:
+      hwi_name: *hwi_a
+      storage_type: VMFS
+      vipr_storage_tier: *storage_tier_a
+      size_in_gb: 32
+      request: unknown
+    - description: Provision Cloud Storage
+      reasons: pcs
+      cluster_name:
+      hwi_name: *hwi_b
+      storage_type: VMFS
+      vipr_storage_tier: *storage_tier_b
+      size_in_gb: 32
+      request: unknown
+
+added_cloud_storage:
+    - hwi_name: *hwi_a
+      cluster_name: *protected_cluster
+      name: []
+      srp: []
+    - hwi_name: *hwi_b
+      cluster_name: *recovery_cluster
+      name: []
+      srp: []
+
+operate_vm:
+    basic_action_list:
+        - Power On
+        - Power Off
+        - Reboot
+    user_action_list:
+        - Power Off
+
+create_reservation_policy:
+  names: *res_policy_names
+
+create_reservation:
+ -
+    reservation_name: *res_a
+    reservation_type: vSphere
+    reservation_priority: 1
+    computer_resource: *res_a_cr
+    memory: 16
+    storage_size: 32
+    storage_priority: 1
+    network_path: *res_a_np
+    network_profile: unknown
+ -
+    reservation_name: *res_b
+    reservation_type: vSphere
+    reservation_priority: 1
+    computer_resource: *res_b_cr
+    memory: 16
+    storage_size: 32
+    storage_priority: 1
+    network_path: *res_b_np
+    network_profile: unknown
+
+added_reservation_policy: []
+
+added_reservation: []
+
+assigned_reservation_policy_reservations: []
+
+assigned_reservation_policy_blueprints: []
+
+assign_reservation_policy_to_reservation:
+    reservation_names:
+    reservation_policy_names:
+
+assign_reservation_policy_to_blueprint:
+    blueprint_names:
+    reservation_policy_name:
+
+blueprints:
+    - *bp_a_name
+
+blueprint_machine_pairs:
+    *bp_a_name: *bp_a_id
+    *bp_b_name: *bp_b_id
+
+deploy_vm:
+    with_dp: false
+    description: vm_for_rp4vm
+    number_of_vm: 1
+    reason_for_request: vm_for_rp4vm
+
+deployed_vms: []
+
+rp4vm_info:
+    blueprint: *bp_b_name
+    vsphere_blueprint_id: *bp_b_id
+    sequence: 2
+    cg_list: []
+    protected_vms: []
+
+policy_info:
+  policy_name: *rp_policy_name
+  policy_type: *rp_policy_type
+  journal_size: *journal_size
+  rp_number: *rpo_number
+  rp_units: *rpo_units
+
+vRPA_cluster_to_add:
+    primary_clusetr:
+        ip: *vrpa_a_ip
+        admin: *vrpa_admin
+        password: *vrpa_pwd
+    secondary_cluster:
+        ip: *vrpa_b_ip
+        admin: *vrpa_admin
+        password: *vrpa_pwd
+
+vCenter_relationship_to_add:
+    protected_vCenter_credential:
+        username: *vcs_user
+        password: *vcs_pwd
+    recovery_vCenter_credential:
+        username: *vcs_user
+        password: *vcs_pwd
+    NSX_is_available: True
+    protected_NSX_manager:
+        url: *protected_nsx_url
+        username: *nsx_active_user
+        password: *nsx_active_password
+    recovery_NSX_manager:
+        url: *recovery_nsx_url
+        username: *nsx_passive_user
+        password: *nsx_passive_password
+
+get_vrpa_clusters_from_vro:
+    available_vrpa_clusters: []

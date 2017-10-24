@@ -1,0 +1,38 @@
+{
+  "name": "rdash-angular",
+  "version": "0.0.1",
+  "description": "project static assets",
+  "homepage": "blog.micfan.com",
+  "authors": [
+    "Michael Fan"
+  ],
+  "contributors": [],
+  "main": "index.html",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "rdash-ui": "~1.0.1",
+    "angular": "1.5.5",
+    "bootstrap": "~3.2.0",
+    "font-awesome": "~4.1.0",
+    "angular-ui-router": "~0.2.15",
+    "angular-bootstrap": "~0.14.3",
+    "angular-cookies": "~1.5.5",
+    "angular-mocks": "~1.5.5",
+    "angular-messages": "~1.5.5",
+    "json-editor": "^0.7.28",
+    "angular-ui-select": "^0.19.4",
+    "angular-sanitize": "^1.5.8",
+    "angular-chart.js": "^1.0.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rdash/rdash-angular"
+  }
+}

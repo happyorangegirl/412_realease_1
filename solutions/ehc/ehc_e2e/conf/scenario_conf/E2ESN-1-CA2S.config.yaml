@@ -1,0 +1,448 @@
+# ################################ Configuration section #############################################################
+# Automation user only needs to update the parameters in this section
+# [Mandatory] parameters : you must update with the right ones in your environment.
+# [Optional] parameters : you can suggested to update with your own, but not mandatory.
+mandatory:
+  Pre-Reservation:
+    reservation_names:              &reservation_names          'ca2s_dev167_reser'
+  Pre-Reservation Policy:
+    reservation_policy_name:   &reservation_policy_name  'E2E_Res_Policy_CA2S-DP'
+  Vcenter:
+    1-vcenter_fqdn:              &vcenter_fqdn             'vcs01.vlab.local'
+    # Datacenter name in vCenter you configure
+    2-datacenter:                &datacenter               'Cork'
+  HWI:
+    # vArray in ViPR, the vArray must has physical connection to the vCenter you configure above
+    1-vipr_varray_01:               &vipr_varray01          'CRK-HWI-1-vArray1'
+    2-vipr_varray_02:               &vipr_varray02          'LON-HWI-1-vArray1'
+  Cluster:
+    # CA1S Cluster name
+    cluster_name:              &cluster_name             'CRK-LON-CA-C1'
+  Provision Multiple Cloud Storage:
+    provision_in_hwi_1:
+       1-storage_tier_a(Use comma to split the storage tiers):     &vipr_storage_tier_a     'EHCQE_VPC-CRK-CA-Pool; available'
+       2-number_of_smaller_size_storages_a(Non-negative interger): &vPool_DS_Small_a  1
+       3-number_of_larger_size_storages_a(Non-negative interger):  &vPool_DS_Large_a  0
+       4-storage_type_a:                                             &storage_type_a               'VMFS CA-Enabled'
+    provision_in_hwi_2:
+       1-storage_tier_b(Use comma to split the storage tiers):     &vipr_storage_tier_b       'EHCQE_LON_VPC-LON-CA-Pool; available'
+       2-number_of_smaller_size_storages_b(Non-negative interger): &vPool_DS_Small_b            1
+       3-number_of_larger_size_storages_b(Non-negative interger):  &vPool_DS_Large_b            0
+       4-storage_type_b:                                           &storage_type_b              'VMFS CA-Enabled'
+  Backup Service Level:
+      additional_email:          &additional_email       'ehc_sysadmin@vlab.local'
+  Virtual machine blueprint:
+    # Blueprint name you configure in the automation environment
+    blueprint_name:              &blueprint_name         'Blueprint_LC1S'
+    # virtual machine name you configure in the automation environment
+    virtual_machine_name:        &vSphere_Machine_ID                     'vSphere_Machine_1'
+    #DP
+  Avamar Grid:
+    1-site_avamar_grid_fqdn01:     &site_avamar_grid_fqdn01    'cork-ave01.vlab.local'
+    2-site_avamar_grid_fqdn02:     &site_avamar_grid_fqdn02    'london-ave02.vlab.local'
+    3-admin_username:              &ag_admin_user              'root'
+    4-admin_password:              &ag_admin_pwd               'Password123!'
+    5-soap_user:                   &ag_soap_user               'root'
+    6-soap_password:               &ag_soap_pwd                'Emsee123_'
+  Avamar Proxy:
+   avamar_proxy_01:
+    1-dns_updated_01:                  &dns_updated_01                'Yes'
+    2-datastore_01:                    &avamar_proxy_datastore_01     'CRK-AVP-Templates01'
+    3-network_01:                      &proxy_network_01              'DVS_Cloud_VCS01_-DVUplinks-101 (DVS_Cloud_VCS01_Cork)'
+    4-proxy_vm_name_01:                &proxy_vm_name_01              'cork-ave01-p0.vlab.local'
+    5-avamar_path_01:                  &avamar_path_01                '/clients/cork-ave01.vlab.local'
+    6-proxy_ip_01:                     &proxy_ip_01                   '192.168.0.92'
+    7-proxy_netmask_01:                &proxy_netmask_01              '255.255.248.0'
+    8-proxy_gateway_01:                &proxy_gateway_01              '192.168.1.250'
+    9-dns_server_ip_01:                &dns_server_ip_01              '192.168.1.10'
+    10-proxy_username_01:              &proxy_username_01             'root'
+    11-proxy_password_01:              &proxy_password_01             'avam@r'
+    12-avamar_domain_01:               &avamar_domain_01              '/clients'
+    13-ova_01:                         &avamar_proxy_ova_01           '/DPNInstalls/downloads/VMWARE_PROXY_SP3/AvamarCombinedProxy-linux-sles11_64-7.4.101-58.ova'
+    14-deployment_server_01:           &deployment_server_01          'Dakar-ave01-p0.vlab.local'
+    15-deployment_server_username_01:  &deployment_server_username_01 'root'
+    16-deployment_server_password_01:  &deployment_server_password_01 'avam@r'
+    17-disable_verification_01:        &disable_verification_01       'No'
+   avamar_proxy_02:
+    1-dns_updated_02:                  &dns_updated_02                'Yes'
+    2-datastore_02:                    &avamar_proxy_datastore_02     'CRK-AVP-Templates01'
+    3-network_02:                      &proxy_network_02              'DVS_Cloud_VCS01_-DVUplinks-101 (DVS_Cloud_VCS01_Cork)'
+    4-proxy_vm_name_02:                &proxy_vm_name_02              'cork-ave01-p0.vlab.local'
+    5-avamar_path_02:                  &avamar_path_02                '/clients/cork-ave01.vlab.local'
+    6-proxy_ip_02:                     &proxy_ip_02                   '192.168.0.92'
+    7-proxy_netmask_02:                &proxy_netmask_02              '255.255.248.0'
+    8-proxy_gateway_02:                &proxy_gateway_02              '192.168.1.250'
+    9-dns_server_ip_02:                &dns_server_ip_02              '192.168.1.10'
+    10-proxy_username_02:              &proxy_username_02             'root'
+    11-proxy_password_02:              &proxy_password_02             'avam@r'
+    12-avamar_domain_02:               &avamar_domain_02              '/clients'
+    13-ova_02:                         &avamar_proxy_ova_02           '/DPNInstalls/downloads/VMWARE_PROXY_SP3/AvamarCombinedProxy-linux-sles11_64-7.4.101-58.ova'
+    14-deployment_server_02:           &deployment_server_02          'Dakar-ave01-p0.vlab.local'
+    15-deployment_server_username_02:  &deployment_server_username_02 'root'
+    16-deployment_server_password_02:  &deployment_server_password_02 'avam@r'
+    17-disable_verification_02:        &disable_verification_02       'No'
+  Deploy VM Parallel:
+    cpu_max:                  &cpu_max              1
+    ram_max:                        &ram_max                    4096
+################################# Configuration section #############################################################
+optional:
+  Sites:
+    site_name01:              &site_name01               'CORK-site01'
+    site_name02:               &site_name02              'London-site02'
+  vcenter_name:              &vcenter_name             'Cork-vcenter01'
+  Hardware_Islands:
+      hwi_name01:           &hwi_name01         'Cork-HWI-1'
+      hwi_name02:           &hwi_name02         'CA2S-DP-HWI-2'
+  backup_service_level_name_prefix:  &backup_name_prefix  'backup-svc-CA2S-DP'
+  Avamar_Grids:
+     avamar_grid_name01:        &site_avamar_grid01       Cork-ave01
+     avamar_grid_name02:        &site_avamar_grid02       CA2S-DP-ave02
+keys_to_constants:
+    storage_typea:        &storage_type     BLOCK
+    inter_site_vs_intra_site:  &inter_vs_intra           'Inter-site'
+    ASR:
+        backup_environment_type:   &backup_environment_type  '2C1VC'
+
+# variables set to make debug easier:
+Intermediate_keys:
+  added_site: &added_site []
+  added_vcenter: &added_vcenter []
+  added_hwi: &added_hwi []
+  existed_clusters: &existed_clusters []
+  added_reservation_policy_name: &added_reservation_policy_name []
+  assigned_buleprint: &assigned_buleprint []
+  assigned_reservation: &assigned_reservation []
+  datastorage_name: &datastorage_name []
+##############################################################
+onboard_cluster_type: 'CA2S'
+
+blueprints:
+    - *blueprint_name
+blueprint_machine_pairs:
+   {*blueprint_name: *vSphere_Machine_ID}
+
+deploy_vm_parallel:
+    with_dp: True
+    assign_storage_reservation_policy: True
+    description: 'deployvm'
+    number_of_vm: 1
+    cpu_max: *cpu_max
+    ram_max: *ram_max
+    srm_power_on_priority:
+    reason_for_request: test ca2s scenario WF
+
+deployed_vms:
+ []
+
+existed_clusters:
+  - *cluster_name
+
+add_sites:
+    - *site_name01
+    - *site_name02
+
+added_sites: *added_site
+
+add_vcenter:
+    -
+      select_operation: Add vCenter
+      name_for_vcenter_endpoint: *vcenter_name
+      select_vc_fqdn_to_add: *vcenter_fqdn
+      new_vcenter_associated_sites:
+                                  - *site_name01
+                                  - *site_name02
+      select_datacenter_to_add: *datacenter
+
+added_vcenter: *added_vcenter
+
+delete_vcenter:
+    select_operation: Delete vCenter
+    select_vcenter:
+    ensure_delete_info: Confirm
+
+add_hwi:
+   -
+      hwi_name: *hwi_name01
+      performed_active: Add VxRack(Flex)/VxBlock based Hardware Island
+      vcenter_name_active: *vcenter_name
+      site_name_active: *site_name01
+      storage_type: BLOCK
+      vipr_active: ViPR
+      vipr_active_check: [*vipr_varray01]
+   -
+      hwi_name: *hwi_name02
+      performed_active: Add VxRack(Flex)/VxBlock based Hardware Island
+      vcenter_name_active: *vcenter_name
+      site_name_active: *site_name02
+      storage_type: BLOCK
+      vipr_active: ViPR
+      vipr_active_check: [*vipr_varray02]
+
+added_hwi: *added_hwi
+
+onboard_ca_cluster:
+   select_hardward_island_1: *hwi_name01
+   select_unprepared_cluster: *cluster_name
+   choose_inter_site_vs_intra_site: 'Inter-site'
+   select_hardward_island_2: *hwi_name02
+   select_hosts_for_hardware_island_1:
+   select_hosts_for_hardware_island_2:
+
+operate_vm:
+    basic_action_list:
+      - Power On
+      - Power Off
+      - Reboot
+    user_action_list:
+      - Power Off
+
+delete_cluster:
+    []
+
+provision_multiple_cloud_storage:
+    -
+      'cluster': *cluster_name
+      'hwi_name': *hwi_name01
+      'virtual_pools': *vipr_storage_tier_a
+      'storage_type': *storage_type_a
+      'vPool_DS_Small': *vPool_DS_Small_a
+      'vPool_DS_Large': *vPool_DS_Large_a
+    -
+      'cluster': *cluster_name
+      'hwi_name': *hwi_name02
+      'virtual_pools': *vipr_storage_tier_b
+      'storage_type': *storage_type_b
+      'vPool_DS_Small': *vPool_DS_Small_b
+      'vPool_DS_Large': *vPool_DS_Large_b
+
+added_cloud_storage:
+    -
+      hwi_name:
+      cluster_name:
+      name: []
+      srp: []
+    -
+      hwi_name:
+      cluster_name:
+      name: []
+      srp: []
+
+create_reservation_policy:
+    names: [*reservation_policy_name]
+
+added_reservation_policy: []
+
+added_reservation:
+ - *reservation_names
+
+assigned_reservation_policy_reservations:
+ []
+
+assigned_reservation_policy_blueprints:
+ [*blueprint_name]
+
+assign_reservation_policy_to_blueprint:
+    blueprint_names: []
+    reservation_policy_name: *reservation_policy_name
+
+assign_datastores_and_reservation_policy_to_reservation:
+    reservation_names: []
+    reservation_policy_names: []
+
+delete_datastore:
+    - description: Delete Logic
+      reasons: del logic
+      request: unknown
+
+delete_hwi:
+    del_reasons: tear down
+    del_description: delete hwi
+    del_performed_active: Delete Hardware Island
+    isdel_obj: Confirm
+
+delete_sites:
+    description: deletesite
+    action_to_be_performed: Delete Site
+    please_pick_a_site_to_delete:
+    please_confirm_that_you_wish_to_delete_this_site: Confirm
+
+#DP config
+add_avamar_grid:
+  - description: add avamargrid01
+    select_operation_type: Add Avamar Grid
+    avamar_grid_name: *site_avamar_grid01
+    avamar_grid_fqdn_name: *site_avamar_grid_fqdn01
+    admin_user_name: *ag_admin_user
+    admin_password: *ag_admin_pwd
+    soap_user_name: *ag_soap_user
+    soap_password: *ag_soap_pwd
+    request: unknown
+    site_name: *site_name01
+  - description: add avamargrid02
+    select_operation_type: Add Avamar Grid
+    avamar_grid_name: *site_avamar_grid02
+    avamar_grid_fqdn_name: *site_avamar_grid_fqdn02
+    admin_user_name: *ag_admin_user
+    admin_password: *ag_admin_pwd
+    soap_user_name: *ag_soap_user
+    soap_password: *ag_soap_pwd
+    request: unknown
+    site_name: *site_name02
+
+add_avamar_proxy:
+    - dns_updated: *dns_updated_01
+      tenant_cluster: *cluster_name
+      datastore: *avamar_proxy_datastore_01
+      proxy_network: *proxy_network_01
+      proxy_vm_name: *proxy_vm_name_01
+      avamar_path: *avamar_path_01
+      proxy_ip: *proxy_ip_01
+      proxy_netmask: *proxy_netmask_01
+      proxy_gateway: *proxy_gateway_01
+      dns_server_ip: *dns_server_ip_01
+      proxy_username: *proxy_username_01
+      proxy_password: *proxy_password_01
+      avamar_grid: *site_avamar_grid01
+      avamar_domain: *avamar_domain_01
+      ova: *avamar_proxy_ova_01
+      deployment_server: *deployment_server_01
+      deployment_server_username: *deployment_server_username_01
+      deployment_server_password: *deployment_server_password_01
+      disable_verification: *disable_verification_01
+
+    - dns_updated: *dns_updated_02
+      tenant_cluster: *cluster_name
+      datastore: *avamar_proxy_datastore_02
+      proxy_network: *proxy_network_02
+      proxy_vm_name: *proxy_vm_name_02
+      avamar_path: *avamar_path_02
+      proxy_ip: *proxy_ip_02
+      proxy_netmask: *proxy_netmask_02
+      proxy_gateway: *proxy_gateway_02
+      dns_server_ip: *dns_server_ip_02
+      proxy_username: *proxy_username_02
+      proxy_password: *proxy_password_02
+      avamar_grid: *site_avamar_grid02
+      avamar_domain: *avamar_domain_02
+      ova: *avamar_proxy_ova_02
+      deployment_server: *deployment_server_02
+      deployment_server_username: *deployment_server_username_02
+      deployment_server_password: *deployment_server_password_02
+      disable_verification: *disable_verification_02
+
+added_avamar_grid:
+    []
+
+add_avamar_site_relationship:
+  backup_env_type: '2C1VC'
+  site_first: *site_name01
+  site_second: *site_name02
+  site_third:
+
+added_avamar_site_relationship:
+   - asr_name:
+     backup_env_type: '2C1VC'
+     sites: []
+
+add_an_avamar_replication_relationship:
+  -
+    allow_duplicated_arr: False
+    description: add arr
+    operation_type: Add ARR
+    avamar_site_relationship_name:
+    site1_avamar_grid:
+    site2_avamar_grid:
+    site3_avamar_grid:
+
+added_avamar_replication_relationship:
+#  - ARR00005 (1C1VC-Cork-ave01)
+  []
+
+cluster_asr_to_associate:
+    description: associate cluster to ASR
+    reasons: testing
+    cluster_action: Associate Cluster to ASR
+
+associated_cluster_asr:
+
+avamar_proxies_cluster_to_associate:
+  -
+    avamar_proxies: []
+
+associated_avamar_proxy_cluster:
+  []
+
+add_backup_service_level:
+    - 'description': 'add backup service level'
+      'reasons': 'add_bsl'
+      'please_select_action_for_backup_service_level': 'Add Backup Service Level'
+      'specify_the_service_level_name': *backup_name_prefix
+      'select_backup_schedule': 'Monthly'
+      'schedule_start_time': '18:00'
+      'schedule_week_number': 'First'
+      'schedule_weekday': 'Sunday'
+      'regular_retention_policy': 'Until'
+      'retention_for_number': '3'
+      'retention_unit': 'Weeks'
+      'retention_date': '8/22/17'
+      'retention_time': '10:03 PM'
+      'long_term_retention_policy': '2'
+      'replication_schedule_type': 'Daily'
+      'replication_weekday': 'Monday'
+      'replication_week_number': 'First'
+      'replication_start_time': '20:00'
+
+added_backup_service_level:
+    backup_to_operate_vm:
+    backup_to_set_backup_service:
+
+on_demand_backup_vm:
+  vm_name:
+  description: A description of on_demand_backup_vm
+  reasons: A reason of on_demand_backup_vm
+
+get_arr_from_vro:
+    available_arr: []
+
+get_asr_from_vro:
+    available_asr: []
+
+set_backup_service_level:
+    backup_service_level_name:
+
+get_vrpa_clusters_from_vro:
+    available_vrpa_clusters: []
+
+display_backup_service_level:
+    please_select_action_for_backup_service_level: Display Backup Service Levels
+    email: Confirm
+
+run_admin_report:
+  description: run admin report
+  reasons: 'run_admin_report'
+  select_a_backup_service_level_name:
+  select_pdf_page_orientation: Portrait
+  select_one_or_more_reports_to_run:
+  select_a_time_frame: Last Day
+  email_results: Yes
+  email_address: 123@emc.com
+
+delete_backup_service_level:
+    -
+      description: delete_backup_service_level_operate_vm
+      reasons: 'delete_bsl'
+      please_select_action_for_backup_service_level: Delete Backup Service Level
+      select_backup_service_level_to_delete:
+      confirm_deletion_of_backup_service_level: Yes
+
+delete_avamar_replication_relationship:
+    description: delete arr
+    operation_type: Delete ARR
+    delete_arr:
+
+deleted_avamar_site_relationship:
+    []
+delete_avamar_grid:
+    description: delete_avamar_grid
+    select_operation_type: Delete Avamar Grid
+    confirmation: Confirm

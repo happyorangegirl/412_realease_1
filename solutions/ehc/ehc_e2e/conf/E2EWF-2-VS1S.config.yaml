@@ -1,0 +1,186 @@
+# ################################ Configuration section #############################################################
+# Automation user only needs to update the parameters in this section
+# [Mandatory] parameters : you must update with the right ones in your environment.
+# [Optional] parameters : you can suggested to update with your own, but not mandatory.
+mandatory:
+    vCenter:
+        vCenter_fqdn:              &vcenter_fqdn             'vcs01.vlab.local'
+        vCenter_datacenter:                &datacenter               'Cork'
+    Cluster:
+        cluster_name:              &cluster_name              'CRK-HWI-1-C1'
+    Reservation:
+        computer_resource:         &computer_resource         'CRK-HWI-1-C1'
+        memory_in_GB:              &memory                     20
+        storage_size_in_GB:        &storage_size               20
+        network_path:              &network_path              'vxw-dvs-101-virtualwire-18-sid-10002-LS_CRK-HWI-1-C1'
+    Virtual machine blueprint:
+        blueprint_name:            &blueprint_name            'yinl1-blue'
+        vSphere_Machine_ID:        &vSphere_Machine_ID        'vSphere_Machine_1'
+optional:
+    site_name:                  &site_name                 'VS1S-Site'
+    new_site_name:              &new_site_name             'VS1S-Site-new'
+    vcenter_name:               &vcenter_name              'VS1S-vcs01'
+    new_vcenter_name:           &new_vcenter_name          'VS1S-vcs01-new'
+    hwi_name:                   &hwi_name                  'VS1S-HWI-1'
+    new_hwi_name:               &new_hwi_name              'VS1S-HWI-1-new'
+    reservation_name:           &reservation_name          'VS1S_R'
+    reservation_policy_name:       &reservation_policy_name  ['VS1S_RP']
+################################# Configuration section #############################################################
+Intermediate_keys:
+    # Below are no need to write
+    added_sites: &added_sites []
+    added_vcenter: &added_vcenter []
+    added_hwi: &added_hwi []
+    existed_clusters: &existed_clusters []
+    added_reservation_name: &added_reservation_name []
+    added_reservation_policy_name: &added_reservation_policy_name []
+    assigned_buleprint: &assigned_buleprint []
+    added_reservation_policy: &added_reservation_policy []
+    assigned_reservation: &assigned_reservation []
+    # added cloud storage
+    datastorage_name: &datastorage_name []
+    storage_hwi: &storage_hwi
+    storage_cluster: &storage_cluster
+    srp: &srp []
+    deployed_vms: &deployed_vms []
+
+onboard_cluster_type: VS1S
+
+blueprints: [*blueprint_name]
+
+blueprint_machine_pairs:
+    {*blueprint_name: *vSphere_Machine_ID}
+
+add_sites:
+    - *site_name
+
+edit_sites:
+    - site_name: *site_name
+      new_site_name: *new_site_name
+
+add_vcenter:
+    - 'select_operation': 'Add vCenter'
+      'name_for_vcenter_endpoint': *vcenter_name
+      'select_vc_fqdn_to_add': *vcenter_fqdn
+      'new_vcenter_associated_sites': [*site_name]
+      'select_datacenter_to_add': *datacenter
+
+update_vcenter:
+    - 'select_operation': Edit vCenter
+      'existing_vcenter_object': *vcenter_name
+      'vcenter_name': *new_vcenter_name
+      'vcenter_fqdn': *vcenter_fqdn
+      'datacenter': *datacenter
+      'sites': [*site_name]
+      'vcenter_username': administrator@vsphere.local
+      'vcenter_password': Password123!
+
+add_hwi:
+    -
+      'hwi_name': *hwi_name
+      'performed_active': 'Add VxRail based Hardware Island'
+      'vcenter_name_active': *vcenter_name
+      'site_name_active': *site_name
+      storage_type: VSAN
+      'vipr_active': 'ViPR'
+      'vipr_active_check': []
+      request: unknown
+
+update_hwi:
+    -
+      'old_hwi_name': *hwi_name
+      'edit_hwi_name': *new_hwi_name
+      'performed_active': 'Edit VxRail based Hardware Island'
+      'edit_vcenter_name_active': *vcenter_name
+      'edit_site_name_active': *site_name
+      'vipr_active': 'ViPR'
+      'vipr_active_check': []
+
+onboard_vsan_cluster:
+    'select_a_hardware_island': *hwi_name
+    'select_unprepared_cluster': *cluster_name
+
+create_reservation_policy:
+    names: *reservation_policy_name
+
+create_reservation:
+  -
+    reservation_name: *reservation_name
+    reservation_type: vSphere
+    reservation_priority: 1
+    computer_resource: *computer_resource
+    memory: 30
+    storage_size: 30
+    storage_priority: 1
+    network_path: *network_path
+    network_profile: unknown
+
+assign_reservation_policy_to_reservation:
+    reservation_names: []
+    reservation_policy_names: []
+
+assign_reservation_policy_to_blueprint:
+    blueprint_names: []
+    reservation_policy_name:
+
+deploy_vm:
+    with_dp: False
+    description: 'deploy vm'
+    number_of_vm: 1
+    backup_service_level:
+    SRM_power_on_priority:
+    reason_for_request: test WF
+
+operate_vm:
+    basic_action_list:
+        - 'Power On'
+        - 'Power Off'
+        - 'Reboot'
+
+delete_cluster:
+    []
+
+delete_hwi:
+    del_performed_active: Delete Hardware Island
+    isdel_obj: Confirm
+
+delete_vcenter:
+    description: delete vcenter
+    reasons: tear down
+    select_operation: Delete vCenter
+    ensure_delete_info: Confirm
+
+delete_sites:
+    'description': 'deletesite'
+    'action_to_be_performed': 'Delete Site'
+    'please_pick_a_site_to_delete':
+    'please_confirm_that_you_wish_to_delete_this_site': 'Confirm'
+
+
+added_sites:
+    *added_sites
+
+added_vcenter:
+    *added_vcenter
+
+added_hwi:
+    *added_hwi
+
+existed_clusters:
+    *existed_clusters
+
+added_cloud_storage:
+   - hwi_name: *storage_hwi
+     cluster_name: *storage_cluster
+     name: *datastorage_name
+     srp: *srp
+
+added_reservation_policy: *added_reservation_policy_name
+
+added_reservation: *added_reservation_name
+
+assigned_reservation_policy_reservations: *assigned_reservation
+
+assigned_reservation_policy_blueprints: *assigned_buleprint
+
+deployed_vms: *deployed_vms

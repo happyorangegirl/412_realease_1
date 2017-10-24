@@ -1,0 +1,262 @@
+<div id="popupContainer" class="row">
+  <script type="text/ng-template" id="dialog1.tmpl.html">
+    <md-dialog aria-label="Add Product" ng-cloak>
+      <form>
+        <md-toolbar>
+          <div class="md-toolbar-tools">
+            <h2>Add Product</h2>
+            <span flex></span>
+          </div>
+        </md-toolbar>
+        <md-dialog-content>
+          <div class="md-dialog-content">
+            <form class="form-horizontal">
+              <div class="form-group">
+                <label class="col-sm-3 control-label">Name:</label>
+                <div class="col-sm-10">
+                  <input type="text" ng-model="fields.name" placeholder="product name">
+                </div>
+              </div>
+              <br>
+              <div class="form-group">
+                <label class="col-sm-3 control-label">Comment:</label>
+                <div class="col-sm-10">
+                  <textarea ng-model="fields.cmt" placeholder="comment"></textarea>
+                </div>
+              </div> 
+              <br>
+              <div class="form-group hide">
+                <label class="col-sm-3 control-label">User:</label>
+                <div class="col-sm-10">
+                  <input type="text" ng-model="fields.user_id" placeholder="user_id" value="1">
+                </div>
+              </div>  
+            </form>
+          </div>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+          <span flex></span>
+          <md-button ng-click="cancel()">
+           Not Save
+          </md-button>
+          <md-button ng-click="save()" style="margin-right:20px;">
+            Save
+          </md-button>
+        </md-dialog-actions>
+      </form>
+    </md-dialog>
+  </script>
+</div>
+
+<div class="row">
+
+  <div class="col-lg-11">
+    <rd-widget>
+      <rd-widget-header icon="fa-code" title="Products">
+        <div class="dialog-demo-content col-sm-4">
+          <md-button class="md-primary md-raised" ng-click="addProduct($event)"   flex="100"  flex-gt-md="auto">
+            Add Product
+          </md-button>
+          <md-checkbox ng-model="customFullscreen" aria-label="Fullscreen Custom Dialog" ng-hide="true">Custom Dialog Fullscreen</md-checkbox>
+        </div>
+
+        <input type="text" class="form-inline col-sm-8" style="line-height: 260%;" placeholder="Search a product" ng-model="searchProduct.name" ng-change="search()">
+        <!-- <a ui-sref="tables">Manage</a> -->
+        <!-- <span>&nbsp;</span> -->
+        <!-- <a ng-click="gotoDashbarod()">dashbaord</a> -->
+
+      </rd-widget-header>
+      <paging>
+      <rd-widget-body classes="medium no-padding">
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th><a href="" ng-click="sortType = 'name'; sortReverse = !sortReverse;">Name</a></th>
+                <th><a href="" ng-click="sortType = 'url'; sortReverse = !sortReverse;">Comments</a></th>
+                <!--<th><a href="" ng-click="sortType = 'completed'; sortReverse = !sortReverse;">Completed(%)</a></th>-->
+                <th><a href="" ng-click="sortType = 'create_at'; sortReverse = !sortReverse;">Create date</a></th>
+                <th>Actions</th></tr>
+            </thead>
+            <tbody ng-repeat="product in products | orderBy: sortType: sortReverse">
+              <tr ng-click="_expandedProductId = product.id;">
+                <!-- <td><a><i class="fa fa-plus-square"></i></a></td> -->
+                <td><a ui-sref="products.show.releases.show({productId: product.id, releaseId: 'v2.3.1'})">{{product.name}}</a></td>
+                <td><a ui-sref="products.show.releases.show({productId: product.id, releaseId: 'v3.0.0'})">{{product.cmt}}</a></td>
+                <!-- <td><span class="text-success"><i class="fa fa-check"></i></span></td></tr> -->
+                <!--<td><span ng-class="{'text-success': product.completed > 90, 'text-danger': product.completed < 90}"><i class="fa fa-percent">{{product.completed | number: 2}}</i></span></td>-->
+                <td><span>{{product.create_at | date: 'yyyy-MM-dd HH:mm'}}</span></td>
+                <td>
+                  <a class="fa fa-plus" title="add release" ng-click="addRelease($event, product.id)"></a>
+                  &nbsp;&nbsp;
+                  <a class="fa fa-pencil" title="Settings" ng-click="edit($event, product)"></a>&nbsp;&nbsp;
+                  <a class="fa fa-times" title="Remove"  ng-click="delete($event, product.id, product)"></a>
+                </td>
+              </tr>
+              <tr ng-if="product.releases.length > 0" ng-show="product.releases.length > 0 || _expandedProductId === product.id">
+                <td colspan="5">
+                  <table class="table" style="width: 95%; margin-left: 1%">
+                    <tr ng-repeat="r in product.releases | orderBy: sortType: sortReverse">
+                      <td><a ui-sref="products.show.releases.show.subs.index({productId: product.id, releaseId: r.id})">{{r.version}}</a></td>
+                      <td><a ui-sref="products.show.releases.show.subs.index({productId: product.id, releaseId: r.id})">{{r.cmt}}</a></td>
+                      <td><span class="text-success"><i class="fa fa-check"></i></span></td>
+                      <td><span ng-class="{'text-success': r.completed > 90, 'text-danger': r.completed < 90}"><i class="fa fa-percent">{{r.completed | number: 2}}</i></span></td>
+                      <td><span>{{r.create_at | date: 'yyyy-MM-dd HH:mm'}}</span></td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+
+              </tr>
+            </tbody>
+          </table>
+        </div>      
+      </rd-widget-body>
+      <rd-widget-footer>
+        <ul class="pagination pagination-sm pull-right" 
+          num-pages="tasks.pageCount" 
+          current-page="tasks.currentPage" 
+          on-select-page="selectPage(page)">
+          <li ng-class="{disabled: noPrevious()}"> 
+            <a ng-click="selectPrevious()">&laquo;</a>
+          </li>
+          <li ng-repeat="page in pages track by $index" ng-class="{active: isActive(page), separate: page == '...'}" ng-click="selectPage(page)">
+            <span>{{page}}</span> 
+          </li>
+          <li ng-class="{disabled: noNext()}"> 
+            <a ng-click="selectNext()">&raquo;</a> 
+          </li>
+        </ul>
+        <div class="clearfix"></div>
+      </rd-widget-footer>
+      </paging>
+    </rd-widget>
+  </div>
+
+  <div class="col-lg-6" style="display: none;">
+    <rd-widget>
+      <rd-widget-header icon="fa-tasks" title="Striped Servers">
+        <a ui-sref="tables.detail.grid">Manage</a>
+      </rd-widget-header>
+      <!-- -->
+      <div ui-view><div>
+
+      <rd-widget-body classes="medium no-padding">
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <tbody>
+              <tr><td>RDVMPC001</td><td>238.103.133.37</td><td><span class="text-success"><i class="fa fa-check"></i></span></td></tr>
+              <tr><td>RDVMPC002</td><td>68.66.63.170</td><td><span class="text-success"><i class="fa fa-check"></i></span></td></tr>
+              <tr><td>RDVMPC003</td><td>76.117.212.33</td><td><span tooltip="Server Down!" class="text-danger"><i class="fa fa-warning"></i></span></td></tr>
+              <tr><td>RDPHPC001</td><td>91.88.224.5</td><td><span class="text-success"><i class="fa fa-check"></i></span></td></tr>
+              <tr><td>RDESX001</td><td>197.188.15.93</td><td><span class="text-success"><i class="fa fa-check"></i></span></td></tr>
+              <tr><td>RDESX002</td><td>168.85.154.251</td><td><span class="text-success"><i class="fa fa-check"></i></span></td></tr>
+              <tr><td>RDESX003</td><td>209.25.191.61</td><td><span tooltip="Server Down!" class="text-danger"><i class="fa fa-warning"></i></span></td></tr>
+              <tr><td>RDESX004</td><td>252.37.192.235</td><td><span class="text-success"><i class="fa fa-check"></i></span></td></tr>
+              <tr><td>RDTerminal01</td><td>139.71.18.207</td><td><span class="text-success"><i class="fa fa-check"></i></span></td></tr>
+              <tr><td>RDTerminal02</td><td>136.80.122.212</td><td><span tooltip="Could not connect!" class="text-warning"><i class="fa fa-flash"></i></span></td></tr>
+              <tr><td>RDDomainCont01</td><td>196.80.245.33</td><td><span class="text-success"><i class="fa fa-check"></i></span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </rd-widget-body>
+      <rd-widget-footer>
+        <ul class="pagination pagination-sm pull-right">
+          <li><a href="#">&laquo;</a></li>
+          <li><a href="#">1</a></li>
+          <li><a href="#">2</a></li>
+          <li><a href="#">3</a></li>
+          <li><a href="#">&raquo;</a></li>
+        </ul>
+        <div class="clearfix"></div>
+      </rd-widget-footer>
+    </rd-widget>
+  </div>
+  <script type="text/ng-template" id="updatedialog.tmpl.html">
+    <md-dialog aria-label="Update Product" ng-cloak>
+      <form>
+        <md-toolbar>
+          <div class="md-toolbar-tools">
+            <h2>Update Product</h2>
+            <span flex></span>
+          </div>
+        </md-toolbar>
+        <md-dialog-content>
+          <div class="md-dialog-content">
+            <form class="form-horizontal">
+              <div class="form-group">
+                <label class="col-sm-3 control-label">Name:</label>
+                <div class="col-sm-10">
+                  <input type="text" ng-model="activeProduct.name" placeholder="please input name">
+                </div>
+              </div>
+              <br>
+              <div class="form-group">
+                <label class="col-sm-3 control-label">Comment:</label>
+                <div class="col-sm-10">
+                  <input type="text" ng-model="activeProduct.cmt" placeholder="please input cmt">
+                </div>
+              </div> 
+              <br>
+              <div class="form-group hide">
+                <label class="col-sm-3 control-label">User:</label>
+                <div class="col-sm-10">
+                  <input type="text" ng-model="activeProduct.user_id" placeholder="please input user_id">
+                </div>
+              </div>  
+            </form>
+          </div>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+          <span flex></span>
+          <md-button ng-click="cancel()">
+           Not Save
+          </md-button>
+          <md-button ng-click="save()" style="margin-right:20px;">
+            Save
+          </md-button>
+        </md-dialog-actions>
+      </form>
+    </md-dialog>
+  </script>
+  <script type="text/ng-template" id="addrelease.tmpl.html">
+    <md-dialog aria-label="Add Release" ng-cloak>
+      <form>
+        <md-toolbar>
+          <div class="md-toolbar-tools">
+            <h2>Add Release</h2>
+            <span flex></span>
+          </div>
+        </md-toolbar>
+        <md-dialog-content>
+          <div class="md-dialog-content">
+            <form class="form-horizontal">
+              <div class="form-group">
+                <label class="col-sm-3 control-label">Release:</label>
+                <div class="col-sm-10">
+                  <input type="text" ng-model="activeRelease.version" placeholder="please input releaseversion">
+                </div>
+              </div>
+              <br> 
+              <div class="form-group">
+                <label class="col-sm-3 control-label">Comment:</label>
+                <div class="col-sm-10">
+                  <input type="text" ng-model="activeRelease.cmt" placeholder="please input cmt">
+                </div>
+              </div> 
+            </form>
+          </div>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+          <span flex></span>
+          <md-button ng-click="cancel()">
+           Not Save
+          </md-button>
+          <md-button ng-click="save()" style="margin-right:20px;">
+            Save
+          </md-button>
+        </md-dialog-actions>
+      </form>
+    </md-dialog>
+  </script>
+</div>

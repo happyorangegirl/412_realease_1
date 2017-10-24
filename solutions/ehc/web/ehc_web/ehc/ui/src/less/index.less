@@ -1,0 +1,221 @@
+@font-size-base:          14px;
+@font-size-large:         ceil((@font-size-base * 1.25)); // ~18px
+@font-size-small:         ceil((@font-size-base * 0.85)); // ~12px
+
+@font-size-h1:            floor((@font-size-base * 2.6)); // ~36px
+@font-size-h2:            floor((@font-size-base * 2.15)); // ~30px
+@font-size-h3:            ceil((@font-size-base * 1.7)); // ~24px
+@font-size-h4:            ceil((@font-size-base * 1.25)); // ~18px
+@font-size-h5:            @font-size-base;
+@font-size-h6:            ceil((@font-size-base * 0.85)); // ~12px
+
+@input-width-base:        100%;
+@input-width-per60:       ceil((@input-width-base * 0.6)); // ~60%
+
+.dialogdemoBasicUsage { height: 300px;}
+.dialogdemoBasicUsage #popupContainer {
+  position: relative; }
+.dialogdemoBasicUsage .footer {
+  width: 100%;
+  text-align: center;
+  margin-left: 20px; }
+.dialogdemoBasicUsage .footer, .dialogdemoBasicUsage .footer > code {
+  font-size: 0.8em;
+  margin-top: 50px; }
+
+
+/* sidebar */
+#sidebar-wrapper {
+  margin: 0 auto;
+  left: -30px;
+  width: 100%;
+  position: static;
+  height: 50px;
+  z-index: 999;
+  background-color: #1991d2;
+
+  ul.sidebar {
+    position: static;
+    height: 100%;
+    overflow: hidden;
+    .sidebar-title { display: none;}
+
+    .sidebar-main {
+      float: left;
+      min-width: 13%;
+      height: 100%;
+      display: inline-block;
+
+      a {
+        background: none;
+        font-size: 22px;
+        line-height: 50px;
+      }
+    }
+
+    li {
+      a {
+        display: inline-block;
+        width: 100%;
+      }
+    }
+
+    .sidebar-list {
+      width: 10%;
+      height: 100%;
+      display: inline-block;
+      float: left;
+
+      a {
+        text-align: center;
+        background: none;
+        width: 100%;
+        height: 100%;
+        line-height: 50px;
+        float: left;
+        text-indent: 0;
+        color: #81d4ff;
+
+        .menu-icon { display: none;}
+      }
+      a.active {
+        color: #fff !important;
+        border-bottom: 3px solid #e99d1a;
+      }
+      a:hover {
+        border-left: none;
+        color: #fff;
+        border-bottom: 3px solid #e99d1a;
+        text-indent: 0;
+      }
+    }    
+  }
+
+  .sidebar-footer {
+    margin: 0 auto;
+    width: 80%;
+  }
+}
+
+.sidebar-footer {
+  width: 100%;
+  position: static;
+}
+
+@media screen and (min-width: 561px) {
+  #page-wrapper {
+    padding-left: 0 !important;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  #content-wrapper { width: 90%; margin: 0 auto; min-height: 91%;}
+}
+
+.widget .widget-body.lauto {
+  height: auto;
+  overflow-y: auto;
+}
+
+/* Flow the inline-block .btn starting from the right. */
+.btn-container-right {
+  direction: rtl;
+
+  * {
+    direction: ltr;
+  }
+}
+
+.pack-show, .license-show {
+  .panel-heading {
+    padding: 5px 15px;
+    div {
+      height: @font-size-h2;
+      line-height: @font-size-h2;
+      text-align: left;
+      font-weight: bold;
+    }
+  }
+  .list-group-item {
+    border: 1px solid #ddd;
+    min-height: 40px;
+    padding-left: 50px;
+
+    .status {
+      width: auto;
+    }
+    label {
+      font-weight: normal;
+      text-align: left;
+      width: auto;
+      display: inline;
+      float: left;
+      margin-right: 15px;
+    }
+    .url {
+      width: @input-width-per60;
+    }
+  }
+}
+
+.sub-repos {
+  width: 100%;
+
+  tr {
+    border-left: 3px solid #AECCE5;
+
+
+    td:first-child {
+      padding-left: 8px;
+      width: 70px;
+    }
+  }
+
+  tr:hover {
+    border-left: 3px solid #008AFF;
+  }
+}
+
+.widget .widget-icon {
+  background: #30426a;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  text-align: center;
+  vertical-align: middle;
+  margin-right: 15px;
+}
+
+.widget .widget-icon i {
+  line-height: 41px;
+  color: #fff;
+  font-size: 25px;
+}
+
+.path-divider {
+  margin: 0 0.25em;
+  //font-size: 18px;
+  //line-height: 26px;
+  color: #666;
+}
+
+.packs_search {
+  td a:visited {
+    color:#BF217E;
+  }
+}
+
+.BDL {
+  margin-top: 20px;
+  .node {
+    margin-top: 10px;
+  }
+
+  form.tab-form-demo .tab-pane {
+    margin: 20px 20px;
+  }
+
+  .grid {
+    margin: 10px 0;
+  }
+}

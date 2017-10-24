@@ -1,0 +1,206 @@
+Optional:
+  added_avamar_grid: &id001 []
+  added_avamar_replication_relationship: &id002 []
+  added_hwi: &id006 []
+  added_reservation_name: &id007 []
+  added_reservation_policy_name: &id008 []
+  added_site: &id009 []
+  added_vcenter: &id010 []
+  asr_name: null
+  assigned_buleprint: &id011 []
+  assigned_reservation: &id012 []
+  backup_env_type: null
+  backup_service_level_name: backup_svc_name_E2EWF-1-LC1S
+  backup_to_operate_vm: null
+  backup_to_set_backup_service: null
+  cluster_name: CRK-HWI-1-C1
+  cluster_type: LC1S
+  datastorage_name: &id004 []
+  deployed_vms: &id014 []
+  edit_cluster_hwi_cluster: CRK-HWI-1-C1
+  edit_cluster_hwi_hwi: Cork-HWI-1
+  edit_cluster_site_cluster: CRK-HWI-1-C1
+  edit_cluster_site_hwi: Cork-HWI-1
+  edit_cluster_site_site: Cork
+  existed_clusters: &id015 []
+  network_profile: CRK-HWI-1-C1
+  new_avamar_grid_fqdn_name: cork-ave02.vlab.local
+  new_avamar_grid_name: Cork-ave02
+  new_hwi_name: Cork-HWI-1-new
+  new_site_name: ite
+  new_vcenter_name: vCenter01-new
+  reservation_name: dev022
+  reservation_policy_name: &id013 [dev022-R]
+  set_backup_service_level_name: set_backup_svc_name_E2EWF-1-LC1S
+  site_name: Cork
+  sites: &id003 []
+  srp: &id005 []
+  storage_cluster: null
+  storage_hwi: null
+  vcenter_name: vcs01
+add_an_avamar_replication_relationship: {avamar_site_relationship_name: null, description: add
+    arr, operation_type: Add Avamar Replication Relationship, site1_avamar_grid: null,
+  site2_avamar_grid: null, site3_avamar_grid: null}
+add_avamar_grid:
+- {admin_password: Password123!, admin_user_name: root, avamar_grid_fqdn_name: cork-ave02.vlab.local,
+  avamar_grid_name: Cork-ave01, description: add avamargrid01, request: unknown, select_operation_type: Add
+    Avamar Grid, site_name: Cork, soap_password: Emsee123_, soap_user_name: root}
+add_avamar_site_relationship: {backup_env_type: 1C1VC, site_first: Cork, site_second: null,
+  site_third: null}
+add_backup_service_level:
+- {description: add backup service leve, long_term_retention_policy: '2', please_select_action_for_backup_service_level: Add
+    Backup Service Level, reasons: reasons, regular_retention_policy: for, replication_week_day: Monday,
+  retention_custom_phrase: weeks, retention_for_number: '3', select_backup_schedule: Weekly,
+  select_replication_schedule: Weekly, specify_the_service_level_name: backup_svc_name_E2EWF-1-LC1S,
+  weekday: Sunday}
+- {description: add backup service leve, long_term_retention_policy: '2', please_select_action_for_backup_service_level: Add
+    Backup Service Level, reasons: reasons, regular_retention_policy: for, replication_week_day: Monday,
+  retention_custom_phrase: weeks, retention_for_number: '3', select_backup_schedule: Weekly,
+  select_replication_schedule: Weekly, specify_the_service_level_name: set_backup_svc_name_E2EWF-1-LC1S,
+  weekday: Sunday}
+add_hwi:
+- hwi_name: Cork-HWI-1
+  performed_active: Add Hardware Island
+  site_name_active: Cork
+  vcenter_name_active: vcs01
+  vipr_active: ViPR
+  vipr_active_check: [CRK-HWI-1-vArray1]
+add_sites: [Cork]
+add_vcenter:
+- name_for_vcenter_endpoint: vcs01
+  new_vcenter_associated_sites: [Cork]
+  select_datacenter_to_add: Cork
+  select_operation: Add vCenter
+  select_vc_fqdn_to_add: vcs01.vlab.local
+added_avamar_grid: *id001
+added_avamar_replication_relationship: *id002
+added_avamar_site_relationship:
+  asr_name: null
+  backup_env_type: null
+  sites: *id003
+added_backup_service_level: {backup_to_operate_vm: null, backup_to_set_backup_service: null}
+added_cloud_storage:
+- cluster_name: null
+  hwi_name: null
+  name: *id004
+  srp: *id005
+added_hwi: *id006
+added_reservation: *id007
+added_reservation_policy: *id008
+added_sites: *id009
+added_vcenter: *id010
+assign_reservation_policy_to_blueprint:
+  blueprint_names: []
+  reservation_policy_name: null
+assign_reservation_policy_to_reservation:
+  reservation_names: []
+  reservation_policy_names: []
+assigned_reservation_policy_blueprints: *id011
+assigned_reservation_policy_reservations: *id012
+associated_avamar_proxy_cluster: []
+associated_cluster_asr: []
+avamar_proxies_cluster_to_associate:
+- avamar_proxies: []
+blueprint_machine_pairs: {dev010-E2E-test: vSphere_Machine_1}
+blueprints: [dev010-E2E-test]
+cluster_asr_to_associate: {cluster_action: Associate Cluster to ASR, description: associate
+    cluster to ASR, reasons: testing}
+create_reservation:
+- {computer_resource: CRK-HWI-1-C1 (VCS01), memory: 50, network_path: vxw-dvs-101-virtualwire-18-sid-10002-LS_CRK-HWI-1-C1,
+  network_profile: CRK-HWI-1-C1, reservation_name: dev022, reservation_priority: 1,
+  reservation_type: vSphere, storage_priority: 1, storage_size: 100}
+create_reservation_policy:
+  names: *id013
+delete_avamar_grid: {confirmation: Confirm, description: delete_avamar_grid, select_operation_type: Delete
+    Avamar Grid}
+delete_avamar_replication_relationship: {delete_arr: null, description: delete arr,
+  operation_type: Delete Avamar Replication Relationship}
+delete_avamar_site_relationship: {action: Delete an ASR, description: delete avamar
+    site relationship demo}
+delete_backup_service_level:
+- {confirm_deletion_of_backup_service_level: true, description: delete_backup_service_level,
+  please_select_action_for_backup_service_level: Delete Backup Service Level, reasons: reasons,
+  select_backup_service_level_to_delete: null}
+- {confirm_deletion_of_backup_service_level: true, description: delete_backup_service_level,
+  please_select_action_for_backup_service_level: Delete Backup Service Level, reasons: reasons,
+  select_backup_service_level_to_delete: null}
+delete_cluster: []
+delete_datastore:
+- {description: Delete Datastore, reasons: tear down}
+delete_hwi: {del_performed_active: Delete Hardware Island, isdel_obj: Confirm}
+delete_sites: {action_to_be_performed: Delete Site, description: deletesite, please_confirm_that_you_wish_to_delete_this_site: Confirm,
+  please_pick_a_site_to_delete: null}
+delete_vcenter: {description: delete vcenter, ensure_delete_info: Confirm, reasons: tear
+    down, select_operation: Delete vCenter}
+delete_vcenter_relatinship: {description: del_vcenter_relationship02, please_select_the_operation: Delete
+    vCenter Relationship, protected_vcenter: null, reasons: delrelationship, recovery_vcenter: null}
+deploy_vm: {SRM_power_on_priority: null, backup_service_level: null, description: deploy
+    vm, number_of_vm: 1, reason_for_request: test WF, with_dp: true}
+deployed_vms: *id014
+display_backup_service_level: {email: Confirm, please_select_action_for_backup_service_level: Display
+    Backup Service Levels}
+edit_admin_full:
+- {admin_full: true, avamar_grid_name: Cork-ave02, description: update avamargrid01,
+  edit_action: Modify Avamar Grid Admin Full setting, email_notification: Confirm,
+  select_operation_type: Edit Avamar Grid}
+edit_avamar_grid:
+- {avamar_grid_name: Cork-ave01, description: update avamargrid01, edit_action: Modify
+    Avamar Grid details, edit_admin_password: Password123!, edit_admin_user_name: root,
+  edit_avamar_grid_fqdn_name: cork-ave02.vlab.local, edit_site_name: Cork, edit_soap_password: Emsee123_,
+  edit_soap_user_name: root, email_notification: Confirm, new_avamar_grid_name: Cork-ave02,
+  request: unknown, select_operation_type: Edit Avamar Grid}
+edit_avamar_replication_relationship: {admin_full: true, arr: null}
+edit_avamar_site_relationship: {site_first: Cork, site_second: '', site_third: ''}
+edit_cluster_hwi:
+- {cluster: CRK-HWI-1-C1, hwi_1: Cork-HWI-1, hwi_2: null}
+edit_cluster_site:
+- {cluster: CRK-HWI-1-C1, hwi: Cork-HWI-1, site: Cork}
+edit_sites:
+- {new_site_name: ite, site_name: Cork}
+existed_clusters: *id015
+launch_browser: {baseUrl: 'https://vra-vip.vlab.local/vcac/org/', browserType: Chrome}
+login:
+  primary: {domain: vlab.local, password: Password123!, role: null, user: ehc_sysadmin,
+    username: ehc_sysadmin}
+  secondary: {password: null, role: null, username: null}
+mandatory: {avamar_grid_fqdn_name: cork-ave02.vlab.local, avamar_grid_name: Cork-ave01,
+  blueprint_name: dev010-E2E-test, computer_resource: CRK-HWI-1-C1 (VCS01), datacenter: Cork,
+  hwi_name: Cork-HWI-1, network_path: vxw-dvs-101-virtualwire-18-sid-10002-LS_CRK-HWI-1-C1,
+  vSphere_Machine_ID: vSphere_Machine_1, vcenter_fqdn: vcs01.vlab.local, vipr_storage_tier: CRK-XIO-Local;
+    available, vipr_varray: CRK-HWI-1-vArray1}
+on_demand_backup_vm: {description: A description of on_demand_backup_vm, reasons: A
+    reason of on_demand_backup_vm, vm_name: null}
+onboard_cluster_type: LC1S
+onboard_local_cluster: {select_a_hardware_island: null, select_unprepared_cluster: CRK-HWI-1-C1}
+operate_vm:
+  basic_action_list: [Power On, Power Off, Reboot]
+  user_action_list: [Power Off]
+provision_cloud_storage:
+- {description: Provision Cloud Storage, hwi_name: '', reasons: pcs, request: unknown,
+  size_in_gb: '10', storage_type: VMFS, vipr_storage_tier: CRK-XIO-Local; available}
+run_admin_report: {description: run admin report, email_address: 123@emc.com, email_results: true,
+  reasons: run reason, select_a_backup_service_level_name: null, select_a_time_frame: Last
+    Day, select_one_or_more_reports_to_run: null, select_pdf_page_orientation: Portrait}
+set_backup_service_level: {backup_service_level_name: null}
+shared:
+  current_browser: {current_user: null, instance: null, is_login: false, launched: false,
+    type: null}
+update_hwi:
+- edit_hwi_name: Cork-HWI-1-new
+  edit_site_name_active: Cork
+  edit_vcenter_name_active: vcs01
+  edit_vipr_active: ViPR
+  edit_vipr_active_check: [CRK-HWI-1-vArray1]
+  old_hwi_name: Cork-HWI-1
+  performed_active: Update Hardware Island
+update_vcenter:
+- datacenter: Cork
+  existing_vcenter_object: vcs01
+  select_operation: Update vCenter
+  sites: [Cork]
+  vcenter_fqdn: vcs01.vlab.local
+  vcenter_name: vCenter01-new
+  vcenter_password: Password123!
+  vcenter_username: administrator@vsphere.local
+vra: {business_group: dev022BG, tenant: dev022}
+vro: {address: 192.168.7.122, password: Password123!, username: yinl1@vlab.local}

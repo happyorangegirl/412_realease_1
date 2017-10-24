@@ -1,0 +1,21 @@
+{
+  "Avamar configuration": {
+    "avamar_grid_fqdn_name": "cork-ave08.vlab.local",
+    "avamar_grid_name": "Cork-ave08"
+  },
+  "Virtual machine": {
+    "blueprint_name": "dev008-E2E-test",
+    "vSphere_Machine_ID": "vSphere_Machine_1"
+  },
+  "Infrastructure": {
+    "network_path": "vxw-dvs-101-virtualwire-18-sid-10002-LS_CRK-HWI-1-C1",
+    "datacenter": "Cork",
+    "vcenter_fqdn": "vcs08.vlab.local",
+    "hwi_name": "Cork-HWI-1",
+    "computer_resource": "CRK-HWI-1-C1 (VCS01)"
+  },
+  "Storage": {
+    "vipr_storage_tier": "CRK-XIO-Local; available",
+    "vipr_varray": "CRK-HWI-1-vArray1"
+  }
+}

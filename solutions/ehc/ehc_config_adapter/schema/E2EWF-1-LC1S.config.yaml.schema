@@ -1,0 +1,118 @@
+{
+    "$schema":"http://json-schema.org/draft-03/schema#",
+    "id":"#",
+    "properties":{
+        "Avamar configuration":{
+            "description":"Avamar configuration",
+            "id":"Avamar configuration",
+            "properties":{
+                "avamar_grid_fqdn_name":{
+                    "default":"cork-ave02.vlab.local",
+                    "description":"avamar grid fqdn name",
+                    "id":"avamar_grid_fqdn_name",
+                    "required":true,
+                    "type":"string"
+                },
+                "avamar_grid_name":{
+                    "default":"Cork-ave01",
+                    "description":"avamar grid name",
+                    "id":"avamar_grid_name",
+                    "required":true,
+                    "type":"string"
+                }
+            },
+            "required":true,
+            "type":"object"
+        },
+        "Infrastructure":{
+            "description":"Infrastructure",
+            "id":"Infrastructure",
+            "properties":{
+                "computer_resource":{
+                    "default":"CRK-HWI-1-C1 (VCS01)",
+                    "description":"computer resource",
+                    "id":"computer_resource",
+                    "required":true,
+                    "type":"string"
+                },
+                "datacenter":{
+                    "default":"Cork",
+                    "description":"datacenter",
+                    "id":"datacenter",
+                    "required":true,
+                    "type":"string"
+                },
+                "hwi_name":{
+                    "default":"Cork-HWI-1",
+                    "description":"hwi name",
+                    "id":"hwi_name",
+                    "required":true,
+                    "type":"string"
+                },
+                "network_path":{
+                    "default":"vxw-dvs-101-virtualwire-18-sid-10002-LS_CRK-HWI-1-C1",
+                    "description":"network path",
+                    "id":"network_path",
+                    "required":true,
+                    "type":"string"
+                },
+                "vcenter_fqdn":{
+                    "default":"vcs01.vlab.local",
+                    "description":"vcenter fqdn",
+                    "id":"vcenter_fqdn",
+                    "required":true,
+                    "type":"string"
+                }
+            },
+            "required":true,
+            "type":"object"
+        },
+        "Storage":{
+            "description":"Storage",
+            "id":"Storage",
+            "properties":{
+                "vipr_storage_tier":{
+                    "default":"CRK-XIO-Local; available",
+                    "description":"vipr storage tier",
+                    "id":"vipr_storage_tier",
+                    "required":true,
+                    "type":"string"
+                },
+                "vipr_varray":{
+                    "default":"CRK-HWI-1-vArray1",
+                    "description":"vipr varray",
+                    "id":"vipr_varray",
+                    "required":true,
+                    "type":"string"
+                }
+            },
+            "required":true,
+            "type":"object"
+        },
+        "Virtual machine":{
+            "description":"Virtual machine",
+            "id":"Virtual machine",
+            "properties":{
+                "blueprint_name":{
+                    "default":"dev010-E2E-test",
+                    "description":"blueprint name",
+                    "id":"blueprint_name",
+                    "required":true,
+                    "type":"string"
+                },
+                "vSphere_Machine_ID":{
+                    "default":"vSphere_Machine_1",
+                    "description":"vSphere Machine ID",
+                    "id":"vSphere_Machine_ID",
+                    "required":true,
+                    "type":"string"
+                }
+            },
+            "required":true,
+            "type":"object"
+        }
+    },
+    "required":true,
+    "title":"EHC E2E Automation Configurations",
+    "type":"object"
+}

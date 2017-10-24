@@ -1,0 +1,38 @@
+
+# ################################ Configuration section #############################################################
+# Automation user only needs to update the parameters in this section
+# [Mandatory] parameters : you must update with the right ones in your environment.
+# [Optional] parameters : you can suggested to update with your own, but not mandatory.
+
+mandatory:
+    Relationship_Mappings:
+        relationship_mapping_1:
+            1-mapping-a-cluster-name:              &mapping_a_cluster_name                 LON-WSW-RP-C1
+            2-mapping-a-reservation-name:          &mapping_a_reservation_name             RP4VM-101-RP-a
+            3-mapping-a-computer-resource:         &mapping_a_computer_resource            'LON-WSW-RP-C1 (VCS02)'
+            4-mapping-a-network-path:              &mapping_a_np                           'VM Network'
+            5-mapping-a-blueprint:                 &mapping_a_blueprint                    'Blueprints_RP4VM'
+            6-mapping-a-vsphere-machine-id:        &mapping_a_vspmachine_id                'vSphere_Machine_1'
+        relationship_mapping_2:
+            1-mapping-b-cluster-name:              &mapping_b_cluster_name                 LON-WSW-RP-C1
+            2-mapping-b-reservation-name:          &mapping_b_reservation_name             RP4VM-101-RP-a
+            3-mapping-b-computer-resource:         &mapping_b_computer_resource            'LON-WSW-RP-C1 (VCS02)'
+            4-mapping-b-network-path:              &mapping_b_np                           'VM Network'
+            5-mapping-b-blueprint:                 &mapping_b_blueprint                    'Blueprints_RP4VM'
+            6-mapping-b-vsphere-machine-id:        &mapping_b_vspmachine_id                'vSphere_Machine_1'
+
+workflow_relation_mappings:
+    Relation_Mapping_1:
+         mapping_cluster_name:              *mapping_a_cluster_name
+         mapping_reservation_name:          *mapping_a_reservation_name
+         mapping_computer_resource:         *mapping_a_computer_resource
+         mapping_network_path:              *mapping_a_np
+         mapping_blueprint:                 *mapping_a_blueprint
+         mapping_vsphere_machine_id:        *mapping_a_vspmachine_id
+    Relation_Mapping_2:
+         mapping_cluster_name:              *mapping_b_cluster_name
+         mapping_reservation_name:          *mapping_b_reservation_name
+         mapping_computer_resource:         *mapping_b_computer_resource
+         mapping_network_path:              *mapping_b_np
+         mapping_blueprint:                 *mapping_b_blueprint
+         mapping_vsphere_machine_id:        *mapping_b_vspmachine_id

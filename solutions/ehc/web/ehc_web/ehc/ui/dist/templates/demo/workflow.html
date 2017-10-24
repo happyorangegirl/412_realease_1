@@ -1,0 +1,58 @@
+<ui-view></ui-view>
+<style type=text/css>
+    textarea {
+        /*padding: 10px;*/
+    }
+</style>
+    <div id="over" class="over"></div>
+    <div id="layout" class="layout"><img src="img/loading.gif" alt="" /></div>
+<div class=BDL ui-i18n=en>
+    <div>
+        <div style="display: inline-block; line-height: 33px; font-weight:33px;">Workflow Template:</div>
+        <ui-select ng-model=DemoCtrl.selected_workflow theme=bootstrap title="$item" autofocus=true
+                   style="width: 30%; display: inline-block; margin: 10px; top: 10px;"
+                   on-select="onSelectWorkflow($item,null,'false');">
+            <ui-select-match placeholder="Chose your workflow" style="width: 100%" ui-lock-choice>{{$select.selected.workflow}}
+            </ui-select-match>
+            <ui-select-choices repeat="wf in config.workflows | filter: $select.search" refresh-delay=0>
+                <div ng-bind-html="wf.id+': '+wf.workflow | highlight: $select.search" title={{wf.id : wf.workflow}}></div>
+            </ui-select-choices>
+        </ui-select>
+        <div style="display: inline-block; line-height: 33px; font-weight:33px;">
+            <button class="btn btn-default" ng-click="exportEditorData(data.schema, data.schema_filename, editor)"
+                    title="export key-values on this page to yaml file" ng-disabled=!valid>Export
+            </button>
+        </div>
+        <div style="display: inline-block; line-height: 33px; font-weight:33px;">
+            <button class="btn btn-default" ng-click="onSelectWorkflow(data.select_workflow, data.scenario_workflows, 'true');"
+                    title="get available values from vra/vro for specific keys" ng-disabled=!valid>Sync
+            </button>
+        </div>
+    </div>
+    <div style="width: 50%;margin:0 auto;overflow: hidden" ng-if="data.scenario_workflows.length > 0">
+        <p style="font-style: italic; margin: 3%">Show the first workflow's configuration by default</p>
+             <label class="label-workflow" data-ng-repeat="sc_workflow in data.scenario_workflows">
+                 <input type="radio" name="sc_workflow" ng-click="onSelectWorkflow(sc_workflow,data.scenario_workflows)" />
+                 {{sc_workflow.workflow}}
+             </label>
+    </div>
+    <div id=editor_holder style="width: 50%;margin:0 auto"></div>
+</div>
+<script type=text/ng-template id=rawTextSaveSuccess.html>
+    <div
+    class="modal-header"> <h3 class="modal-title">{{actionResult.title}}</h3> </div>
+    <div class="modal-body"> {{ actionResult.detail }}</div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+        <!-- <button class="btn btn-warning" type="button" ng-click="cancel()" ng-show="actionResult.error">Refresh</button> -->
+        <!-- <button class="btn btn-warning" type="button" ng-click="refresh()" ng-show="actionResult.error">Refresh</button> -->
+    </div></script>
+<script type=text/ng-template id=rawTextSaveFailed.html>
+    <div
+    class="modal-header text-danger"> <h3 class="modal-title ">{{actionResult.title}}</h3> </div>
+    <div class="modal-body"> {{ actionResult.detail }}</div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="reload()">Reload</button>
+        <!-- <button class="btn btn-warning" type="button" ng-click="cancel()" ng-show="actionResult.error">Refresh</button> -->
+        <!-- <button class="btn btn-warning" type="button" ng-click="refresh()" ng-show="actionResult.error">Refresh</button> -->
+    </div></script

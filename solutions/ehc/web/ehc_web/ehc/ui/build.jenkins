@@ -1,0 +1,39 @@
+Build Triggers >> Poll SCM >> Schedule
+
+    H/2 9-18 * * 1-5
+------------------------------------------------------------------------------
+
+1. ### Plugin: https://wiki.jenkins-ci.org/display/JENKINS/SSH+plugin
+    Build Environment >> Execute shell script on remote host using ssh >> Pre build script:
+        rm -rf /srv/license/ui
+
+------------------------------------------------------------------------------
+
+2. Build >> Execute Shell >> Command:
+
+    export LICENSE_UI_ENV=production
+
+    ## Target nginx static-files dir
+
+    rm -rf $WORKSPACE/dist
+    ## rm -rf $WORKSPACE/src/components/
+
+    ## git:// protocal is blocked by company, this make Bower faster
+    git config --global url."https://".insteadOf git://
+
+    ## Actions
+    npm install
+    node_modules/bower/bin/bower install
+    node_modules/gulp/bin/gulp.js build
+
+    # cp -R $WORKSPACE/dist $dir
+
+------------------------------------------------------------------------------
+
+3. ### Plugin: http://wiki.jenkins-ci.org/display/JENKINS/Publish+Over+SSH+Plugin
+
+    Build >> Send files or execute commands over SSH >> SSH Publishers:
+        Source files: dist/**/*
+        Remote directory: ui
+        Exec command:
+            echo "==== License UI Remote Build Success! ===="

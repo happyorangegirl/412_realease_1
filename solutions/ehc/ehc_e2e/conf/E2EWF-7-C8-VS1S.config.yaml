@@ -1,0 +1,209 @@
+#################################################################################################################
+# Caveats:
+#     Preconditions:
+#         1. Sites are created;
+#         2. vCenter is added;
+#         3. Hardware Island is created;
+#         4. "Onboard VSAN Cluster" (VS1S) catalog request is submitted.
+#################################################################################################################
+mandatory:
+    Avamar_grids_configurations:
+        1-avamar_grid_fqdn:             &grid_a_fqdn            'cork-ave01.vlab.local'
+        2-admin_username:   &ag_a_admin_user        'root'
+        3-admin_password:   &ag_a_admin_pwd         'Password123!'
+        4-soap_user_name:        &ag_a_soap_user         'root'
+        5-soap_password:    &ag_a_soap_pwd          'Emsee123_'
+    Existing_sites:
+        1-site_A:      &site_a                 'SiteCork'
+        2-site_B:      &site_b                 'SiteLondon'
+    Existing_vCenters:
+        1-vCenter_name:             &vcs01_name             'vcs01'
+        2-vCenter_fqdn:             &vcs01_fqdn             'vcs01'
+        3-vCenter_datacenter:       &vcs01_dc               'Cork'
+    Existing_hardware_islands:
+        1-HWI:        &hwi_a                  'VS1S-CRK-HWI-1'
+    Onboarded_cluster:
+        1-cluster_name:     &protected_cluster      'CRK-HWI-1-C1'
+#################################################################################################################
+optional_parameters:
+    vRA:
+        email:                &vra_email              admin@vlab.local
+    avamar_grids:
+        grid_4_local_site:
+            name:             &grid_a                 cork-ave01
+            edit_name:        &grid_name_edit         cork-ave01-edit
+    backup_servcie_level:
+        name:                 &busl_name              backup-svc-E2E7-VS1S-DP
+#################################################################################################################
+added_sites:
+  # Fake site which will be pdated to: '*site_a' in AUC: edit_avamar_site_relationship
+  - *site_b
+
+added_vcenter:
+  - *vcs01_name
+
+added_hwi:
+  - *hwi_a
+
+existed_clusters:
+  - *protected_cluster
+
+#################################################################################################################
+## For Debugging
+#added_avamar_grid:
+#    - *grid_a
+#
+#added_avamar_site_relationship:
+# - asr_name:
+#   backup_env_type:
+#   sites: []
+
+#  asr_name: ASR00037
+#  backup_env_type: 1C1VC
+#  sites: [London]
+
+#added_avamar_replication_relationship:
+#added_avamar_replication_relationship: [
+# ]
+
+#added_backup_service_level:
+#  backup_to_set_backup_service: *busl_name
+#  backup_to_operate_vm: ''
+#  backup_to_set_backup_service: ''
+
+#associated_avamar_proxy_cluster: []
+
+#################################################################################################################
+### Nodes for running workflow
+onboard_cluster_type: VS1S
+
+add_avamar_grid:
+    - description: add avamar grid01
+      select_operation_type: Add Avamar Grid
+      avamar_grid_name: *grid_a
+      avamar_grid_fqdn_name: *grid_a_fqdn
+      admin_user_name: *ag_a_admin_user
+      admin_password: *ag_a_admin_pwd
+      soap_user_name: *ag_a_soap_user
+      soap_password: *ag_a_soap_pwd
+      request: unknown
+      site_name: *site_a
+
+get_asr_from_vro:
+    available_asr: []
+
+edit_admin_full:
+    - description: edit_admin_full avamar grid01
+      select_operation_type: Edit Avamar Grid Admin Full
+      avamar_grid_name: *grid_name_edit
+      email_notification: Confirm
+      admin_full: True
+
+edit_avamar_grid:
+    - description: update avamar grid01
+      select_operation_type: Edit Avamar Grid Details
+      avamar_grid_name: *grid_a
+      new_avamar_grid_name: *grid_name_edit
+      edit_avamar_grid_fqdn_name: *grid_a_fqdn
+      edit_admin_user_name: *ag_a_admin_user
+      edit_admin_password: *ag_a_admin_pwd
+      edit_soap_user_name: *ag_a_soap_user
+      edit_soap_password: *ag_a_soap_pwd
+      request: unknown
+      edit_site_name: *site_a
+      email_notification: Confirm
+
+
+edit_avamar_site_relationship:
+    site_first: *site_a
+    site_second: ''
+    site_third: ''
+
+edit_avamar_replication_relationship:
+    # Keep this key empty, it will fetch added arr
+    arr:
+    admin_full: True
+
+add_avamar_site_relationship:
+    description: add avamar site relationship demo
+    action: Add an ASR
+    backup_env_type: 1C1VC
+    site_first: *site_b
+    site_second: ''
+
+
+add_an_avamar_replication_relationship:
+  -
+    allow_duplicated_arr: False
+    description: add arr
+    operation_type: Add Avamar Replication Relationship
+    avamar_site_relationship_name:
+    site1_avamar_grid: *grid_a
+    site2_avamar_grid:
+    site3_avamar_grid:
+
+get_arr_from_vro:
+    available_arr: []
+
+cluster_asr_to_associate:
+    description: associate cluster to ASR
+    reasons: testing
+    cluster_action: Associate Cluster to ASR
+
+add_backup_service_level:
+    - 'description': 'add backup service level'
+      'reasons': 'reasons'
+      'please_select_action_for_backup_service_level': 'Add Backup Service Level'
+      'specify_the_service_level_name': *busl_name
+      'select_backup_schedule': 'Monthly'
+      'schedule_start_time': '18:00'
+      'schedule_week_number': 'First'
+      'schedule_weekday': 'Sunday'
+      'regular_retention_policy': 'Until'
+      'retention_for_number': '3'
+      'retention_unit': 'Weeks'
+      'retention_date': '7/22/17'
+      'retention_time': '10:03 PM'
+      'long_term_retention_policy': '2'
+      'replication_schedule_type': 'Daily'
+      'replication_weekday': 'Monday'
+      'replication_week_number': 'First'
+      'replication_start_time': '20:00'
+
+display_backup_service_level:
+    please_select_action_for_backup_service_level: Display Backup Service Levels
+    email: Confirm
+
+avamar_proxies_cluster_to_associate:
+    - avamar_proxies: []
+
+run_admin_report:
+    description: run admin report
+    reasons: run reason
+    select_a_backup_service_level_name: *busl_name
+    select_pdf_page_orientation: Portrait
+    select_one_or_more_reports_to_run:
+    select_a_time_frame: Last Day
+    email_results: Yes
+    email_address: *vra_email
+
+delete_backup_service_level:
+    - description: delete_backup_service_level_operate_vm
+      reasons: reasons
+      please_select_action_for_backup_service_level: Delete Backup Service Level
+      select_backup_service_level_to_delete:
+      confirm_deletion_of_backup_service_level: Yes
+
+delete_avamar_replication_relationship:
+    description: delete arr
+    operation_type: Delete Avamar Replication Relationship
+    delete_arr:
+
+delete_avamar_site_relationship:
+    description: delete avamar site relationship demo
+    action: Delete an ASR
+
+delete_avamar_grid:
+    description: delete_avamar_grid
+    select_operation_type: Delete Avamar Grid
+    confirmation: Confirm

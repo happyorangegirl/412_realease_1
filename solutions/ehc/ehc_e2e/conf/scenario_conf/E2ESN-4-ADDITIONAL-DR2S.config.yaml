@@ -1,0 +1,310 @@
+# ################################ Configuration section #############################################################
+# Automation user only needs to update the parameters in this section
+# [Mandatory] parameters : you must update with the right ones in your environment.
+# [Optional] parameters : you can suggested to update with your own, but not mandatory.
+
+mandatory:
+    Pre-Reservation:
+        reservation_name:                     &reservation_name             'addtional-dr2s'
+    Pre-Reservation Policy:
+        reservation_policy_name:                &reservation_policy_name              'DR2S-DP-RP'
+    Virtual machine blueprint:
+        blueprint_name:                       &blueprint_name                     'Blueprint'
+        vSphere_Machine_ID:                   &vSphere_Machine_ID                 'vSphere_Machine_1'
+    Cluster:
+        1-protected_cluster_name:              &cluster_name_protected              'CRK-PAR-DR-C1'
+        2-recovery_cluster_name:               &cluster_name_recovery               'PAR-CRK-DR-C1'
+    ViPR:
+        1-protected_vipr_varray:               &vipr_varray_protected               'CRK-HWI-1-vArray1'
+        2-recovery_vipr_varray:                &vipr_varray_recovery                'PAR-HWI-1-vArray1'
+    provision_multiple_cloud_storage:
+        1-storage_tier(Use comma to split the storage tiers):             &vipr_storage_tier    "PAR-DR-0.25x"
+        2-storage_type:                       &storage_type               'VMFS DR-Enabled'
+        3-number_of_smaller_size_storages(Non-negative interger): &vPool_DS_Small  1
+        4-number_of_larger_size_storages(Non-negative interger):  &vPool_DS_Large  0
+    Deploy VM Parallel:
+        cpu_max:                        &cpu_max              2
+        ram_max:                              &ram_max                    2048
+    Protected Avamar Proxy:
+        1-protected_dns_updated:              &protected_dns_updated                'Yes'
+        2-protected_datastore:                  &protected_avamar_proxy_datastore     'Par-XIO-DR-Source_1490849662459'
+        3-protected_proxy_network:              &protected_proxy_network              'vxw-dvs-46-virtualwire-18-sid-20006-LS_PAR-CRK-DR-C4 (DVS_Cloud_VCS03_Paris)'
+        4-protected_proxy_vm_name:              &protected_proxy_vm_name              'Giza-ave01-p2.vlab.local'
+        5-protected_avamar_path:                &protected_avamar_path                '/clients/Giza-ave01.vlab.local'
+        6-protected_proxy_ip:                   &protected_proxy_ip                   '192.168.0.92'
+        7-protected_proxy_netmask:              &protected_proxy_netmask              '255.255.248.0'
+        8-protected_proxy_gateway:              &protected_proxy_gateway              '192.168.1.250'
+        9-protected_dns_server_ip:              &protected_dns_server_ip              '192.168.1.10'
+        11-protected_proxy_username:             &protected_proxy_username             'root'
+        12-protected_proxy_password:             &protected_proxy_password             'avam@r'
+        13-protected_avamar_domain:              &protected_avamar_domain              '/clients'
+        14-protected_ova:                        &protected_avamar_proxy_ova           '/DPNInstalls/downloads/VMWARE_PROXY_SP3/AvamarCombinedProxy-linux-sles11_64-7.4.101-58.ova'
+        15-protected_deployment_server:          &protected_deployment_server          'Dakar-ave01-p0.vlab.local'
+        16-protected_deployment_server_username: &protected_deployment_server_username 'root'
+        17-protected_deployment_server_password: &protected_deployment_server_password 'avam@r'
+        18-protected_disable_verification:       &protected_disable_verification       'No'
+    Recovery Avamar Proxy:
+        1-recovery_dns_updated:              &recovery_dns_updated                'Yes'
+        2-recovery_datastore:                  &recovery_avamar_proxy_datastore     'Par-XIO-DR-Source_1490849662459'
+        3-recovery_proxy_network:              &recovery_proxy_network              'vxw-dvs-46-virtualwire-18-sid-20006-LS_PAR-CRK-DR-C4 (DVS_Cloud_VCS03_Paris)'
+        4-recovery_proxy_vm_name:              &recovery_proxy_vm_name              'Giza-ave01-p2.vlab.local'
+        5-recovery_avamar_path:                &recovery_avamar_path                '/clients/Giza-ave01.vlab.local'
+        6-recovery_proxy_ip:                   &recovery_proxy_ip                   '192.168.0.92'
+        7-recovery_proxy_netmask:              &recovery_proxy_netmask              '255.255.248.0'
+        8-recovery_proxy_gateway:              &recovery_proxy_gateway              '192.168.1.250'
+        9-recovery_dns_server_ip:              &recovery_dns_server_ip              '192.168.1.10'
+        11-recovery_proxy_username:             &recovery_proxy_username             'root'
+        12-recovery_proxy_password:             &recovery_proxy_password             'avam@r'
+        13-recovery_avamar_domain:              &recovery_avamar_domain              '/clients'
+        14-recovery_ova:                        &recovery_avamar_proxy_ova           '/DPNInstalls/downloads/VMWARE_PROXY_SP3/AvamarCombinedProxy-linux-sles11_64-7.4.101-58.ova'
+        15-recovery_deployment_server:          &recovery_deployment_server          'Dakar-ave01-p0.vlab.local'
+        16-recovery_deployment_server_username: &recovery_deployment_server_username 'root'
+        17-recovery_deployment_server_password: &recovery_deployment_server_password 'avam@r'
+        18-recovery_disable_verification:       &recovery_disable_verification       'No'
+optional:
+    Site:
+        site_name_protected:                 &site_name_protected                 'DR2S-DP-Site-Pro'
+        site_name_recovery:                  &site_name_recovery                  'DR2S-DP-Site-Rec'
+    vCenter:
+        vcenter_name_protected:              &vcenter_name_protected              'DR2S-DP-vcs01'
+        vcenter_name_recovery:               &vcenter_name_recovery               'DR2S-DP-vcs03'
+    Avamar Grid:
+        avamar_name_protected:               &avamar_name_protected               'DR2S-DP-ave01-Pro'
+        avamar_name_recovery:                &avamar_name_recovery                'DR2S-DP-ave01-Rec'
+    backup_service_name_prefix:             &backup_name_prefix                    'E2E-1-DR2S-DP'
+################################# Configuration section #############################################################
+# variables set to make debug easier:
+Intermediate_keys:
+    added_sites: &added_sites []
+    added_vcenter: &added_vcenter []
+    # added vcentr relationship
+    protected_vcenter: &protected_vcenter
+    recovery_vcenter: &recovery_vcenter
+    added_hwi: &added_hwi [] #['DR2S-DP-HWI-1-Pro', 'DR2S-DP-HWI-1-Rec']
+    existed_clusters: &existed_clusters []
+    added_avamar_grid: &added_avamar_grid [] #['LC1S-RP4VM-ave01-1', 'LC1S-RP4VM-ave01-2']
+    # added asr
+    asr_name: &asr_name
+    backup_environment_type: &backup_environment_type
+    sites: &sites []
+    added_avamar_replication_relationship: &added_avamar_replication_relationship []
+    # paramters to added_backup_service_level
+    backup_to_operate_vm: &backup_to_operate_vm
+    backup_to_set_backup_service: &backup_to_set_backup_service
+    # added cloud storage
+    datastorage_name: &datastorage_name [] #['PAR-DR-0.25x_1499851031320']
+    storage_hwi: &storage_hwi  #'DR2S-DP-HWI-1-Rec'
+    storage_cluster: &storage_cluster #'PAR-CRK-DR-C4'
+    srp: &srp
+    added_reservation_policy: &added_reservation_policy []
+    assigned_buleprint: &assigned_buleprint []
+    assigned_reservation: &assigned_reservation []
+    deployed_vms: &deployed_vms []
+
+onboard_cluster_type: DR2S
+
+shared:
+    current_browser:
+        type:
+        instance:
+        launched: False
+        current_user:
+        is_login: False
+    backup_service_levels:
+        for_deletion: []
+        for_deploy_vm:
+        for_set_backup_service_level:
+
+blueprints:
+    - *blueprint_name
+
+blueprint_machine_pairs:
+    {*blueprint_name: *vSphere_Machine_ID}
+
+deploy_vm_parallel:
+    with_dp: True
+    description: ''
+    number_of_vm: 1
+    cpu_max: *cpu_max
+    ram_max: *ram_max
+    srm_power_on_priority: 3
+    reason_for_request: test DR2S scenario WF
+
+onboard_dr_cluster:
+    select_a_hwi_for_the_protected_cluster:
+    select_unprepared_protected_cluster: *cluster_name_protected
+    select_a_hwi_for_the_recovery_cluster:
+    select_unprepared_recovery_cluster: *cluster_name_recovery
+
+add_avamar_proxy:
+    - dns_updated: *protected_dns_updated
+      tenant_cluster: *cluster_name_protected
+      datastore: *protected_avamar_proxy_datastore
+      proxy_network: *protected_proxy_network
+      proxy_vm_name: *protected_proxy_vm_name
+      avamar_path: *protected_avamar_path
+      proxy_ip: *protected_proxy_ip
+      proxy_netmask: *protected_proxy_netmask
+      proxy_gateway: *protected_proxy_gateway
+      dns_server_ip: *protected_dns_server_ip
+      proxy_username: *protected_proxy_username
+      proxy_password: *protected_proxy_password
+      avamar_grid: *avamar_name_protected
+      avamar_domain: *protected_avamar_domain
+      ova: *protected_avamar_proxy_ova
+      deployment_server: *protected_deployment_server
+      deployment_server_username: *protected_deployment_server_username
+      deployment_server_password: *protected_deployment_server_password
+      disable_verification: *protected_disable_verification
+
+    - dns_updated: *recovery_dns_updated
+      tenant_cluster: *cluster_name_recovery
+      datastore: *recovery_avamar_proxy_datastore
+      proxy_network: *recovery_proxy_network
+      proxy_vm_name: *recovery_proxy_vm_name
+      avamar_path: *recovery_avamar_path
+      proxy_ip: *recovery_proxy_ip
+      proxy_netmask: *recovery_proxy_netmask
+      proxy_gateway: *recovery_proxy_gateway
+      dns_server_ip: *recovery_dns_server_ip
+      proxy_username: *recovery_proxy_username
+      proxy_password: *recovery_proxy_password
+      avamar_grid: *avamar_name_recovery
+      avamar_domain: *recovery_avamar_domain
+      ova: *recovery_avamar_proxy_ova
+      deployment_server: *recovery_deployment_server
+      deployment_server_username: *recovery_deployment_server_username
+      deployment_server_password: *recovery_deployment_server_password
+      disable_verification: *recovery_disable_verification
+
+provision_multiple_cloud_storage:
+    -
+      'cluster': *cluster_name_protected
+      'hwi_name':
+      'virtual_pools': *vipr_storage_tier
+      'storage_type': *storage_type
+      'vPool_DS_Small': *vPool_DS_Small
+      'vPool_DS_Large': *vPool_DS_Large
+
+create_reservation_policy:
+    names: [*reservation_policy_name]
+
+assign_reservation_policy_to_blueprint:
+    blueprint_names: []
+    reservation_policy_name:
+
+deploy_vm:
+    with_dp: True
+    description: deploy vm
+    number_of_vm: 1
+    backup_service_level:
+    SRM_power_on_priority:
+    reason_for_request: test dp
+
+operate_vm:
+    basic_action_list:
+      - Power On
+      - Power Off
+      - Reboot
+    user_action_list:
+      - Power Off
+
+set_backup_service_level:
+    backup_service_level_name:
+
+delete_backup_service_level:
+  - description: delete backup service level
+    reasons: reasons
+    please_select_action_for_backup_service_level: Delete Backup Service Level
+    select_backup_service_level_to_delete:
+    confirm_deletion_of_backup_service_level: Yes
+
+delete_datastore:
+    - description: Delete Logic
+      reasons: del logic
+
+delete_avamar_replication_relationship:
+    'description': 'delete arr'
+    'operation_type': 'Delete Avamar Replication Relationship'
+    'delete_arr':
+
+delete_avamar_site_relationship:
+  description: delete avamar site relationship demo
+  action: Delete an ASR
+  avamar_site_relationship_name:
+
+delete_avamar_grid:
+    description: delete_avamar_grid
+    select_operation_type: Delete Avamar Grid
+    confirmation: Confirm
+
+delete_cluster:
+    []
+
+delete_vcenter_relatinship:
+    description: del_vcenter_relationship
+    reasons: del relationship
+    please_select_the_operation: Delete vCenter Relationship
+    protected_vcenter: *vcenter_name_protected
+    recovery_vcenter: *vcenter_name_recovery
+
+delete_hwi:
+    del_reasons: del
+    del_description: del hwi
+    del_performed_active: Delete Hardware Island
+    isdel_obj: Confirm
+
+delete_vcenter:
+    description: delete vcenter
+    reasons: test
+    select_operation: Delete vCenter
+    ensure_delete_info: Confirm
+
+added_sites:
+    *added_sites
+
+added_vcenter:
+    *added_vcenter
+
+added_hwi:
+    *added_hwi
+
+existed_clusters:
+    *existed_clusters
+
+added_avamar_grid:
+    *added_avamar_grid
+
+added_avamar_site_relationship:
+   - asr_name: *asr_name
+     backup_env_type: *backup_environment_type
+     sites: *sites
+
+added_avamar_replication_relationship:
+    *added_avamar_replication_relationship
+
+added_backup_service_level:
+    {
+       'backup_to_operate_vm': *backup_to_operate_vm,
+       'backup_to_set_backup_service': *backup_to_set_backup_service
+    }
+
+added_cloud_storage:
+   - hwi_name: *storage_hwi
+     cluster_name: *storage_cluster
+     name: *datastorage_name
+     srp: *srp
+
+deployed_vms: *deployed_vms
+
+added_reservation_policy:
+    *added_reservation_policy
+added_reservation:
+  [*reservation_name]
+assigned_reservation_policy_reservations: *assigned_reservation
+
+assigned_reservation_policy_blueprints: [*blueprint_name]
+
+assign_datastores_and_reservation_policy_to_reservation:
+    reservation_names: []
+    reservation_policy_names: []

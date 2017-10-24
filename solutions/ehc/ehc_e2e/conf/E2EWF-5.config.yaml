@@ -1,0 +1,118 @@
+hardware_islands:
+    storage_type:        &storage_type     BLOCK
+
+shared:
+    current_browser:
+        type:
+        instance:
+        launched: False
+        current_user:
+        is_login: False
+
+launch_browser:
+    browserType: Chrome
+    baseUrl: https://vra-vip.vlab.local/vcac/org/
+
+vra:
+    tenant: dev065
+    business_group: EHCSystem-dev065
+
+login:
+    primary:
+        user: ehc_sysadmin
+        username: ehc_sysadmin
+        password: Password123!
+        role:
+        domain: vlab.local
+    secondary:
+        username:
+        password:
+        role:
+
+vro:
+    address: 10.103.201.117
+    username: app_vro_vcenter@ppindigo.lab.local
+    password: Emsee123!
+
+### Add site
+# Fake cluster type to pass add site validate
+onboard_cluster_type: LC1S
+
+add_sites:
+    - Cork
+
+#    - description: Add protected site 2
+#      action_to_be_performed: Add Site
+#      site_name: London
+#
+#    - description: Add recovery site 1
+#      action_to_be_performed: Add Site
+#      site_name: Paris
+
+edit_sites:
+    - site_name:
+      new_site_name:
+
+added_sites: [Cork]
+
+### Add vCenter
+add_vcenter:
+    - description: vcs01
+      reasons: vcs01
+      select_operation: Add vCenter
+      name_for_vcenter_endpoint: vcs01
+      select_vc_fqdn_to_add: vcs01.vlab.local
+      new_vcenter_associated_sites:
+       - Cork
+      select_datacenter_to_add: Cork
+
+added_vcenter: #[]
+    - vcs01
+
+### Add HWI
+add_hwi:
+    -
+      hwi_name: Cork-HWI
+      performed_active: Add VxRack(Flex)/VxBlock based Hardware Island
+      vcenter_name_active: vcs01
+      site_name_active: Cork
+      storage_type: *storage_type
+      vipr_active: ViPR
+      vipr_active_check:
+        - CRK-HWI-1-vArray1
+      request: unknown
+
+added_hwi:
+    - Cork-HWI
+
+### Onboard local cluster
+onboard_local_cluster:
+    description: CRK-HWI-1-C1
+    cluster_action_to_perform: Onboard Local Cluster
+    select_a_hardware_island: Cork-HWI
+    select_unprepared_cluster: CRK-HWI-1-C1
+
+existed_clusters: [CRK-HWI-1-C1]
+
+### Provision cloud storage
+provision_cloud_storage:
+    - description: Provision Cloud Storage
+      reasons: Provision Cloud Storage
+      storage_type: VMFS
+      vipr_storage_tier: "CRK-Local-VP; available: 14047GB"
+      size_in_gb: 10
+      request: unknown
+      hwi_name:
+
+added_cloud_storage:
+    hwi_name: Cork-HWI
+    cluster_name: CRK-HWI-1-C1
+    name:
+      - ''
+    srp: []
+
+### Delete datastore
+delete_datastore:
+    - description: Delete Datatore
+      reasons: Delete datastore
+      request:

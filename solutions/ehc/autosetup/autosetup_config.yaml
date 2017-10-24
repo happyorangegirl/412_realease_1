@@ -1,0 +1,149 @@
+init_vra_util:
+  host: 'vra-vip.vlab.local'
+  tenant: 'vsphere.local'
+  username: 'administrator'
+  password: 'Password123!'
+
+init_vro_util:
+  host: '192.168.3.166'
+  username: 'ehc_sysadmin@vlab.local'
+  password: 'Password123!'
+
+init_vipr_util:
+  host: 'vipr.vlab.local'
+  username: 'root'
+  password: 'Password123!'
+
+create_a_vipr_project:
+  name: 'dev9999'
+  owner: 'ehc_sysadmin@vlab.local'
+  acl_users:
+    - 'app_vro_vipr@vlab.local'
+  acl_groups:
+    - 'VIPR_SYSTEM_MONITORS@VLAB.LOCAL'
+
+create_a_tenant:
+  name: 'dev9999'
+  admin_username: 'ehc_sysadmin@vlab.local'
+  admin_password: 'Password123!'
+  local_user:
+    first_name: 'ehc'
+    last_name: 'sysadmin'
+    default_domain: 'vsphere.local'
+    email: 'ehc_sysadmin@vlab.local'
+    username: 'ehc_sysadmin'
+    password: 'Password123!'
+
+create_an_ad:
+  tenant_name: 'dev9999'
+  base_dn: 'ou=EHC,DC=vlab,DC=local'
+  bind_dn: 'cn=adbind_vra,OU=EHC,DC=vlab,DC=local'
+  password: 'Password123!'
+
+assign_roles:
+  tenant_name: 'dev9999'
+  tenant_admins:
+    - 'ehc_sysadmin@vlab.local'
+    - 'EHC_Tenant_Admins@vlab.local'
+  iaas_admins:
+    - 'ehc_sysadmin@vlab.local'
+    - 'EHC_IaaS_Admins@vlab.local'
+  xaas_admins:
+    - 'ehc_sysadmin@vlab.local'
+
+add_a_vra_host:
+  name: 'vra_temp'
+  host: 'vra-vip.vlab.local'
+  tenant: 'dev9999'
+  username: 'ehc_sysadmin@vlab.local'
+  password: 'Password123!'
+
+remove_a_vra_host:
+  name: 'vra_temp'
+
+add_an_iaas_host:
+  name: 'iaas_temp'
+  host: 'web-vip.vlab.local'
+  username: 'svc_iaas'
+  password: 'Password123!'
+  domain: 'vlab.local'
+
+remove_an_iaas_host:
+  name: 'iaas_temp'
+
+create_credentials:
+  -
+    iaas_host_name: 'iaas_temp'
+    name: 'vro-credential'
+    username: 'luw7@vlab.local'
+    password: 'Password123!'
+  -
+    iaas_host_name: 'iaas_temp'
+    name: 'vro-credential-2'
+    username: 'ehc_sysadmin@vlab.local'
+    password: 'Password123!'
+
+create_endpoints:
+  -
+    iaas_host_name: 'iaas_temp'
+    name: 'vro-endpoint'
+    platform_type: 'vRealize Orchestrator'
+    credential: 'vro-credential'
+    fqdn: 'https://192.168.3.166/vco/'
+    vco_priority: '1'
+
+create_machine_prefixes:
+  -
+    iaas_host_name: 'iaas_temp'
+    prefix: 'ehcsys-'
+    number_digits: '3'
+    next_number: '0'
+  -
+    iaas_host_name: 'iaas_temp'
+    prefix: 'ehcops-'
+    number_digits: '3'
+    next_number: '0'
+
+create_business_groups:
+  -
+    vra_host_name: 'vra_temp'
+    name: 'EHCSystem'
+    tenant: 'dev9999'
+    manager_email: 'ehc_sysadmin@vlab.local'
+    group_manager_role:
+      - 'ehc_sysadmin@vlab.local'
+      - 'Tenant_BG_Managers@vlab.local'
+    support_role:
+      - 'ehc_sysadmin@vlab.local'
+    user_role:
+      - 'ehc_sysadmin@vlab.local'
+    machine_prefix: 'ehcsys-'
+    ad_container: 'EHC'
+  -
+    vra_host_name: 'vra_temp'
+    name: 'EHCOperations'
+    tenant: 'dev9999'
+    manager_email: 'ehc_sysadmin@vlab.local'
+    group_manager_role:
+      - 'ehc_sysadmin@vlab.local'
+      - 'Tenant_BG_Managers@vlab.local'
+    support_role:
+      - 'ehc_sysadmin@vlab.local'
+    user_role:
+      - 'ehc_sysadmin@vlab.local'
+    machine_prefix: 'ehcops-'
+    ad_container: 'EHC'
+
+update_vro_config:
+  vra_host_name: 'vra_temp'
+  conn_name: 'dev9999-vro'
+  tenant: 'dev9999'
+  vro_host: '192.168.3.166'
+  vro_username: 'ehc_sysadmin@vlab.local'
+  vro_password: 'Password123!'
+
+create_a_fabric_group:
+  name: 'dev9999_fg'
+  admins:
+    - 'ehc_sysadmin@vlab.local'
+    - 'vraadmin@vsphere.local'

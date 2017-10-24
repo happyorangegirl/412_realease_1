@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="//apps.bdimg.com/libs/bootstrap/3.3.4/css/bootstrap.min.css">
+    <style>
+        #nav {
+            line-height: 30px;
+            background-color: #eeeeee;
+            height: 300px;
+            float: left;
+            padding: 5px;
+        }
+        #autoclearlog {
+            width: 950px;
+            height: 1000px;
+            float: left;
+            padding: 10px;
+        }
+        pre {
+            white-space: -moz-pre-wrap; /* Mozilla, supported since 1999 */
+            white-space: pre-wrap; /* CSS3 - Text module (Candidate Recommendation) http://www.w3.org/TR/css3-text/#white-space */
+            word-wrap: break-word; /* IE 5.5+ */
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <h3>Tools</h3>
+    <div style="float:left;" id="nav">
+        <ul class="nav nav-pills nav-stacked">
+            <li><a ng-href="javascript:;" ng-click="confirmClear(data.vra_tenant);">Auto clear</a></li>
+            <li><a ng-href="https://pie4.rtp.lab.emc.com/display/TAF/Knowledge+Base">Knowledge base</a></li>
+
+        </ul>
+    </div>
+    <pre>
+    <div style="float:left; text-align: left;" id="autoclearlog" >
+
+    </div>
+    </pre>
+</div>
+</body>
+</html>

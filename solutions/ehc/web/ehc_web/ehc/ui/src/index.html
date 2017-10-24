@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en" ng-app="RDash">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>EHC Admin</title>
+  <!-- STYLES -->
+  <!-- build:css lib/css/main.min.css -->
+  <link rel="stylesheet" type="text/css" href="components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="components/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="components/rdash-ui/dist/css/rdash.min.css">
+  <link rel="stylesheet" type="text/css" href="components/angular-ui-select/dist/select.css">
+  <!-- endbuild -->
+
+  <link rel="stylesheet" href="css/dashboard.css">
+
+  <!-- SCRIPTS -->
+  <!-- build:js lib/js/main.min.js -->
+  <script type="text/javascript" src="components/jquery/dist/jquery.min.js"></script>
+  <script type="text/javascript" src="components/angular/angular.js"></script>
+  <script type="text/javascript" src="components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+  <script type="text/javascript" src="components/chart.js/dist/Chart.min.js"></script>
+  <script type="text/javascript" src="components/angular-cookies/angular-cookies.min.js"></script>
+  <script type="text/javascript" src="components/angular-ui-router/release/angular-ui-router.min.js"></script>
+  <script type="text/javascript" src="components/angular-chart.js/dist/angular-chart.min.js"></script>
+  <script type="text/javascript" src="components/angular-sanitize/angular-sanitize.js"></script>
+  <script type="text/javascript" src="components/angular-ui-select/dist/select.min.js"></script>
+  <script type="text/javascript" src="components/angular-messages/angular-messages.min.js"></script>
+  <script type="text/javascript" src="components/json-editor/dist/jsoneditor.min.js"></script>
+  <!-- endbuild -->
+  <!-- Custom Scripts -->
+  <script type="text/javascript" src="js/dashboard.min.js"></script>
+</head>
+<body ng-controller="MasterCtrl">
+  <div id="page-wrapper" ng-class="{'open': toggle}" ng-cloak>
+
+    <!-- Sidebar -->
+    <div id="sidebar-wrapper">
+      <ul class="sidebar">
+        <li class="sidebar-main">
+          <a ui-sref="index">EHC Admin <i style="font-size: 8px;">0.1</i></a>
+        </li>
+        <li class="sidebar-list">
+          <a title="Dashboard" ui-sref="index" ng-class="{'active':($state.current.name == 'index')}" 
+             ng-show="globals.currentUser.authdata != null">
+             Dashboard<span class="menu-icon fa fa-tachometer"></span>
+          </a>
+        </li>
+
+        <li class="sidebar-list">
+          <a title="Configuration" ui-sref="demo.base.show"
+             ng-class="{'active':($state.current.name.indexOf('demo') >= 0)}" ng-show="globals.currentUser.authdata != null">
+            <span ng-class="{'active':($state.current.name == 'products')}">Configuration</span>
+            <span class="menu-icon fa fa-code"></span>
+          </a>
+        </li>
+
+        <li class="sidebar-list">
+          <a title="Release" ui-sref="run.wf"
+             ng-class="{'active':($state.current.name.indexOf('run') >= 0)}" 
+             ng-show="globals.currentUser.authdata != null">
+            <span ng-class="{'active':($state.current.name == 'run.wf')}">Run Wrokflow</span>
+            <span class="menu-icon fa fa-code"></span>
+          </a>
+        </li>
+        <li class="sidebar-list pull-right">
+          <a title="Login" ui-sref="login()" ng-if="globals.currentUser == null"
+             ng-class="{'active': $state.current.name == 'login'}">
+            <span>Login</span>
+          </a>
+          <a title="Profile" ui-sref="profile" ng-if="globals.currentUser != null"
+             ng-class="{'active': $state.current.name == 'profile'}">
+            <i class="fa fa-user"></i>
+            <span>{{globals.currentUser.username}}</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <!-- End Sidebar -->
+
+    <div id="content-wrapper">
+      <div class="page-content">
+
+        <!-- Header Bar -->
+        <!-- End Header Bar -->
+
+        <!-- Main Content -->
+        <div ui-view></div>
+
+      </div><!-- End Page Content -->
+    </div><!-- End Content Wrapper -->
+
+    <div class="sidebar-footer hide">
+      <div class="col-xs-4 hide">
+        <a href="https://slack.com" target="_blank">
+          Slack
+        </a>
+      </div>
+      <div class="col-xs-6 hide">
+        <a href="https://bitbucket.org/license-auto/license_ui" target="_blank">
+          About
+        </a>
+      </div>
+      <div class="col-xs-12">
+        <a ui-sref="support">
+          Support
+        </a>
+      </div>
+    </div>
+  </div><!-- End Page Wrapper -->
+</body>
+</html>

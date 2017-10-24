@@ -1,0 +1,86 @@
+{
+  "title": "Workflow-1 CA1S",
+  "type": "object",
+  "properties": {
+    "vra": {
+        "type": "object",
+        "description": "vRA info",
+        "properties": {
+            "foo": {
+                "$ref": "#/definitions/foo"
+            },
+            "bar": {
+                "$ref": "#/definitions/bar"
+            },
+            "base_url": {
+                "type": "string",
+                "description": "Brower URL prefix",
+                "minLength": 1,
+                "default": "https://vra-vip.vlab.local/vcac/org/",
+                "pattern": "^https://.*$",
+                "propertyOrder": 1
+            },
+            "tenant": {
+                "type": "string",
+                "description": "Brower URL postfix, eg.dev001",
+                "default": "dev001",
+                "pattern": "^dev\\d{3}$",
+                "propertyOrder": 2
+            },
+            "bg": {
+                "type": "string",
+                "description": "Business group",
+                "default": "EHCSystem",
+                "minLength": 1,
+                "enum": [
+                    "dev012_bg",
+                    "EHCSystem",
+                    "Something eles ..."
+                ],
+                "propertyOrder": 3
+            },
+            "vra_user": {
+                "type": "string",
+                "description": "vRA username",
+                "default": "ehc_sysadmin",
+                "minLength": 1,
+                "propertyOrder": 4
+            },
+            "vra_pwd": {
+                "type": "string",
+                "description": "vRA password",
+                "default": "Password123!",
+                "minLength": 1,
+                "propertyOrder": 5
+            }
+        },
+        "required": [
+            "base_url",
+            "tenant",
+            "bg",
+            "vra_pwd",
+            "bg"            
+        ]
+    }
+
+  },
+
+  "definitions": {
+    "foo": {
+        "type": "object",
+        "properties": {
+            "host": {"type": "string", "pattern": "^.*\\.vlab\\.local$", "default": "xxx.vlab.local"},
+            "username": {"type": "string", "pattern": "^.*$", "default": "", "description": "username"},
+            "password": {"type": "string", "pattern": "^.*$", "default": "", "description": "Password"}
+        }
+    },
+    "bar": {
+        "type": "array",
+        "items": [
+            {"type": "string", "pattern": "^.*\\.vlab\\.local$", "default": "xxx.vlab.local"},
+            {"type": "string", "pattern": "^.*$", "default": "", "description": "username"},
+            {"type": "string", "pattern": "^.*$", "default": "", "description": "Password"}
+        ]
+    }
+  }
+}

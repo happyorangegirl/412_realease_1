@@ -1,0 +1,33 @@
+# ################################ Configuration section #############################################################
+# Automation user only needs to update the parameters in this section
+# [Mandatory] parameters : you must update with the right ones in your environment.
+# [Optional] parameters : you can suggested to update with your own, but not mandatory.
+
+mandatory:
+    Virtual machine blueprint:
+        1-Blueprint_name_local:                       &bp_a_name          'LC1S_VB1_HWI1'
+        2-Machine_id_local:                           &bp_a_id          'vSphere__vCenter__Machine_1'
+        3-Blueprint_name_remote:                      &bp_b_name          'LC1S_VB2_HWI1'
+        4-Machine_id_remote:                          &bp_b_id          'vSphere__vCenter__Machine_1'
+    Deploy VM Parallel:
+        1-CPU_max:                        &cpu_max              2
+        2-RAM_max:                        &ram_max              8192
+Intermediate_Keys:
+    deployed_vms:  &deployed_vms  []
+    assigned_reservation_policy_blueprints:  &assigned_reservation_policy_blueprints  []
+deploy_vm_parallel:
+    with_dp: True
+    description: ''
+    number_of_vm: 1
+    cpu_max: *cpu_max
+    ram_max: *ram_max
+    srm_power_on_priority:
+    reason_for_request: test LC1S scenario WF
+deployed_vms: *deployed_vms
+blueprints:
+  - blueprint_name: *bp_a_name
+  - blueprint_name: *bp_b_name
+blueprint_machine_pairs:
+    {*bp_a_name: *bp_a_id,
+    *bp_b_name: *bp_b_id}
+assigned_reservation_policy_blueprints:  *assigned_reservation_policy_blueprints

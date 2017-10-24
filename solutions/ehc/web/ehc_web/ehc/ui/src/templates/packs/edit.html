@@ -1,0 +1,67 @@
+
+<div class="pack-show panel panel-default">
+  <div class="panel-heading btn-container-right">
+    <div class="col-md-2">
+      Package
+    </div>
+    <button type="button" class="btn btn-primary btn-sm" ng-click="save()">Save</button>
+    <button type="button" class="btn btn-danger btn-sm">Delete</button>
+    <button type="button" class="btn btn-success btn-sm" ng-click="newLicenseView()">Add License</button>
+  </div>
+  <ul class="list-group form-inline">
+    <li class="list-group-item">
+      <label>Name:</label>
+      <input class="form-control" ng-model="nav.pack.meta.name" ng-disabled="true">
+    </li>
+    <li class="list-group-item">
+      <label>Version:</label>
+      <input class="form-control" ng-model="nav.pack.version" ng-disabled="true">
+    </li>
+    <li class="list-group-item">
+      <label>Language:</label>
+      <select class="form-control" ng-model="nav.pack.meta.language" ng-disabled="true">
+        <option ng-repeat="lang in availableOpts.languages"
+                ng-selected="{{lang === nav.pack.language}}">
+          {{lang}}
+        </option>
+      </select>
+    </li>
+    <li class="list-group-item" ng-show="currLanguages == 'Java'">
+      <label>Group:</label>
+      <input class="form-control" ng-model="newpack.group">
+    </li>
+    <li class="list-group-item">
+      <label>Identification:</label>
+      <input class="form-control url" id="uuid" name="uuid" type="text" required ng-model="nav.pack.meta.uuid">
+      <span class="glyphicon glyphicon-ok form-control-feedback" ng-show="packversionForm.uuid.$dirty && packversionForm.uuid.$valid"></span>
+    </li>
+    <li class="list-group-item">
+      <label>Status:</label>
+      <select class="form-control" ng-model="currStatus"
+              ng-required="true"
+              ng-options="st as st.code +': '+ st.text  for st in availableOpts.status">
+        <!-- TODO: config border color-->
+              <!--ng-class="{-->
+              <!--'text-success': currStatus.code >= 40,-->
+              <!--'text-warning': currStatus.code >= 30 && currStatus.code < 40,-->
+              <!--'text-danger': currStatus.code < 30}">-->
+      </select>
+    </li>
+    <li class="list-group-item">
+      <label>Homepage:</label>
+      <input type="text" class="form-control url" ng-model="nav.pack.homepage" value="{{nav.pack.homepage}}">
+    </li>
+    <li class="list-group-item">
+      <label>Project URL:</label>
+      <input type="text" class="form-control url" ng-model="nav.pack.project_url">
+    </li>
+    <li class="list-group-item">
+      <label>Source URL:</label>
+      <input type="text" class="form-control url" ng-model="nav.pack.source_url">
+    </li>
+    <li class="list-group-item">
+      <label>Comment:</label>
+      <textarea class="form-control url" ng-model="nav.pack.cmt"></textarea>
+    </li>
+  </ul>
+</div>

@@ -1,0 +1,2 @@
+from ehc_e2e.auc.executable.remove_reservation_policy_from_blueprint.remove_reservation_policy_from_blueprint \
+    import RemoveReservationPolicyFromBlueprint

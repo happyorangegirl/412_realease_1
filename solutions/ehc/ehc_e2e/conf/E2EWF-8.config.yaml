@@ -1,0 +1,239 @@
+config_references_required:
+    vra:
+        baseurl:                &base_url           https://vra-vip.vlab.local/vcac/org/
+        tenant:                 &tenant             dev023
+        business_group:         &bg                 dev023_BG
+        username:               &vra_user           ehc_sysadmin
+        password:               &vra_pwd            Password123!
+        domain:                 &vra_domain         vlab.local
+    vro:
+        host:                   &vro_host           192.168.7.123
+        username:               &vro_user           vlab.local\cyann1
+        password:               &vro_pwd            Password123!
+    blueprints:
+        blueprint_a:
+            name:               &bp_a_name          ABC
+            id:                 &bp_a_id            vSphere_Machine_1
+    Backup Service Level:
+        additional_email:       &additional_email   'ehc_sysadmin@vlab.local'
+
+config_references_optional:
+    browser:
+        typr:                   &browser_type       Chrome
+    vra:
+        email:                  &vra_email          ehc_sysadmin@vlab.local
+
+shared:
+    current_browser:
+        type:
+        instance:
+        launched: False
+        current_user:
+        is_login: False
+    SRM:
+        protected_cluster: Unknown
+        recovery_cluster: Unknown
+    backup_service_levels:
+        for_deletion:
+        for_deploy_vm:
+        for_set_backup_service_level:
+
+added_sites:
+
+added_vcenter:
+
+added_hwi:
+
+added_cloud_storage:
+    - hwi_name:
+      cluster_name:
+      name: []
+      srp: []
+
+added_backup_service_level:
+  backup_to_operate_vm:
+  backup_to_set_backup_service: 
+
+added_reservation_policy:
+
+existed_clusters:
+
+launch_browser:
+    browserType: *browser_type
+    baseUrl: *base_url
+
+vra:
+    tenant: *tenant
+    business_group: *bg
+
+vro:
+    address: *vro_host
+    username: *vro_user
+    password: *vro_pwd
+
+login:
+    primary:
+        user: ehc_sysadmin
+        username: *vra_user
+        password: *vra_pwd
+        role:
+        domain: *vra_domain
+    secondary:
+        username:
+        password:
+        role:
+
+add_an_avamar_replication_relationship:
+      description: add arr
+      operation_type: Add Avamar Replication Relationship
+      avamar_site_relationship_name:
+      site1_avamar_grid:
+      site2_avamar_grid:
+      site3_avamar_grid:
+
+cluster_asr_to_associate:
+    description: associate cluster to ASR
+    reasons: testing
+    cluster_action: Associate Cluster to ASR
+
+avamar_proxies_cluster_to_associate:
+    - avamar_proxies: []
+
+add_backup_service_level:
+    - backup_service_level_name:
+      select_backup_schedule:
+        schedule_type: Weekly
+        weekday: Sunday
+      regular_retention_policy:
+        policy_name: for
+        retention_for_number: 3
+        retention_custom_phrase: weeks
+        long_term_retention_years: 2
+      select_replication_schedule:
+        schedule_type: Weekly
+        replication_week_day: Monday
+
+    - backup_service_level_name:
+      select_backup_schedule:
+        schedule_type: Daily
+        time: '19:00'
+      regular_retention_policy:
+        policy_name: thisSchedule
+        daily_number: 2
+        daily_unit: weeks
+        weekly_number: 3
+        weekly_unit: days
+        monthly_number: 2
+        monthly_unit: months
+        yearly_number: 4
+        yearly_unit: years
+        long_term_retention_years: 3
+      select_replication_schedule:
+        schedule_type: Monthly
+        week: third
+        day: Monday
+
+assign_reservation_policy_to_reservation:
+    reservation_names:
+    -
+    reservation_policy_names:
+    -
+
+assign_reservation_policy_to_blueprint:
+    blueprint_names:
+    -
+    reservation_policy_name:
+
+blueprint_machine_pairs:
+    *bp_a_name: *bp_a_id
+
+blueprints:
+    - *bp_a_name
+
+deploy_vm:
+    with_dp: True
+    vsphere_blueprint_id:
+    description: deployvm
+    number_of_vm: 1
+    backup_service_level: dev023_bkp_srv_lv_01
+    SRM_power_on_priority:
+    reason_for_request: test
+
+operate_vm:
+    basic_action_list:
+        - Power On
+        - Power Off
+        - Reboot
+    user_action_list:
+        - Power Off
+
+on_demand_backup_vm:
+  vm_name:
+  description: A description of on_demand_backup_vm
+  reasons: A reason of on_demand_backup_vm
+
+set_backup_service_level:
+    backup_service_level_name:
+
+display_backup_service_level:
+    please_select_action_for_backup_service_level: Display Backup Service Levels
+    email: Confirm
+
+run_admin_report:
+  description: run admin report
+  reasons: run reason
+  select_a_backup_service_level_name: dev024-001
+  select_pdf_page_orientation: Portrait
+  select_one_or_more_reports_to_run:
+  select_a_time_frame: Last Day
+  email_results: Yes
+  email_address: ehc_sysadmin@emc.com
+
+delete_backupdelete_backup_service_level:
+  - description: delete_backup_service_level_operate_vm
+    reasons: reasons
+    please_select_action_for_backup_service_level: Delete Backup Service Level
+    select_backup_service_level_to_delete:
+    confirm_deletion_of_backup_service_level: Yes
+  - description: delete_backup_service_level_operate_vm
+    reasons: reasons
+    please_select_action_for_backup_service_level: Delete Backup Service Level
+    select_backup_service_level_to_delete:
+    confirm_deletion_of_backup_service_level: Yes
+
+delete_avamar_replication_relationship:
+    description: delete arr
+    operation_type: Delete Avamar Replication Relationship
+    delete_arr: None
+
+delete_avamar_site_relationship:
+  description: delete avamar site relationship demo
+  action: Delete an ASR
+
+delete_avamar_grid:
+    description: delete_avamar_grid
+    select_operation_type: Delete Avamar Grid
+    confirmation: Confirm
+
+delete_datastore:
+    - description: Delete Logic
+      reasons: del logic
+      request: unknown
+
+delete_hwi:
+    del_reasons: del
+    del_description: del hwi001
+    del_performed_active: Delete Hardware Island
+    isdel_obj: Confirm
+
+delete_vcenter:
+    description: delete vcenter
+    reasons: test
+    select_operation: Delete vCenter
+    ensure_delete_info: Confirm
+
+delete_sites:
+    description: deletesite
+    action_to_be_performed: Delete Site
+    please_pick_a_site_to_delete':
+    please_confirm_that_you_wish_to_delete_this_site: Confirm

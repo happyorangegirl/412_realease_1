@@ -1,0 +1,467 @@
+# ################################ Configuration section #############################################################
+# Automation user only needs to update the parameters in this section
+# [Mandatory] parameters : you must update with the right ones in your environment.
+# [Optional] parameters : you can suggested to update with your own, but not mandatory.
+mandatory:
+  Cluster:
+    # CA1S Cluster name
+    cluster_name:              &cluster_name             'CRK-LON-CA-C1'
+  Vcenter:
+    vcenter_fqdn:              &vcenter_fqdn             'vcs01.vlab.local'
+    # Datacenter name in vCenter you configure
+    datacenter:                &datacenter               'Cork'
+  Reservation:
+    # Computer resource (Cluster) you want to configure in reservation
+    computer_resource:         &computer_resource        'CRK-LON-CA-C1 (vcs01)'
+    memory_in_GB:              &mem                       2
+    storage_size_in_GB:        &res_storage_size          32
+    # Network path you want to configure in reservation
+    network_path:              &network_path             'vxw-dvs-101-virtualwire-21-sid-10005-LS_CRK-LON-CA-C1'
+  ViPR:
+    # vArray in ViPR, the vArray must has physical connection to the vCenter you configure above
+    vipr_varray01:               &vipr_varray01          'CRK-HWI-1-vArray1'
+    vipr_varray02:               &vipr_varray02          'LON-HWI-1-vArray1'
+  provision_cloud_storage:
+    1-storage_tier:             &vipr_storage_tier         'CRK-XIO-Local; available'
+    2-storage_type:             &storage_type               'VMFS'
+    3-size_in_GB:               &provision_size             30
+  Backup Service Level:
+      additional_email:          &additional_email       'ehc_sysadmin@vlab.local'
+  Virtual machine blueprint:
+    # Blueprint name you configure in the automation environment
+    blueprint_name:              &blueprint_name         'Blueprints'
+    # virtual machine name you configure in the automation environment
+    virtual_machine_name:        &vSphere_Machine_ID                     'ABC'
+    #DP
+  Avamar grid FQDN:
+    1-site_avamar_grid_fqdn01:     &site_avamar_grid_fqdn01    'cork-ave02.vlab.local'
+    2-site_avamar_grid_fqdn02:     &site_avamar_grid_fqdn02    'london-ave01.vlab.local'
+    3-admin_username:              &ag_admin_user              'root'
+    4-admin_password:              &ag_admin_pwd               'Password123!'
+    5-soap_user:                   &ag_soap_user               'root'
+    6-soap_password:               &ag_soap_pwd                'Emsee123_'
+################################# Configuration section #############################################################
+    # no need to write
+optional:
+    site_name01:              &site_name01               'CA2S-DP-site01'
+    site_name02:               &site_name02              'CA2S-DP-site02'
+    vcenter_name:              &vcenter_name             'CA2S-DP-vCenter01'
+    new_site_name:             &new_site_name            'CA2S-DP-site01-new'
+    new_vcenter_name:          &new_vcenter_name         'CA2S-DP-vCenter01-new'
+    hardware_islands:
+      hwi_name01:           &hwi_name01         'CA2S-DP-HWI-1'
+      hwi_name02:           &hwi_name02         'CA2S-DP-HWI-2'
+      storage_typea:        &storage_type_a     BLOCK
+      storage_typeb:        &storage_type_b     BLOCK
+      new_hwiname:          &edit_hwi_name       CA2S-DP-HWI-1-new
+    reasons: &reasons 'deploy CA2S cluster'
+    reservation_data:
+      reservation_name:   &reservation_name         'E2E_Res_CA2S-DP'
+    reservation_policy_name:   &reservation_policy_name  'E2E_Res_Policy_CA2S-DP'
+    # DP
+    avamar_grids:
+        avamar_grid_name01:        &site_avamar_grid01       CA2S-DP-ave01
+        avamar_grid_name02:        &site_avamar_grid02       CA2S-DP-ave02
+        new_avamar_grid_name:      &new_site_avamar_grid     'Cork-ave-01-1'
+    backup_service_to_operate_vm:           &backup_service_to_operate_vm           'operate-vm-backup-svc-CA2S-DP'
+    backup_service_to_set_backup_service:   &backup_service_to_set_backup_service   'set-backup-svc-CA2S-DP'
+#constants
+Keys_to_contants:
+    cluster_type:              &cluster_type             'CA2S'
+    inter_site_vs_intra_site:  &inter_vs_intra           'Inter-site'
+    backup_environment_type:   &backup_environment_type  '2C1VC'
+    network_profile:    &network_profile          'unknown'
+#variable to make debug easier
+Intermediate_keys:
+    added_site: &added_site []
+    added_vcenter: &added_vcenter []
+    added_hwi: &added_hwi []
+    existed_clusters: &existed_clusters []
+    added_reservation_name: &added_reservation_name []
+    added_reservation_policy_name: &added_reservation_policy_name []
+    assigned_buleprint: &assigned_buleprint []
+    assigned_reservation: &assigned_reservation []
+    datastorage_name: &datastorage_name []
+#################################################################################################################
+# no need to write
+
+onboard_cluster_type: *cluster_type
+
+blueprints:
+    - *blueprint_name
+blueprint_machine_pairs:
+   {*blueprint_name: *vSphere_Machine_ID}
+
+deploy_vm:
+    with_dp: True
+    description: deployvm
+    number_of_vm: 1
+    backup_service_level:
+    SRM_power_on_priority:
+    reason_for_request: test dp
+
+deployed_vms:
+ []
+
+existed_clusters:
+  - *cluster_name
+
+add_sites:
+    - *site_name01
+    - *site_name02
+
+added_sites:
+ []
+
+edit_sites:
+    - site_name: *site_name01
+      new_site_name: *new_site_name
+
+add_vcenter:
+    -
+      select_operation: Add vCenter
+      name_for_vcenter_endpoint: *vcenter_name
+      select_vc_fqdn_to_add: *vcenter_fqdn
+      new_vcenter_associated_sites:
+                                  - *site_name01
+                                  - *site_name02
+      select_datacenter_to_add: *datacenter
+
+added_vcenter:
+ []
+
+update_vcenter:
+  -
+    select_operation: Edit vCenter
+    existing_vcenter_object: *vcenter_name
+    vcenter_name: *new_vcenter_name
+    vcenter_fqdn: *vcenter_fqdn
+    datacenter: *datacenter
+    sites:
+        - *site_name01
+    vcenter_username: administrator@vsphere.local
+    vcenter_password: Password123!
+
+delete_vcenter:
+    select_operation: Delete vCenter
+    select_vcenter:
+    ensure_delete_info: Confirm
+
+add_hwi:
+   -
+      hwi_name: *hwi_name01
+      performed_active: Add VxRack(Flex)/VxBlock based Hardware Island
+      vcenter_name_active: *vcenter_name
+      site_name_active: *site_name01
+      storage_type: *storage_type_a
+      vipr_active: ViPR
+      vipr_active_check: [*vipr_varray01]
+   -
+      hwi_name: *hwi_name02
+      performed_active: Add VxRack(Flex)/VxBlock based Hardware Island
+      vcenter_name_active: *vcenter_name
+      site_name_active: *site_name02
+      storage_type: *storage_type_a
+      vipr_active: ViPR
+      vipr_active_check: [*vipr_varray02]
+
+added_hwi:
+ []
+
+update_hwi:
+  -
+    performed_active: Edit VxRack(Flex)/VxBlock based Hardware Island
+    old_hwi_name: *hwi_name01
+    edit_hwi_name: *edit_hwi_name
+    edit_vcenter_name_active: *vcenter_name
+    edit_site_name_active: *site_name01
+    vipr_active: ViPR
+    vipr_active_check:
+       - *vipr_varray01
+
+onboard_ca_cluster:
+   select_hardward_island_1: *hwi_name01
+   select_unprepared_cluster: *cluster_name
+   choose_inter_site_vs_intra_site: *inter_vs_intra
+   select_hardward_island_2: *hwi_name02
+   select_hosts_for_hardware_island_1:
+   select_hosts_for_hardware_island_2:
+
+operate_vm:
+    basic_action_list:
+      - Power On
+      - Power Off
+      - Reboot
+    user_action_list:
+      - Power Off
+
+delete_cluster:
+    []
+
+provision_cloud_storage:
+    - 'description': 'Provision Cloud Storage'
+      'reasons': 'pcs'
+      'storage_type': *storage_type
+      'vipr_storage_tier': *vipr_storage_tier
+      'size_in_gb': *provision_size
+      'request': 'unknown'
+      'hwi_name': *hwi_name01
+
+added_cloud_storage:
+    -
+      hwi_name: *hwi_name01
+      cluster_name: *cluster_name
+      name:
+        []
+      srp: []
+
+create_reservation_policy:
+    names: [*reservation_policy_name]
+
+create_reservation:
+  -
+    reservation_name: *reservation_name
+    reservation_type: vSphere
+    reservation_priority: 1
+    computer_resource: *computer_resource
+    memory: *mem
+    storage_size: *res_storage_size
+    storage_priority: 1
+    network_path: *network_path
+    network_profile: *network_profile
+
+added_reservation_policy:
+  []
+
+added_reservation:
+  []
+
+assigned_reservation_policy_reservations:
+ []
+
+assign_reservation_policy_to_reservation:
+    reservation_names: [*reservation_name]
+    reservation_policy_names: [*reservation_policy_name]
+
+assign_reservation_policy_to_blueprint:
+    blueprint_names: []
+    reservation_policy_name: *reservation_policy_name
+
+delete_datastore:
+    - description: Delete Logic
+      reasons: del logic
+      request: unknown
+
+edit_cluster_hwi:
+    - cluster: *cluster_name
+      hwi_1: *hwi_name01
+      hwi_2: *hwi_name02
+
+delete_hwi:
+    del_reasons: tear down
+    del_description: delete hwi
+    del_performed_active: Delete Hardware Island
+    isdel_obj: Confirm
+
+delete_sites:
+    description: deletesite
+    action_to_be_performed: Delete Site
+    please_pick_a_site_to_delete:
+    please_confirm_that_you_wish_to_delete_this_site: Confirm
+
+#DP config
+add_avamar_grid:
+  - description: add avamargrid01
+    select_operation_type: Add Avamar Grid
+    avamar_grid_name: *site_avamar_grid01
+    avamar_grid_fqdn_name: *site_avamar_grid_fqdn01
+    admin_user_name: *ag_admin_user
+    admin_password: *ag_admin_pwd
+    soap_user_name: *ag_soap_user
+    soap_password: *ag_soap_pwd
+    request: unknown
+    site_name: *site_name01
+  - description: add avamargrid02
+    select_operation_type: Add Avamar Grid
+    avamar_grid_name: *site_avamar_grid02
+    avamar_grid_fqdn_name: *site_avamar_grid_fqdn02
+    admin_user_name: *ag_admin_user
+    admin_password: *ag_admin_pwd
+    soap_user_name: *ag_soap_user
+    soap_password: *ag_soap_pwd
+    request: unknown
+    site_name: *site_name02
+
+edit_avamar_grid:
+    - description: update avamargrid01
+      select_operation_type: Edit Avamar Grid Details
+      avamar_grid_name: *site_avamar_grid01
+      new_avamar_grid_name: *new_site_avamar_grid
+      edit_avamar_grid_fqdn_name: *site_avamar_grid_fqdn01
+      edit_admin_user_name: *ag_admin_user
+      edit_admin_password: *ag_admin_pwd
+      edit_soap_user_name: *ag_soap_user
+      edit_soap_password: *ag_soap_pwd
+      request: unknown
+      edit_site_name: *site_name01
+      email_notification: Confirm
+
+edit_admin_full:
+    - description: edit_admin_full avamargrid01
+      select_operation_type: Edit Avamar Grid Admin Full
+      avamar_grid_name: *new_site_avamar_grid
+      email_notification: Confirm
+      admin_full: True
+
+added_avamar_grid:
+    []
+
+add_avamar_site_relationship:
+  backup_env_type: *backup_environment_type
+  site_first: *site_name01
+  site_second: *site_name02
+  site_third:
+
+edit_avamar_site_relationship:
+  site_first: *site_name01
+  site_second: *site_name02
+  site_third: ''
+
+added_avamar_site_relationship:
+   - asr_name:
+     backup_env_type: *backup_environment_type
+     sites:
+         []
+
+add_an_avamar_replication_relationship:
+  -
+    allow_duplicated_arr: False
+    description: add arr
+    operation_type: Add ARR
+    avamar_site_relationship_name:
+    site1_avamar_grid:
+    site2_avamar_grid:
+    site3_avamar_grid:
+
+edit_avamar_replication_relationship:
+    # Keep this key empty, it will fetch added arr
+    arr:
+    admin_full: Yes
+
+added_avamar_replication_relationship:
+#  - ARR00005 (1C1VC-Cork-ave01)
+  []
+
+cluster_asr_to_associate:
+    description: associate cluster to ASR
+    reasons: testing
+    cluster_action: Associate Cluster to ASR
+
+associated_cluster_asr:
+
+avamar_proxies_cluster_to_associate:
+  -
+    avamar_proxies: []
+
+associated_avamar_proxy_cluster:
+  []
+
+add_backup_service_level:
+    - 'description': 'add backup service level'
+      'reasons': 'reasons'
+      'please_select_action_for_backup_service_level': 'Add Backup Service Level'
+      'specify_the_service_level_name': *backup_service_to_operate_vm
+      'select_backup_schedule': 'Monthly'
+      'schedule_start_time': '18:00'
+      'schedule_week_number': 'First'
+      'schedule_weekday': 'Sunday'
+      'regular_retention_policy': 'Until'
+      'retention_for_number': '3'
+      'retention_unit': 'Weeks'
+      'retention_date': '7/22/17'
+      'retention_time': '10:03 PM'
+      'long_term_retention_policy': '2'
+      'replication_schedule_type': 'Daily'
+      'replication_weekday': 'Monday'
+      'replication_week_number': 'First'
+      'replication_start_time': '20:00'
+
+    - 'description': 'add backup service level'
+      'reasons': 'reasons'
+      'please_select_action_for_backup_service_level': 'Add Backup Service Level'
+      'specify_the_service_level_name': *backup_service_to_set_backup_service
+      'select_backup_schedule': 'Daily'
+      'schedule_start_time': '18:00'
+      'schedule_week_number': 'First'
+      'schedule_weekday': 'Sunday'
+      'regular_retention_policy': 'For'
+      'retention_for_number': '3'
+      'retention_unit': 'Weeks'
+      'retention_date': '7/22/17'
+      'retention_time': '10:03 PM'
+      'long_term_retention_policy': '2'
+      'replication_schedule_type': 'Monthly'
+      'replication_weekday': 'Monday'
+      'replication_week_number': 'First'
+      'replication_start_time': '20:00'
+
+added_backup_service_level:
+    backup_to_operate_vm:
+    backup_to_set_backup_service:
+
+on_demand_backup_vm:
+  vm_name:
+  description: A description of on_demand_backup_vm
+  reasons: A reason of on_demand_backup_vm
+
+get_arr_from_vro:
+    available_arr: []
+
+get_asr_from_vro:
+    available_asr: []
+
+set_backup_service_level:
+    backup_service_level_name:
+
+get_vrpa_clusters_from_vro:
+    available_vrpa_clusters: []
+
+display_backup_service_level:
+    please_select_action_for_backup_service_level: Display Backup Service Levels
+    email: Confirm
+
+run_admin_report:
+  description: run admin report
+  reasons: run reason
+  select_a_backup_service_level_name:
+  select_pdf_page_orientation: Portrait
+  select_one_or_more_reports_to_run:
+  select_a_time_frame: Last Day
+  email_results: Yes
+  email_address: 123@emc.com
+
+delete_backup_service_level:
+    -
+      description: delete_backup_service_level_operate_vm
+      reasons: reasons
+      please_select_action_for_backup_service_level: Delete Backup Service Level
+      select_backup_service_level_to_delete:
+      confirm_deletion_of_backup_service_level: Yes
+    -
+      description: delete_backup_service_level_set_backup_service
+      reasons: reasons
+      please_select_action_for_backup_service_level: Delete Backup Service Level
+      select_backup_service_level_to_delete:
+      confirm_deletion_of_backup_service_level: Yes
+
+delete_avamar_replication_relationship:
+    description: delete arr
+    operation_type: Delete ARR
+    delete_arr:
+
+deleted_avamar_site_relationship:
+    []
+delete_avamar_grid:
+    description: delete_avamar_grid
+    select_operation_type: Delete Avamar Grid
+    confirmation: Confirm

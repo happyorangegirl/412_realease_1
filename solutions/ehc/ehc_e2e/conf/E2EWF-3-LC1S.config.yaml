@@ -1,0 +1,32 @@
+# ################################ Configuration section #############################################################
+# Automation user only needs to update the parameters in this section
+# [Mandatory] parameters : you must update with the right ones in your environment.
+# [Optional] parameters : you can suggested to update with your own, but not mandatory.
+mandatory:
+    Virtual machine blueprint:
+        blueprint_name:            &blueprint_name            'yinl1-blue'
+        vSphere_Machine_ID:        &vSphere_Machine_ID        'vSphere_Machine_1'
+################################# Configuration section #############################################################
+onboard_cluster_type: LC1S
+
+blueprints: [*blueprint_name]
+
+blueprint_machine_pairs:
+    {*blueprint_name: *vSphere_Machine_ID}
+
+deploy_vm:
+    with_dp: False
+    description: 'deploy vm'
+    number_of_vm: 1
+    backup_service_level: ''
+    SRM_power_on_priority:
+    reason_for_request: test WF
+
+deployed_vms:
+  []
+
+operate_vm:
+    basic_action_list:
+        - 'Power On'
+        - 'Power Off'
+        - 'Reboot'

@@ -1,0 +1,364 @@
+# ################################ Configuration section #############################################################
+# Automation user only needs to update the parameters in this section
+# [Mandatory] parameters : you must update with the right ones in your environment.
+# [Optional] parameters : you can suggested to update with your own, but not mandatory.
+
+mandatory:
+    Protected vCenter:
+        1-vCenter Protected Info:
+            1-protected_vCenter_fqdn:                 &vcs01_fqdn                 'vcs01.vlab.local'
+            2-protected_vCenter_datacenter:           &vcs01_dc                   'Cork'
+            3-protected_vCenter_username:             &vcs01_admin                'administrator@vsphere.local'
+            4-protected_vCenter_password:             &vcs01_password             'Password123!'
+        2-Srm Plugin Protected Site:
+            1-protected_srm_username_with_privileges:         &vcs01_srm_user             'administrator@vsphere.local'
+            2-protected_srm_password:         &vcs01_srm_pwd              'Password123!'
+        3-Protected Srm:
+            3-protected_srm_soap_host_fqdn:        &vcs01_srm_fqdn        'srm01.vlab.local'
+            4-protected_srm_soap_user:        &vcs01_srm_soap_user        'app_vco_vcenter@vlab.local'
+            5-protected_srm_soap_pwd:         &vcs01_srm_soap_pwd         'Password123!'
+        4-Srm Sql Protected Site:
+            1-protected_srm_sql_db_host:         &vcs01_srm_sql_fqdn         'sql01.vlab.local'
+            2-protected_srm_sql_db_port:         &vcs01_srm_sql_port         1433
+            3-protected_srm_sql_auth_type:    &vcs01_srm_sql_auth         'Domain'
+            4-protected_srm_sql_username:     &vcs01_srm_sql_user         'ehc_sysadmin'
+            5-protected_srm_sql_password:     &vcs01_srm_sql_pwd          'Password123!'
+            6-protected_srm_sql_user_domain:  &vcs01_srm_domain           'vlab.local'
+            7-protected_srm_sql_db_name:      &vcs01_srm_sql_db           'srm_a'
+    Recovery vCenter:
+        1-vCenter Recovery Info:
+            1-recovery_vCenter_fqdn::                 &vcs03_fqdn                 'vcs03.vlab.local'
+            2-recovery_vCenter_datacenter:           &vcs03_dc                   'Paris'
+            3-recovery_vCenter_username:             &vcs03_admin                'administrator@vsphere.local'
+            4-recovery_vCenter_password:             &vcs03_password             'Password123!'
+        2-Srm Plugin Recovery Site:
+            1-recovery_srm_username_with_privileges:         &vcs03_srm_user             'administrator@vsphere.local'
+            2-recovery_srm_password:         &vcs03_srm_pwd              'Password123!'
+        3-Recovery Srm:
+            1-recovery_srm_soap_host_fqdn:        &vcs03_srm_fqdn             'srm02.vlab.local'
+            2-recovery_srm_soap_user:        &vcs03_srm_soap_user        'app_vco_vcenter@vlab.local'
+            3-recovery_srm_soap_pwd:         &vcs03_srm_soap_pwd         'Password123!'
+        4-Srm Sql Recovery Site:
+            1-recovery_srm_sql_db_host:         &vcs03_srm_sql_fqdn         'sql02.vlab.local'
+            2-recovery_srm_sql_db_port:         &vcs03_srm_sql_port         1433
+            3-recovery_srm_sql_auth_type:    &vcs03_srm_sql_auth         'Domain'
+            4-recovery_srm_sql_username:     &vcs03_srm_sql_user         'ehc_sysadmin'
+            5-recovery_srm_sql_password:     &vcs03_srm_sql_pwd          'Password123!'
+            6-recovery_srm_sql_user_domain:  &vcs03_srm_domain           'vlab.local'
+            7-recovery_srm_sql_db_name:      &vcs03_srm_sql_db           'srm_b'
+    nsx:
+        nsx_enabled:                                &nsx_enabled                No
+        protected_site_nsx_configurations:
+            1-protected_nsx_url:                   &nsx_active_fqdn            'nsx-mgr01.vlab.local'
+            2-protected_nsx_username:             &nsx_active_user            'admin'
+            3-protected_nsx_password:             &nsx_active_password        'Password123!'
+        recovery_site_nsx_configurations:
+            1-recovery_nsx_url:                 &nsx_passive_fqdn           'nsx-mgr03.vlab.local'
+            2-recovery_nsx_username:             &nsx_passive_user           'admin'
+            3-recovery_nsx_password:             &nsx_passive_password       'Password123!'
+    Cluster:
+        1-protected_cluster_name:              &cluster_name_protected              'CRK-PAR-DR-C1'
+        2-recovery_cluster_name:               &cluster_name_recovery               'PAR-CRK-DR-C1'
+    ViPR:
+        1-protected_vipr_varray:               &vipr_varray_protected               'CRK-HWI-1-vArray1'
+        2-recovery_vipr_varray:                &vipr_varray_recovery                'PAR-HWI-1-vArray1'
+        3-edit_protected_vipr_varray:          &edit_vipr_varray_protected          'CRK-HWI-1-vArray1'
+    provision_cloud_storage:
+        1-storage_tier:             &vipr_storage_tier          'CRK-DR-0.25x'
+        2-storage_type:             &storage_type               'VMFS DR-Enabled'
+        3-size_in_GB:               &provision_size             50
+    Reservation:
+        1-computer_resource:                  &computer_resource                  'CRK-PAR-DR-C1 (VCS01)'
+        2-memory_in_GB:                       &memory                             20
+        3-network_path:                       &network_path                       'vxw-dvs-103-virtualwire-23-sid-10007-LS_CRK-PAR-DR-C1'
+    Virtual machine blueprint:
+        blueprint_name:                     &blueprint_name                     'yinl1-blue'
+        vSphere_Machine_ID:                 &vSphere_Machine_ID                 'vSphere_Machine_1'
+optional:
+    Site:
+        site_name_protected:                 &site_name_protected                 'DR2S-Site-Pro'
+        site_name_recovery:                  &site_name_recovery                  'DR2S-Site-Rec'
+        new_site_name_protected:             &new_site_name_protected             'DR2S-Site-Pro-new'
+    vCenter:
+        vcenter_name_protected:              &vcenter_name_protected              'DR2S-vcs01'
+        vcenter_name_recovery:               &vcenter_name_recovery               'DR2S-vcs03'
+        new_vcenter_name_protected:          &new_vcenter_name_protected          'DR2S-vcs01-new'
+    HWI:
+        hwi_name_protected:                 &hwi_name_protected                   'DR2S-HWI-1-Pro'
+        hwi_name_recovery:                  &hwi_name_recovery                    'DR2S-HWI-1-Rec'
+        new_hwi_name_protected:             &new_hwi_name_protected               'DR2S-HWI-1-Pro-new'
+    reservation_name:                       &reservation_name                     'DR2S-Rsv'
+    reservation_policy_name:                &reservation_policy_name              ['DR2S-RP']
+################################# Configuration section #############################################################
+Intermediate_keys:
+    # no need to write------------
+    added_sites: &added_sites [DR2S-Site-Pro,DR2S-Site-Rec]
+    added_vcenter: &added_vcenter [DR2S-vcs01,DR2S-vcs03]
+    # added vcentr relationship
+    protected_vcenter: &protected_vcenter
+    recovery_vcenter: &recovery_vcenter
+    added_hwi: &added_hwi [DR2S-HWI-1-Pro,DR2S-HWI-1-Rec]
+    existed_clusters: &existed_clusters []
+    # added cloud storage
+    datastorage_name: &datastorage_name []
+    storage_hwi: &storage_hwi
+    storage_cluster: &storage_cluster
+    srp: &srp
+    added_reservation: &added_reservation []
+    added_reservation_policy: &added_reservation_policy []
+    assigned_buleprint: &assigned_buleprint []
+    assigned_reservation: &assigned_reservation []
+    deployed_vms: &deployed_vms []
+
+onboard_cluster_type: DR2S
+
+blueprints:
+    - *blueprint_name
+
+blueprint_machine_pairs:
+    {*blueprint_name: *vSphere_Machine_ID}
+
+add_sites:
+    - *site_name_protected
+    - *site_name_recovery
+
+edit_sites:
+    - site_name: *site_name_protected
+      new_site_name: *new_site_name_protected
+
+add_vcenter:
+    - select_operation: Add vCenter
+      name_for_vcenter_endpoint: *vcenter_name_protected
+      select_vc_fqdn_to_add: *vcs01_fqdn
+      new_vcenter_associated_sites:
+        - *site_name_protected
+      select_datacenter_to_add: *vcs01_dc
+
+    - select_operation: Add vCenter
+      name_for_vcenter_endpoint: *vcenter_name_recovery
+      select_vc_fqdn_to_add: *vcs03_fqdn
+      new_vcenter_associated_sites:
+        - *site_name_recovery
+      select_datacenter_to_add: *vcs03_dc
+
+update_vcenter:
+    - select_operation: Edit vCenter
+      existing_vcenter_object: *vcenter_name_protected
+      vcenter_name: *new_vcenter_name_protected
+      vcenter_fqdn: *vcs01_fqdn
+      datacenter: *vcs01_dc
+      sites:
+        - *site_name_protected
+      vcenter_username: *vcs01_admin
+      vcenter_password: *vcs01_password
+
+add_hwi:
+    - hwi_name: *hwi_name_protected
+      performed_active: Add VxRack(Flex)/VxBlock based Hardware Island
+      vcenter_name_active: *vcenter_name_protected
+      site_name_active: *site_name_protected
+      storage_type: 'BLOCK'
+      vipr_active: ViPR
+      vipr_active_check:
+        - *vipr_varray_protected
+
+    - hwi_name: *hwi_name_recovery
+      performed_active: Add VxRack(Flex)/VxBlock based Hardware Island
+      vcenter_name_active: *vcenter_name_recovery
+      site_name_active: *site_name_recovery
+      storage_type: 'BLOCK'
+      vipr_active: ViPR
+      vipr_active_check:
+        - *vipr_varray_recovery
+
+update_hwi:
+    -
+      old_hwi_name: *hwi_name_protected
+      edit_hwi_name: *new_hwi_name_protected
+      performed_active: Edit VxRack(Flex)/VxBlock based Hardware Island
+      edit_vcenter_name_active: *vcenter_name_protected
+      edit_site_name_active: *site_name_protected
+      vipr_active: ViPR
+      vipr_active_check:
+              - *edit_vipr_varray_protected
+
+add_vcenter_relationship:
+    description: add_vcenter_relationship
+    reasons: reasons01
+    please_select_the_operation: Add SRMDR vCenter Relationship
+    protected_vcenter_information:
+        protected_vcenter: *vcenter_name_protected
+        protected_vcenter_username: *vcs01_admin
+        protected_vcenter_password: *vcs01_password
+    recovery_vcenter_information:
+        recovery_vcenter: *vcenter_name_recovery
+        recovery_vcenter_username: *vcs03_admin
+        recovery_vcenter_password: *vcs03_password
+    nsx_available_for_this_setup: *nsx_enabled
+    protected_site_nsx_configurations:
+        enter_protected_site_nsx_manager_fqdn: *nsx_active_fqdn
+        protected_site_nsx_manager_username: *nsx_active_user
+        protected_site_nsx_manager_password: *nsx_active_password
+    recovery_site_nsx_configurations:
+        enter_recovery_site_nsx_manager_fqdn: *nsx_passive_fqdn
+        recovery_site_nsx_manager_username: *nsx_passive_user
+        recovery_site_nsx_manager_password: *nsx_passive_password
+    srm_plugin_protected_site:
+        select_protected_srm_site: *vcs01_fqdn
+        protected_srm_username_with_privileges_to_srm: *vcs01_srm_user
+        srm_protected_password: *vcs01_srm_pwd
+    srm_plugin_recovery_site:
+        select_recovery_srm_site: *vcs03_fqdn
+        recovery_srm_username_with_privileges_to_srm: *vcs03_srm_user
+        srm_recovery_password: *vcs03_srm_pwd
+    srm_sql_protected_site:
+        srm_protected_site_sql_database_host: *vcs01_srm_sql_fqdn
+        protected_site_sql_database_port: *vcs01_srm_sql_port
+        protected_select_authentication_type: *vcs01_srm_sql_auth
+        protected_site_sql_username: *vcs01_srm_sql_user
+        protected_site_sql_password: *vcs01_srm_sql_pwd
+        protected_site_sql_user_domain: *vcs01_srm_domain
+        protected_site_sql_database_name: *vcs01_srm_sql_db
+    srm_sql_recovery_site:
+        srm_recovery_site_sql_database_host: *vcs03_srm_sql_fqdn
+        recovery_site_sql_database_port: *vcs03_srm_sql_port
+        recovery_select_authentication_type: *vcs03_srm_sql_auth
+        recovery_site_sql_username: *vcs03_srm_sql_user
+        recovery_site_sql_password: *vcs03_srm_sql_pwd
+        recovery_site_sql_user_domain: *vcs03_srm_domain
+        recovery_site_sql_database_name: *vcs03_srm_sql_db
+    protected_srm:
+        protected_srm_soap_host_fqdn: *vcs01_srm_fqdn
+        protected_srm_soap_username: *vcs01_srm_soap_user
+        protected_srm_soap_password: *vcs01_srm_soap_pwd
+    recovery_srm:
+        recovery_srm_soap_host_fqdn: *vcs03_srm_fqdn
+        recovery_srm_soap_username: *vcs03_srm_soap_user
+        recovery_srm_soap_password: *vcs03_srm_soap_pwd
+
+onboard_dr_cluster:
+    select_a_hwi_for_the_protected_cluster:
+    select_unprepared_protected_cluster: *cluster_name_protected
+    select_a_hwi_for_the_recovery_cluster:
+    select_unprepared_recovery_cluster: *cluster_name_recovery
+
+edit_cluster_site:
+    - cluster: *cluster_name_protected
+      site: *site_name_protected
+      hwi: *hwi_name_protected
+
+edit_cluster_hwi:
+    - cluster: *cluster_name_protected
+      hwi_1: *hwi_name_protected
+      hwi_2:
+
+provision_cloud_storage:
+    - 'description': 'Provision Cloud Storage'
+      'reasons': 'pcs'
+      'storage_type': *storage_type
+      'vipr_storage_tier': *vipr_storage_tier
+      'size_in_gb': *provision_size
+      'request': 'unknown'
+      'hwi_name': *hwi_name_protected
+
+create_reservation_policy:
+    names: *reservation_policy_name
+
+create_reservation:
+ -
+    reservation_name: *reservation_name
+    reservation_type: vSphere
+    reservation_priority: 1
+    computer_resource: *computer_resource
+    memory: *memory
+    storage_size: *provision_size
+    storage_priority: 1
+    network_path: *network_path
+    network_profile: unknown
+
+assign_reservation_policy_to_reservation:
+    reservation_names: []
+    reservation_policy_names: []
+
+assign_reservation_policy_to_blueprint:
+    blueprint_names: []
+    reservation_policy_name:
+
+deploy_vm:
+    with_dp: False
+    description: deploy vm
+    number_of_vm: 1
+    backup_service_level:
+    SRM_power_on_priority:
+    reason_for_request: test dp
+
+operate_vm:
+    basic_action_list:
+      - Power On
+      - Power Off
+      - Reboot
+
+delete_datastore:
+    - description: Delete Logic
+      reasons: del logic
+
+delete_cluster:
+    []
+
+delete_vcenter_relatinship:
+    description: del_vcenter_relationship02
+    reasons: delrelationship
+    please_select_the_operation: Delete vCenter Relationship
+    protected_vcenter: *vcenter_name_protected
+    recovery_vcenter: *vcenter_name_recovery
+
+delete_hwi:
+    del_reasons: del
+    del_description: del hwi001
+    del_performed_active: Delete Hardware Island
+    isdel_obj: Confirm
+
+delete_vcenter:
+    description: delete vcenter
+    reasons: test
+    select_operation: Delete vCenter
+    ensure_delete_info: Confirm
+
+
+added_sites:
+    *added_sites
+
+existed_clusters:
+    *existed_clusters
+
+added_vcenter:
+    *added_vcenter
+
+added_vcenter_relationship:
+  -
+    {
+    'protected_vcenter': *protected_vcenter,
+    'recovery_vcenter': *recovery_vcenter
+    }
+
+added_hwi:
+    *added_hwi
+
+added_cloud_storage:
+   - hwi_name: *storage_hwi
+     cluster_name: *storage_cluster
+     name: *datastorage_name
+     srp: *srp
+
+deployed_vms: *deployed_vms
+
+added_reservation_policy:
+    *added_reservation_policy
+
+added_reservation:
+    *added_reservation
+
+assigned_reservation_policy_reservations: *assigned_reservation
+
+assigned_reservation_policy_blueprints: *assigned_buleprint
+

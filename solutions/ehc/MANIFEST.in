@@ -1,0 +1,14 @@
+include packaging_scripts/*.sh
+include packaging_scripts/*.template
+include ehc_e2e/robot_tests/workflows/Basic_Workflows.robot
+include ehc_e2e/robot_tests/workflows/Planned_Migration_Workflows.robot
+include ehc_e2e/robot_tests/workflows/RP4VM_Workflows.robot
+include ehc_e2e/robot_tests/workflows/Failover_Workflows.robot
+include ehc_e2e/robot_tests/scenarios/Basic_Verification_Scenarios.robot
+include ehc_e2e/robot_tests/scenarios/resources/ehc.robot
+include ehc_e2e/conf/*
+include ehc_e2e/conf/scenario_conf/*
+include dumpinspector/dump_inspector.py
+include ehc_config_adapter/schema/*.schema
+recursive-include web/ehc_web/ehc/api *.*
+recursive-include web/ehc_web/ehc/ui *.*

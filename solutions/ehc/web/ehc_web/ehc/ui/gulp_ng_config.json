@@ -1,0 +1,27 @@
+{
+  "local": {
+    "EnvironmentConfig": {
+      "api": "http://localhost:8000/api"
+    }
+  },
+  "development": {
+    "EnvironmentConfig": {
+      "api": "http://10.102.6.40:8000"
+    }
+  },
+  "test": {
+    "EnvironmentConfig": {
+      "api": "http://localhost:8000/api"
+    }
+  },
+  "stage": {
+    "EnvironmentConfig": {
+      "api": "http://localhost:8000/api"
+    }
+  },
+  "production": {
+    "EnvironmentConfig": {
+      "api": "http://localhost:8000/api"
+    }
+  }
+}

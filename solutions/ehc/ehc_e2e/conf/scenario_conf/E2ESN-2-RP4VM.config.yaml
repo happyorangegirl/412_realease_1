@@ -1,0 +1,509 @@
+# ################################ Configuration section #############################################################
+# Automation user only needs to update the parameters in this section
+# [Mandatory] parameters : you must update with the right ones in your environment.
+# [Optional] parameters : you can suggested to update with your own, but not mandatory.
+
+mandatory:
+    Relationship_Mappings:
+        relationship_mapping_RP4VM_protected:
+            1-mapping-protected-cluster-name:              &mapping_protected_cluster_name                 LON-WSW-RP-C1
+            2-mapping-protected-reservation-name:          &mapping_protected_reservation_name             'rp4vm-reservation-1'
+            3-mapping-protected-blueprint:                 &mapping_protected_blueprint                    'RP4VM_Blueprint_1'
+            4-mapping-protected-vsphere-machine-id:        &mapping_protected_vspmachine_id                'vSphere_Machine_1'
+            5-mapping-protected-reservation-policy-name:   &mapping_protected_reservation_policy              'rp-name-1'
+        relationship_mapping_RP4VM_recovery:
+            1-mapping-recovery-cluster-name:              &mapping_recovery_cluster_name                 WSW-LON-RP-C1
+            2-mapping-recovery-reservation-name:          &mapping_recovery_reservation_name             'rp4vm-reservation-2'
+            3-mapping-recovery-blueprint:                 &mapping_recovery_blueprint                    'RP4VM_Blueprint_2'
+            4-mapping-recovery-vsphere-machine-id:        &mapping_recovery_vspmachine_id                'vSphere_Machine_1'
+            5-mapping-recovery-reservation-policy-name:   &mapping_recovery_reservation_policy              'rp-name-2'
+    vCenters:
+        1-Protected_vCenter_fqdn:                   &vcs01_fqdn         vcs02.vlab.local
+        2-Protected_vCenter_datacenter:             &vcs01_dc           London
+        3-Recovery_vCenter_fqdn:                    &vcs02_fqdn         vcs04.vlab.local
+        4-Recovery_vCenter_datacenter:              &vcs02_dc           Warsaw
+    vCenter Relationship:
+        1-Protected_nsx_url:            &protected_nsx_url        nsx-mgr02.vlab.local
+        2-Recovery_nsx_url:             &recovery_nsx_url         nsx-mgr04.vlab.local
+        3-Vcs_user:                     &vcs_user                 administrator@vsphere.local
+        4-Vcs_password:                 &vcs_pwd                  Password123!
+        5-protected_nsx_username:             &nsx_active_user            'admin'
+        6-protected_nsx_password:             &nsx_active_password        'Password123!'
+        7-recovery_nsx_username:             &nsx_passive_user           'admin'
+        8-recovery_nsx_password:             &nsx_passive_password       'Password123!'
+    Avamar Grid:
+        1-Protected_avamar_grid_fqdn:             &grid_a_fqdn        london-ave01.vlab.local
+        2-Recovery_avamar_grid_fqdn:              &grid_b_fqdn        warsaw-ave01.vlab.local
+        3-admin_user_name:    &ag_admin_user      root
+        4-admin_password:    &ag_admin_pwd       Password123!
+        5-soap_user_name:         &ag_soap_user       root
+        6-soap_password:     &ag_soap_pwd        Emsee123_
+    Protected Avamar Proxy:
+        1-Protected_dns_updated:              &protected_dns_updated                'Yes'
+        2-Protected_datastore:                  &protected_avamar_proxy_datastore     'VB1-Prod01'
+        3-Protected_proxy_network:              &protected_proxy_network              'HWI1-MGMT-BKNet-115 (VB1-HWI1-MGMT)'
+        4-Protected_proxy_vm_name:              &protected_proxy_vm_name              'vb1-vc01-ave01-p01-1'
+        5-Protected_avamar_path:                &protected_avamar_path                '/clients/vb1-vc01-ave01-p01-1.sit.lab.local'
+        6-Protected_proxy_ip:                   &protected_proxy_ip                   '192.168.115.33'
+        7-Protected_proxy_netmask:              &protected_proxy_netmask              '255.255.255.128'
+        8-Protected_proxy_gateway:              &protected_proxy_gateway              '192.168.115.1'
+        9-Protected_dns_server_ip:              &protected_dns_server_ip              '192.168.120.6'
+        10-Protected_proxy_username:             &protected_proxy_username             'root'
+        11-Protected_proxy_password:             &protected_proxy_password             'avam@r'
+        12-Protected_avamar_domain:              &protected_avamar_domain              '/clients'
+        13-Protected_ova:                        &protected_avamar_proxy_ova           '/DPNInstalls/downloads/VMWARE_PROXY_SP3/AvamarCombinedProxy-linux-sles11_64-7.4.101-58.ova'
+        14-Protected_deployment_server:          &protected_deployment_server          'vb4-ovftool.sit.lab.local'
+        15-Protected_deployment_server_username: &protected_deployment_server_username 'root'
+        16-Protected_deployment_server_password: &protected_deployment_server_password 'Password123!'
+        17-Protected_disable_verification:       &protected_disable_verification       'No'
+    Recovery Avamar Proxy:
+        1-Recovery_dns_updated:              &recovery_dns_updated                'Yes'
+        2-Recovery_datastore:                  &recovery_avamar_proxy_datastore     'VB2-Prod01'
+        3-Recovery_proxy_network:              &recovery_proxy_network              'HWI1-MGMT-BKNet-215 (VB2-HWI1-MGMT)'
+        4-Recovery_proxy_vm_name:              &recovery_proxy_vm_name              'vb1-vc01-ave01-p01-1'
+        5-Recovery_avamar_path:                &recovery_avamar_path                '/clients/vb1-vc01-ave01-p01-1.sit.lab.local'
+        6-Recovery_proxy_ip:                   &recovery_proxy_ip                   '172.22.115.33'
+        7-Recovery_proxy_netmask:              &recovery_proxy_netmask              '255.255.255.128'
+        8-Recovery_proxy_gateway:              &recovery_proxy_gateway              '172.23.115.128'
+        9-Recovery_dns_server_ip:              &recovery_dns_server_ip              '192.168.120.70'
+        10-Recovery_proxy_username:             &recovery_proxy_username             'root'
+        11-Recovery_proxy_password:             &recovery_proxy_password             'avam@r'
+        12-Recovery_avamar_domain:              &recovery_avamar_domain              '/clients'
+        13-Recovery_ova:                        &recovery_avamar_proxy_ova           '/DPNInstalls/downloads/VMWARE_PROXY_SP3/AvamarCombinedProxy-linux-sles11_64-7.4.101-58.ova'
+        14-Recovery_deployment_server:          &recovery_deployment_server          'vb4-ovftool.sit.lab.local'
+        15-Recovery_deployment_server_username: &recovery_deployment_server_username 'root'
+        16-Recovery_deployment_server_password: &recovery_deployment_server_password 'Password123!'
+        17-Recovery_disable_verification:       &recovery_disable_verification       'No'
+    provision_multiple_cloud_storage:
+        1-storage_tier_a(Use_comma_to_split_the_storage_tiers):          &vipr_storage_tier_a        'LON-Local-VP, LON-MP-Local'
+        2-storage_tier_b(Use_comma_to_split_the_storage_tiers):          &vipr_storage_tier_b        'WSW-Local'
+        3-storage_type:                         &storage_type               'VMFS'
+        4-number_of_smaller_size_storages(Non-negative_interger): &vPool_DS_Small  1
+        5-number_of_larger_size_storages(Non-negative_interger):  &vPool_DS_Large  1
+    Deploy VM Parallel:
+        cpu_max:                                    &cpu_max              2
+        ram_max:                                    &ram_max                    8192
+    RP4VM VRPA Cluster:
+        1-Primary_vrpa_ip:                          &vrpa_a_ip          '192.168.1.63'
+        2-Secondary_vrpa_ip:                        &vrpa_b_ip          '192.168.1.64'
+        3-vrpa_admin_user:                          &vrpa_admin         'admin'
+        4-vrpa_password:                            &vrpa_pwd           'admin'
+    RP4VM Policy:
+        1-RP4VM_policy_name:                        &rp_policy_name         TEN08-Async-25G-20M
+        2-Replication_type:                         &rp_policy_type         'Asynchronous'
+        3-Journal_size:                             &journal_size           25
+        4-RPO_number:                               &rpo_number             20
+        5-RPO_units:                                &rpo_units             Minutes
+#################################################################################################################
+workflow_relation_mappings:
+    Relation_Mapping_protected:
+         mapping_cluster_name:              *mapping_protected_cluster_name
+         mapping_reservation_name:          *mapping_protected_reservation_name
+         mapping_computer_resource:         None
+         mapping_network_path:              None
+         mapping_blueprint:                 *mapping_protected_blueprint
+         mapping_vsphere_machine_id:        *mapping_protected_vspmachine_id
+         mapping_reservation_policy_name:   *mapping_protected_reservation_policy
+    Relation_Mapping_recovery:
+         mapping_cluster_name:              *mapping_recovery_cluster_name
+         mapping_reservation_name:          *mapping_recovery_reservation_name
+         mapping_computer_resource:         None
+         mapping_network_path:              None
+         mapping_blueprint:                 *mapping_recovery_blueprint
+         mapping_vsphere_machine_id:        *mapping_recovery_vspmachine_id
+         mapping_reservation_policy_name:   *mapping_recovery_reservation_policy
+optional:
+    Sites:
+        1-Protected_site:       &site_a             London
+        2-Recovery_site:        &site_b             Warsaw
+    Vcenters:
+        1-Protected_vCenter_name:             &vcs01_name         vcs02
+        2-Recovery_vCenter_name:             &vcs02_name         vcs04
+    Avamar Grid:
+        1-Protected_avamar_grid_name:             &grid_a             london-ave01
+        2-Recovery_avamar_grid_name:             &grid_b             warsaw-ave01
+    Hardware Islands:
+        1-Protected_HWI:            &hwi_a              London-hwi
+        2-Recovery_HWI:           &hwi_b              Warsaw-hwi
+        3-Protected_storage_type:        &storage_type_a     VSAN
+        4-Recovery_storage_type:        &storage_type_b     VSAN
+
+shared:
+    current_browser:
+        type:
+        instance:
+        launched: False
+        current_user:
+        is_login: False
+    RP4VM_related_vCenters:
+        protected_vCenter:
+        recovery_vCenter:
+    RP4VM_vRPA_clusters:
+        primary:
+            ip:
+            user: *vrpa_admin
+            password: *vrpa_pwd
+            port: 443
+        secondary:
+            ip:
+            user: *vrpa_admin
+            password: *vrpa_pwd
+            port: 443
+    RP4VM_Failover:
+        consistency_group_name:
+
+
+add_sites:
+  - *site_a
+  - *site_b
+
+added_sites: []
+
+delete_sites:
+    description: deletesite
+    action_to_be_performed: Delete Site
+    please_pick_a_site_to_delete:
+    please_confirm_that_you_wish_to_delete_this_site: Confirm
+
+add_vcenter:
+  -
+    description: vCenter_1
+    reasons: Add_vCenter_1
+    select_operation: Add vCenter
+    name_for_vcenter_endpoint: *vcs01_name
+    select_vc_fqdn_to_add: *vcs01_fqdn
+    new_vcenter_associated_sites:
+      -  *site_a
+    select_datacenter_to_add:  *vcs01_dc
+    request: unknown
+  -
+    description: vCenter_2
+    reasons: Add_vCenter_2
+    select_operation: Add vCenter
+    name_for_vcenter_endpoint: *vcs02_name
+    select_vc_fqdn_to_add: *vcs02_fqdn
+    new_vcenter_associated_sites:
+      -  *site_b
+    select_datacenter_to_add:  *vcs02_dc
+    request: unknown
+
+assigned_reservation_policy_blueprints:  [*mapping_protected_blueprint, *mapping_recovery_blueprint]
+added_vcenter: []
+
+delete_vcenter:
+    description: delete vcenter
+    reasons: test
+    select_operation: Delete vCenter
+    ensure_delete_info: Confirm
+
+add_hwi:
+  -
+    hwi_name: *hwi_a
+    performed_active: Add VxRail based Hardware Island
+    vcenter_name_active:  *vcs01_name
+    site_name_active: *site_a
+    storage_type: *storage_type_a
+    vipr_active: ViPR
+    vipr_active_check: []
+    request: unknown
+  -
+    hwi_name: *hwi_b
+    performed_active: Add VxRail based Hardware Island
+    vcenter_name_active:  *vcs02_name
+    site_name_active: *site_b
+    storage_type: *storage_type_b
+    vipr_active: ViPR
+    vipr_active_check: []
+    request: unknown
+
+added_hwi: []
+
+delete_hwi:
+    del_reasons: delete_hwi
+    del_description: delete_hwi
+    del_performed_active: Delete Hardware Island
+    isdel_obj: Confirm
+
+onboard_cluster_type: VS2S
+
+cluster_maintenance:
+  onboard_vsan_cluster_for_rp4vm:
+    vsan_cluster_hardware_island: *hwi_a
+    vsan_cluster_name: *mapping_protected_cluster_name
+    partner_vsan_cluster_hardware_island: *hwi_b
+    partner_vsan_cluster_name: *mapping_recovery_cluster_name
+
+existed_clusters: []
+
+added_cloud_storage:
+    - hwi_name: *hwi_a
+      cluster_name: *mapping_protected_cluster_name
+      name: []
+      srp: []
+    - hwi_name: *hwi_b
+      cluster_name: *mapping_recovery_cluster_name
+      name: []
+      srp: []
+
+add_avamar_grid:
+    - description: add avamar grid01
+      select_operation_type: Add Avamar Grid
+      avamar_grid_name: *grid_a
+      avamar_grid_fqdn_name: *grid_a_fqdn
+      admin_user_name: *ag_admin_user
+      admin_password: *ag_admin_pwd
+      soap_user_name: *ag_soap_user
+      soap_password: *ag_soap_pwd
+      request: unknown
+      site_name: *site_a
+
+    - description: add avamar grid02
+      select_operation_type: Add Avamar Grid
+      avamar_grid_name: *grid_b
+      avamar_grid_fqdn_name: *grid_b_fqdn
+      admin_user_name: *ag_admin_user
+      admin_password: *ag_admin_pwd
+      soap_user_name: *ag_soap_user
+      soap_password: *ag_soap_pwd
+      request: unknown
+      site_name: *site_b
+
+added_avamar_grid: []
+
+get_asr_from_vro:
+    available_asr: []
+
+add_avamar_site_relationship:
+  description: add avamar site relationship demo
+  action: Add an ASR
+  backup_env_type: MC2VC
+  site_first: *site_a
+  site_second: *site_b
+
+edit_avamar_site_relationship:
+  site_first: *site_a
+  site_second: *site_b
+  site_third: ''
+
+add_an_avamar_replication_relationship:
+  -
+    allow_duplicated_arr: False
+    description: add arr
+    operation_type: Add Avamar Replication Relationship
+    avamar_site_relationship_name:
+    site1_avamar_grid: *grid_a
+    site2_avamar_grid: *grid_b
+    site3_avamar_grid:
+
+get_arr_from_vro:
+    available_arr: []
+
+cluster_asr_to_associate:
+    description: associate cluster to ASR
+    reasons: testing
+    cluster_action: Associate Cluster to ASR
+
+added_avamar_site_relationship: []
+
+added_avamar_replication_relationship: []
+
+added_backup_service_level:
+  backup_to_operate_vm:
+  backup_to_set_backup_service:
+
+associated_avamar_proxy_cluster: []
+
+avamar_proxies_cluster_to_associate:
+  - avamar_proxies: []
+  - avamar_proxies: []
+
+associated_cluster_asr: []
+
+add_avamar_proxy:
+    - dns_updated: *protected_dns_updated
+      tenant_cluster: *mapping_protected_cluster_name
+      datastore: *protected_avamar_proxy_datastore
+      proxy_network: *protected_proxy_network
+      proxy_vm_name: *protected_proxy_vm_name
+      avamar_path: *protected_avamar_path
+      proxy_ip: *protected_proxy_ip
+      proxy_netmask: *protected_proxy_netmask
+      proxy_gateway: *protected_proxy_gateway
+      dns_server_ip: *protected_dns_server_ip
+      proxy_username: *protected_proxy_username
+      proxy_password: *protected_proxy_password
+      avamar_grid: *grid_a
+      avamar_domain: *protected_avamar_domain
+      ova: *protected_avamar_proxy_ova
+      deployment_server: *protected_deployment_server
+      deployment_server_username: *protected_deployment_server_username
+      deployment_server_password: *protected_deployment_server_password
+      disable_verification: *protected_disable_verification
+
+    - dns_updated: *recovery_dns_updated
+      tenant_cluster: *mapping_recovery_cluster_name
+      datastore: *recovery_avamar_proxy_datastore
+      proxy_network: *recovery_proxy_network
+      proxy_vm_name: *recovery_proxy_vm_name
+      avamar_path: *recovery_avamar_path
+      proxy_ip: *recovery_proxy_ip
+      proxy_netmask: *recovery_proxy_netmask
+      proxy_gateway: *recovery_proxy_gateway
+      dns_server_ip: *recovery_dns_server_ip
+      proxy_username: *recovery_proxy_username
+      proxy_password: *recovery_proxy_password
+      avamar_grid: *grid_b
+      avamar_domain: *recovery_avamar_domain
+      ova: *recovery_avamar_proxy_ova
+      deployment_server: *recovery_deployment_server
+      deployment_server_username: *recovery_deployment_server_username
+      deployment_server_password: *recovery_deployment_server_password
+      disable_verification: *recovery_disable_verification
+
+add_backup_service_level:
+    - backup_service_level_name: VS1SBkpSrvLv0
+      select_backup_schedule:
+        schedule_type: Weekly
+        weekday: Sunday
+      regular_retention_policy:
+        policy_name: for
+        retention_for_number: 3
+        retention_custom_phrase: weeks
+        long_term_retention_years: 2
+      select_replication_schedule:
+        schedule_type: Weekly
+        replication_week_day: Monday
+
+    - backup_service_level_name: VS1SBkpSrvLv1
+      select_backup_schedule:
+        schedule_type: Daily
+        time: '19:00'
+      regular_retention_policy:
+        policy_name: thisSchedule
+        daily_number: 2
+        daily_unit: weeks
+        weekly_number: 3
+        weekly_unit: days
+        monthly_number: 2
+        monthly_unit: months
+        yearly_number: 4
+        yearly_unit: years
+        long_term_retention_years: 3
+      select_replication_schedule:
+        schedule_type: Monthly
+        week: third
+        day: Monday
+
+set_backup_service_level:
+    backup_service_level_name:
+
+display_backup_service_level:
+    please_select_action_for_backup_service_level: Display Backup Service Levels
+    email: Confirm
+
+delete_backupdelete_backup_service_level:
+  - description: delete_backup_service_level_operate_vm
+    reasons: reasons
+    please_select_action_for_backup_service_level: Delete Backup Service Level
+    select_backup_service_level_to_delete:
+    confirm_deletion_of_backup_service_level: Yes
+  - description: delete_backup_service_level_operate_vm
+    reasons: reasons
+    please_select_action_for_backup_service_level: Delete Backup Service Level
+    select_backup_service_level_to_delete:
+    confirm_deletion_of_backup_service_level: Yes
+
+delete_avamar_replication_relationship:
+    description: delete arr
+    operation_type: Delete Avamar Replication Relationship
+    delete_arr: None
+
+delete_avamar_site_relationship:
+  description: delete avamar site relationship demo
+  action: Delete an ASR
+
+delete_avamar_grid:
+    description: delete_avamar_grid
+    select_operation_type: Delete Avamar Grid
+    confirmation: Confirm
+
+operate_vm:
+    basic_action_list:
+        - Power On
+        - Power Off
+        - Reboot
+    user_action_list:
+        - Power Off
+
+added_reservation_policy: []
+
+added_reservation: []
+
+assign_reservation_policy_to_reservation:
+    reservation_names:
+    -
+    reservation_policy_names:
+    -
+
+assign_reservation_policy_to_blueprint:
+    blueprint_names:
+    -
+    reservation_policy_name:
+
+blueprints:
+    - *mapping_protected_blueprint
+    - *mapping_recovery_blueprint
+
+blueprint_machine_pairs:
+    {*mapping_protected_blueprint: *mapping_protected_vspmachine_id,
+    *mapping_recovery_blueprint: *mapping_recovery_vspmachine_id}
+
+deploy_vm_parallel:
+    rp4vm_cg: 'Auto_cg'
+    rp4vm_boot_priority: 1
+    rp4vm_policy: *rp_policy_name
+    with_dp: True
+    description: ''
+    number_of_vm: 1
+    cpu_max: *cpu_max
+    ram_max: *ram_max
+    reason_for_request: test RP4VM scenario WF
+
+deployed_vms: []
+
+policy_info:
+  policy_name: *rp_policy_name
+  policy_type: *rp_policy_type
+  journal_size: *journal_size
+  rp_number: *rpo_number
+  rp_units: *rpo_units
+
+vRPA_cluster_to_add:
+    primary_clusetr:
+        ip: *vrpa_a_ip
+        admin: *vrpa_admin
+        password: *vrpa_pwd
+    secondary_cluster:
+        ip: *vrpa_b_ip
+        admin: *vrpa_admin
+        password: *vrpa_pwd
+
+vCenter_relationship_to_add:
+    protected_vCenter_credential:
+        username: *vcs_user
+        password: *vcs_pwd
+    recovery_vCenter_credential:
+        username: *vcs_user
+        password: *vcs_pwd
+    NSX_is_available: True
+    protected_NSX_manager:
+        url: *protected_nsx_url
+        username: *nsx_active_user
+        password: *nsx_active_password
+    recovery_NSX_manager:
+        url: *recovery_nsx_url
+        username: *nsx_passive_user
+        password: *nsx_passive_password
+
+get_vrpa_clusters_from_vro:
+    available_vrpa_clusters: []

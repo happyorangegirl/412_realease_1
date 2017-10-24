@@ -1,0 +1,80 @@
+shared:
+    current_browser:
+        type:
+        instance:
+        launched: False
+        current_user:
+        is_login: False
+
+mandatory:
+    Common configurations:
+      domain:                          &domain             'vlab.local'
+      report_history_directory:        &history_dir        '/root/automation/ehc/reports'
+      browser_type:                    &browser            'Chrome'
+    vRA Configurations:
+      vRA_Address:                     &baseUrl            'https://vra-vip-a.vlab.local/vcac/org/'
+      Tenant:                          &tenant             'dev140'
+      Business_Group:                  &business_group     'dev140_bg'
+    vRA User Roles:
+      Config Admin:
+          1-config_admin:                   &config_admin         'ehc_sysadmin'
+          2-config_admin_password:          &config_admin_password 'Password123!'
+          3-config_admin_domain:            &config_admin_domain     'vlab.local'
+      Backup Admin:
+          1-backup_admin:                   &backup_admin          'ehc_backup_admin'
+          2-backup_admin_password:          &backup_admin_password 'Password123!'
+          3-backup_admin_domain:            &backup_admin_domain     'vlab.local'
+      Storage Admin:
+          1-storage_admin:                   &storage_admin          'ehc_storage_admin'
+          2-storage_admin_password:          &storage_admin_password 'Password123!'
+          3-storage_admin_domain:            &storage_admin_domain     'vlab.local'
+      Tenant BG User:
+          1-tenant_bg_user:                   &tenant_bg_user          'ehc_sysadmin'
+          2-tenant_bg_user_password:          &tenant_bg_user_password 'Password123!'
+          3-tenant_bg_user_domain:            &tenant_bg_user_domain     'vlab.local'
+    vRO Configurations:
+      vRO_Address:                     &vro_address        'pplime-vro-std140.vlab.local'
+      vRO_Username:                    &vro_username       'zhoum9@vlab.local'
+      vRO_Password:                    &vro_password       'Password123!'
+    ViPR Configurations:
+      ViPR_Address:                    &vipr_address       vipr.vlab.local
+      ViPR_Username:                   &vipr_username      ehc_sysadmin@vlab.local
+      ViPR_Password:                   &vipr_password      Password123!
+
+history_dir: *history_dir
+
+launch_browser:
+    browserType: *browser
+    baseUrl: *baseUrl
+
+vra:
+    tenant: *tenant
+    business_group: *business_group
+
+vro:
+    address: *vro_address
+    username: *vro_username
+    password: *vro_password
+
+user_roles:
+    Config_Admin:
+        username: *config_admin
+        password: *config_admin_password
+        domain: *config_admin_domain
+    Backup_Admin:
+        username: *backup_admin
+        password: *backup_admin_password
+        domain: *backup_admin_domain
+    Storage_Admin:
+        username: *storage_admin
+        password: *storage_admin_password
+        domain: *storage_admin_domain
+    Tenant_BG_User:
+        username: *tenant_bg_user
+        password: *tenant_bg_user_password
+        domain: *tenant_bg_user_domain
+
+vipr:
+    address: *vipr_address
+    username: *vipr_username
+    password: *vipr_password

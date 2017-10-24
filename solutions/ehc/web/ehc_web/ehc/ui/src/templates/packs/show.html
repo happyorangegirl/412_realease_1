@@ -1,0 +1,72 @@
+<div class="pack-show panel panel-default">
+  <div class="panel-heading btn-container-right">
+    <div class="col-md-2">
+      Package
+    </div>
+    <button type="button" class="btn btn-default btn-sm"
+        ui-sref="components.show.rv.show.pv.edit({
+          componentId: $stateParams.componentId,
+          repoId: $stateParams.repoId,
+          packId: $stateParams.packId})">Edit</button>
+    <button type="button" class="btn btn-danger btn-sm">Delete</button>
+    <button type="button" class="btn btn-success btn-sm" ng-click="newLicenseView()">Add License</button>
+    <button type="button" class="btn btn-warning btn-sm" ng-click="runPackTask(nav.pack.id)">Auto</button>
+  </div>
+  <ul class="list-group">
+    <li class="list-group-item">
+      <label>Name:</label>
+      <span>{{nav.pack.meta.name}}</span>
+    </li>
+    <li class="list-group-item">
+      <label>Version:</label>
+      <span>{{nav.pack.version}}</span>
+    </li>
+    <li class="list-group-item">
+      <label>Language:</label><span>{{nav.pack.meta.language}}</span>
+    </li>
+    <li class="list-group-item" ng-show="nav.pack.meta.language == 'Java'">
+      <label>Group:</label>
+      <span>{{nav.pack.meta.group}}</span>
+    </li>
+    <li class="list-group-item">
+      <label>Project Website:</label>
+      <span><a ng-href="{{nav.pack.meta.uuid}}">{{nav.pack.meta.uuid}}</a></span>
+    </li>
+    <li class="list-group-item">
+      <label>Status:</label>
+      <span ng-bind="currStatus.code +': '+currStatus.text"
+            ng-class="{
+              'text-success': currStatus.code >= 40,
+              'text-warning': currStatus.code >= 30 && currStatus.code < 40,
+              'text-danger': currStatus.code < 30}"></span>
+    </li>
+    <li class="list-group-item">
+      <label>Homepage:</label>
+      <span ng-switch="nav.pack.homepage.indexOf('http')">
+        <a target="_blank" href="{{nav.pack.homepage}}"
+           ng-switch-when="0">{{nav.pack.homepage}}</a>
+        <span ng-switch-default>{{nav.pack.homepage}}</span>
+      </span>
+    </li>
+    <li class="list-group-item">
+      <label>Project URL:</label>
+      <span ng-switch="nav.pack.project_url.indexOf('http')">
+        <a target="_blank" href="{{nav.pack.project_url}}"
+           ng-switch-when="0">{{nav.pack.project_url}}</a>
+        <span ng-switch-default>{{nav.pack.project_url}}</span>
+      </span>
+    </li>
+    <li class="list-group-item">
+      <label>Source URL:</label>
+      <span ng-switch="nav.pack.source_url.indexOf('http')">
+        <a target="_blank" href="{{nav.pack.source_url}}"
+           ng-switch-when="0">{{nav.pack.source_url}}</a>
+        <span ng-switch-default>{{nav.pack.source_url}}</span>
+      </span>
+    </li>
+    <li class="list-group-item">
+      <label>Comment:</label>
+      <textarea class="form-control url">{{nav.pack.cmt}}</textarea>
+    </li>
+  </ul>
+</div>

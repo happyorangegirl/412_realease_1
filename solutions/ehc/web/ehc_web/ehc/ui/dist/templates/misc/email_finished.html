@@ -1,0 +1,18 @@
+<pre>
+Hi Kim,
+
+We finished the RepoList: {{subproductName}}, here is the GoogleSheet link: [1].
+
+[1] {{GoogleSheetSharedLink}}
+
+
+Thanks very much
+- PCF Shanghai licensing team
+</pre><pre ng-if="level == 'received'">
+Hi {{}},
+
+We have received your licenses scanning request for {{subproductName}} and will start this work now.
+
+Best Regards,
+- PCF Shanghai licensing team
+</pre><button class="btn btn-primary" ng-click="$state.go('')"></button>

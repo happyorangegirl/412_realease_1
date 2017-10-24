@@ -1,0 +1,350 @@
+# Automation user only needs to update the parameters in this section
+# [Mandatory] parameters: you must update with the right ones in your environment.
+# [Optional] parameters: you can suggested to update with your own, but not mandatory.
+
+# ################################ Configuration section - mandatory ###################################################
+
+mandatory:
+    vCenter:
+        protected_vcenter_fqdn:       &protected_vcenter_fqdn        'vcs01.vlab.local'
+        recovery_vcenter_fqdn:        &recovery_vcenter_fqdn         'vcs03.vlab.local'
+        protected_datacenter:         &protected_datacenter          'Cork'
+        recovery_datacenter:          &recovery_datacenter           'Paris'
+    Storage:
+        protected_vipr_varray01:      &protected_vipr_varray_1       'CRK-HWI-1-vArray1'
+        protected_vipr_varray02:      &protected_vipr_varray_2       'LON-HWI-1-vArray1'
+        recovery_vipr_varray:         &recovery_vipr_varray          'PAR-HWI-1-vArray1'
+        vipr_storage_tier:            &vipr_storage_tier             'EHCQE'
+    vCenter Relationship:
+        sql_username:                 &sql_username                  'tianh'
+    Cluster:
+        protected_cluster_name:       &protected_cluster_name        'CRK-CRK-MP-C1'
+        recovery_cluster_name:        &recovery_cluster_name         'PAR-MP-C1'
+    Reservation:
+        computer_resource:            &computer_resource             'CRK-CRK-MP-C1 (VCS01)'
+        memory_in_GB:                 &mem                            16
+        storage_size_in_GB:           &res_storage_size               30
+        network_path:                 &network_path                  'DPG_HPOD_L2X'
+    Blueprint:
+        blueprint_name:               &blueprint_name                'dev056-blueprint'
+        vSphere_id:                   &vSphere_id                    'vSphere_Machine_1'
+
+# ################################ Configuration section - optional ####################################################
+
+optional:
+    #[Optional] Site name
+    protected_site_name:        &protected_site_name        'a0000dev056Cork'
+    recovery_site_name:         &recovery_site_name         'a0000dev056Paris'
+    #[Optional] vCenter name
+    protected_vcenter_name:     &protected_vcenter_name     'vcs01'
+    recovery_vcenter_name:      &recovery_vcenter_name      'vcs03'
+    #[Optional] Hardware Island name
+    protected_hwi_1_name:       &protected_hwi_1_name       'CRK-HWI-1'
+    protected_hwi_2_name:       &protected_hwi_2_name       'CRK-HWI-2'
+    recovery_hwi_name:          &recovery_hwi_name          'PAR-HWI-1'
+    #[Optional] Reservation name which is going to linked to the datastore you create in the automated workflow
+    reservation_name:           &reservation_name           'MP2S_Test_WO_Res'
+    #[Optional] Network profile you want to configure in reservation
+    network_profile:            &network_profile            'unknown'
+    #[Optional] Reservation policy name, you can just leave as it is.
+    reservation_policy_name:    &reservation_policy_name    'MP2S_Test_WO'
+
+    # no need to write
+    new_protected_site_name:            &new_protected_site_name              'Cork1'
+    new_vcendter_name_protected:        &new_vcendter_name_protected          'vCenter01-new'
+    new_protected_hwi_1_name:           &new_hwi_protected_1                  'Cork-HWI-1-new'
+    cluster_type:                       &cluster_type                         'MP2S'
+    edit_protected_cluster_hwi_hwi_1:   &edit_protected_cluster_hwi_hwi_1     'CRK-HWI-1'
+    edit_protected_cluster_hwi_hwi_2:   &edit_protected_cluster_hwi_hwi_2     'CRK-HWI-2'
+    edit_protect_cluster_site_site:     &edit_protect_cluster_site_site       'a0000dev056Cork'
+    edit_protect_cluster_site_hwi:      &edit_protect_cluster_site_hwi        'CRK-HWI-1'
+    hardware_islands:
+        local_HWI:            &hwi_a              LON-HWI-1
+        remote_HWI:           &hwi_b              WSW-HWI-1
+        update_hwiname:       &update_hwi_name    LON-HWI-1
+        new_hwiname:          &new_hwi_name       LON-HWI-11
+        update_hwi_vcsname:   &update_hwi_vcs     LonCenter
+        site_nameactive:      &update_hwi_site    LonSite
+keys_to_constants:
+        storage_typea:        &storage_type_a     BLOCK
+        storage_typeb:        &storage_type_b     VSAN
+Intermediate_keys:
+    added_site: &added_site
+    added_vcenter: &added_vcenter
+    added_hwi: &added_hwi
+    existed_clusters: &existed_clusters
+    added_reservation_name: &added_reservation_name
+    added_reservation_policy_name: &added_reservation_policy_name
+    assigned_buleprint: &assigned_buleprint
+    assigned_reservation: &assigned_reservation
+    datastorage_name: &datastorage_name
+    storage_hwi: &storage_hwi
+    storage_cluster: &storage_cluster
+    srp: &srp
+    deployed_vms: &deployed_vms
+
+
+
+blueprints:
+    - *blueprint_name
+
+blueprint_machine_pairs:
+    {*blueprint_name: *vSphere_id}
+
+onboard_cluster_type: MP2S
+
+add_sites:
+    - *protected_site_name
+    - *recovery_site_name
+
+edit_sites:
+    - site_name: *protected_site_name
+      new_site_name: *new_protected_site_name
+
+add_vcenter:
+    - 'description': 'vcs01'
+      'reasons': 'reason01'
+      'select_operation': 'Add vCenter'
+      'name_for_vcenter_endpoint': *protected_vcenter_name
+      'select_vc_fqdn_to_add': *protected_vcenter_fqdn
+      'new_vcenter_associated_sites': [*protected_site_name]
+      'select_datacenter_to_add': *protected_datacenter
+
+    - 'description': 'vcs03'
+      'reasons': 'reason03'
+      'select_operation': 'Add vCenter'
+      'name_for_vcenter_endpoint': *recovery_vcenter_name
+      'select_vc_fqdn_to_add': *recovery_vcenter_fqdn
+      'new_vcenter_associated_sites': [*recovery_site_name]
+      'select_datacenter_to_add': *recovery_datacenter
+
+update_vcenter:
+    - 'select_operation': Edit vCenter
+      'existing_vcenter_object': *protected_vcenter_name
+      'vcenter_name': *new_vcendter_name_protected
+      'vcenter_fqdn': *protected_vcenter_fqdn
+      'datacenter': *protected_datacenter
+      'sites': [*protected_site_name]
+
+add_hwi:
+    -
+      'hwi_name': *protected_hwi_1_name
+      'performed_active': 'Add VxRack(Flex)/VxBlock based Hardware Island'
+      'vcenter_name_active': *protected_vcenter_name
+      'site_name_active': *protected_site_name
+      storage_type: *storage_type_a
+      'vipr_active': 'ViPR'
+      'vipr_active_check': [*protected_vipr_varray_1]
+      'request': 'unknown'
+    -
+      'hwi_name': *protected_hwi_2_name
+      'performed_active': 'Add VxRack(Flex)/VxBlock based Hardware Island'
+      'vcenter_name_active': *protected_vcenter_name
+      'site_name_active': *protected_site_name
+      storage_type: *storage_type_a
+      'vipr_active': 'ViPR'
+      'vipr_active_check': [*protected_vipr_varray_2]
+      'request': 'unknown'
+    -
+      'hwi_name': *recovery_hwi_name
+      'performed_active': 'Add VxRack(Flex)/VxBlock based Hardware Island'
+      'vcenter_name_active': *recovery_vcenter_name
+      'site_name_active': *recovery_site_name
+      storage_type: *storage_type_a
+      'vipr_active': 'ViPR'
+      'vipr_active_check': [*recovery_vipr_varray]
+      'request': 'unknown'
+
+update_hwi:
+    -
+      'old_hwi_name': *protected_hwi_1_name
+      'edit_hwi_name': *new_hwi_protected_1
+      'performed_active': 'Edit VxRack(Flex)/VxBlock based Hardware Island'
+      'edit_vcenter_name_active': *protected_vcenter_name
+      'edit_site_name_active': *protected_site_name
+      'edit_vipr_active': 'ViPR'
+      'edit_vipr_active_check': [*protected_vipr_varray_1]
+
+add_vcenter_relationship:
+    description: add_vcenter_relationship01
+    reasons: reasons01
+    please_select_the_operation: Add SRMDR vCenter Relationship
+    protected_vcenter_information:
+        protected_vcenter: *protected_vcenter_name
+        protected_vcenter_username: administrator@vsphere.local
+        protected_vcenter_password: Password123!
+    recovery_vcenter_information:
+        recovery_vcenter: *recovery_vcenter_name
+        recovery_vcenter_username: administrator@vsphere.local
+        recovery_vcenter_password: Password123!
+    nsx_available_for_this_setup: No
+    protected_site_nsx_configurations:
+        enter_protected_site_nsx_manager_fqdn: nsx-mgr01.vlab.local
+        protected_site_nsx_manager_username: admin
+        protected_site_nsx_manager_password: Password123!
+    recovery_site_nsx_configurations:
+        enter_recovery_site_nsx_manager_fqdn: nsx-mgr03.vlab.local
+        recovery_site_nsx_manager_username: admin
+        recovery_site_nsx_manager_password: Password123!
+    srm_plugin_protected_site:
+        select_protected_srm_site: *protected_vcenter_fqdn
+        protected_srm_username_with_privileges_to_srm: app_vco_vcenter@vlab.local
+        srm_protected_password: Password123!
+    srm_plugin_recovery_site:
+        select_recovery_srm_site: *recovery_vcenter_fqdn
+        recovery_srm_username_with_privileges_to_srm: app_vco_vcenter@vlab.local
+        srm_recovery_password: Password123!
+    srm_sql_protected_site:
+        srm_protected_site_sql_database_host: sql01.vlab.local
+        protected_site_sql_database_port: 1433
+        protected_select_authentication_type: Domain
+        protected_site_sql_username: *sql_username
+        protected_site_sql_password: Password123!
+        protected_site_sql_user_domain: vlab.local
+        protected_site_sql_database_name: srm_a
+    srm_sql_recovery_site:
+        srm_recovery_site_sql_database_host: sql02.vlab.local
+        recovery_site_sql_database_port: 1433
+        recovery_select_authentication_type: Domain
+        recovery_site_sql_username: *sql_username
+        recovery_site_sql_password: Password123!
+        recovery_site_sql_user_domain: vlab.local
+        recovery_site_sql_database_name: srm_b
+    protected_srm:
+        protected_srm_soap_host_fqdn: srm01.vlab.local
+        protected_srm_soap_username: app_vco_vcenter@vlab.local
+        protected_srm_soap_password: Password123!
+    recovery_srm:
+        recovery_srm_soap_host_fqdn: srm02.vlab.local
+        recovery_srm_soap_username: app_vco_vcenter@vlab.local
+        recovery_srm_soap_password: Password123!
+
+onboard_mp_cluster:
+    'select_hardward_island_1': *protected_hwi_1_name
+    'choose_inter_site_vs_intra_site_protected_cluster': 'Intra-site'
+    'select_hardward_island_2': *protected_hwi_2_name
+    'select_unprepared_protected_cluster': *protected_cluster_name
+    'select_hosts_from_cluster_that_are_from_hardware_island_1': ''
+    'select_hosts_from_cluster_that_are_from_hardware_island_2': ''
+    'select_hardward_island_3': *recovery_hwi_name
+    'select_unprepared_recovery_cluster': *recovery_cluster_name
+
+edit_cluster_site:
+    - cluster: *protected_cluster_name
+      site: *edit_protect_cluster_site_site
+      hwi: *edit_protect_cluster_site_hwi
+
+edit_cluster_hwi:
+    - cluster: *protected_cluster_name
+      hwi_1: *edit_protected_cluster_hwi_hwi_1
+      hwi_2: *edit_protected_cluster_hwi_hwi_2
+
+provision_cloud_storage:
+    - description: Provision Cloud Storage
+      reasons: pcs
+      cluster_name: *protected_cluster_name
+      hwi_name: *protected_hwi_1_name
+      storage_type: 'VMFS MP-Enabled'
+      vipr_storage_tier: *vipr_storage_tier
+      size_in_gb: 32
+      request: 'unknown'
+
+create_reservation_policy:
+    names: [*reservation_policy_name]
+
+create_reservation:
+  -
+    reservation_name: *reservation_name
+    reservation_type: vSphere
+    reservation_priority: 1
+    computer_resource: *computer_resource
+    memory: *mem
+    storage_size: *res_storage_size
+    storage_priority: 1
+    network_path: *network_path
+    network_profile: *network_profile
+
+assign_reservation_policy_to_reservation:
+    reservation_names:
+    reservation_policy_names: []
+
+assign_reservation_policy_to_blueprint:
+    blueprint_names: []
+    reservation_policy_name:
+
+deploy_vm:
+    with_dp: False
+    description: 'deployvm MP2S with dp'
+    number_of_vm: 1
+    backup_service_level:
+    SRM_power_on_priority: 3
+    reason_for_request: test dp
+
+operate_vm:
+    basic_action_list:
+        - 'Power On'
+        - 'Power Off'
+        - 'Reboot'
+    user_action_list:
+        - 'Power Off'
+
+delete_datastore:
+    [{'description':'Delete Logic',
+      'reasons':'dellogin',
+    }]
+
+delete_cluster:
+    []
+
+delete_vcenter_relatinship:
+    description: del_vcenter_relationship02
+    reasons: delrelationship
+    please_select_the_operation: Delete vCenter Relationship
+    protected_vcenter:
+    recovery_vcenter:
+
+delete_hwi:
+    del_reasons: del
+    del_description: del hwi001
+    del_performed_active: Delete Hardware Island
+    isdel_obj: Confirm
+
+delete_vcenter:
+    description: delete vcenter
+    reasons: test
+    select_operation: Delete vCenter
+    ensure_delete_info: Confirm
+
+delete_sites:
+    'description': 'deletesite'
+    'action_to_be_performed': 'Delete Site'
+    'please_pick_a_site_to_delete':
+    'please_confirm_that_you_wish_to_delete_this_site': 'Confirm'
+
+delete_reservation:
+  [
+
+  ]
+
+delete_datastore:
+    - 'description': 'Delete Datastore'
+      'reasons': 'tear down'
+
+delete_cluster:
+    []
+
+delete_hwi:
+    del_performed_active: Delete Hardware Island
+    isdel_obj: Confirm
+
+delete_vcenter:
+    description: delete vcenter
+    reasons: tear down
+    select_operation: Delete vCenter
+    ensure_delete_info: Confirm
+
+delete_sites:
+    'description': 'deletesite'
+    'action_to_be_performed': 'Delete Site'
+    'please_pick_a_site_to_delete':
+    'please_confirm_that_you_wish_to_delete_this_site': 'Confirm'

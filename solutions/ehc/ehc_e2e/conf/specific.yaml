@@ -1,0 +1,460 @@
+blueprints:
+    - 'jason_demo_2016_6_61'
+
+blueprint_machine_pairs:
+    {'jason_demo_2016_6_6': 'vSphere_Machine_1'}
+
+deploy_vm:
+    with_dp: False
+    description: 'jason_deployvm'
+    number_of_vm: 1
+    backup_service_level: dev57-001
+    SRM_power_on_priority: 1
+    reason_for_request: test dp
+
+
+deployed_vms: [
+    cras039
+  ]
+
+
+deployed_vms2:
+  name:
+
+remove_reservation_policy_from_reservation:
+    reservation_name: NY-HWI-1-C1-Res-3 Benson
+
+
+existed_clusters:
+    [
+      NY-BOS-CA-C1
+    ]
+
+add_sites:
+    - Cork
+
+edit_sites:
+    - site_name: Cork
+      new_site_name: Cork1
+
+added_sites:
+    [
+      Cork,
+      London,
+    ]
+
+added_hwi:
+    [
+    NY-HWI-1,SEA-HWI-1,
+    ]
+
+add_hwi:
+    [{'description':'NY-HWI-1',
+      'reasons':'wo',
+      'hwi_name':'NY-HWI-1',
+      'performed_active':'Add VxRack(Flex)/VxBlock based Hardware Island',
+      'vcenter_name_active':'cloud-vcs01',
+      'site_name_active':'NewYork',
+      'storage_type':'BLOCK',
+      'vipr_active':'ViPR',
+      'vipr_active_check':[NY-HWI-1-vArray1],
+      'request':'unknown',
+    },
+    {'description':'HWI-SEA-01',
+      'reasons':'wo',
+      'hwi_name':'SEA-HWI-1',
+      'performed_active':'Add VxRack(Flex)/VxBlock based Hardware Island',
+      'vcenter_name_active':'cloud-vcs03',
+      'site_name_active':'Seattle',
+      'storage_type':'BLOCK',
+      'vipr_active':'ViPR',
+      'vipr_active_check':[SEA-HWI-1-vArray1],
+      'request':'unknown',
+    },
+    {'description':'HWI-BOS-01',
+      'reasons':'wo',
+      'hwi_name':'Bos-HWI-1',
+      'performed_active':'Add VxRack(Flex)/VxBlock based Hardware Island',
+      'vcenter_name_active':'cloud-vcs01',
+      'site_name_active':'Boston',
+      'storage_type':'BLOCK',
+      'vipr_active':'ViPR',
+      'vipr_active_check':[Bos-HWI-1-vArray1],
+      'request':'unknown',
+    }
+    ]
+
+added_vcenter:
+    [
+      cloud-vcs01
+    ]
+
+add_vcenter:
+    [{'description':'cloud-vcs01',
+      'reasons':'reason01',
+      'select_operation':'Add vCenter',
+      'name_for_vcenter_endpoint':'cloud-vcs01',
+      'select_vc_fqdn_to_add':'cloud-vcs01.ppindigo.lab.local',
+      'select_datacenter_to_add':'NewYork',
+    },
+    {'description':'cloud-vcs03',
+      'reasons':'reason03',
+      'select_operation':'Add vCenter',
+      'name_for_vcenter_endpoint':'cloud-vcs03',
+      'select_vc_fqdn_to_add':'cloud-vcs03.ppindigo.lab.local',
+      'select_datacenter_to_add':'Boston',
+    }]
+
+delete_vcenter:
+    description: delete vcenter
+    reasons: test
+    select_operation: Delete vCenter
+    ensure_delete_info: Confirm
+
+delete_cluster: []
+
+onboard_dr_cluster:
+    'select_a_hwi_for_the_protected_cluster':
+    'select_unprepared_protected_cluster': 'NY-SEA-DR-C1'
+    'select_a_hwi_for_the_recovery_cluster':
+    'select_unprepared_recovery_cluster': 'SEA-NY-DR-C1'
+
+onboard_local_cluster:
+    'select_a_hardware_island':
+    'select_unprepared_cluster': 'NY-HWI-1-C1'
+
+onboard_ca_cluster:
+    'select_hardward_island_1': 'NY-HWI-1'
+    'select_unprepared_cluster': 'NY-BOS-CA-C1'
+    'choose_inter_site_vs_intra_site': 'Inter-site'
+    'select_hardward_island_2': 'Bos-HWI-1'
+    'select_hosts_for_hardware_island_1': ''
+    'select_hosts_for_hardware_island_2': ''
+
+onboard_mp_cluster:
+    'select_hardward_island_1': 'HWI-NY-01'
+    'choose_inter_site_vs_intra_site_protected_cluster': 'Intra-site'
+    'select_hardward_island_2': 'NY-HWI-02'
+    'select_unprepared_protected_cluster': 'NY-NY-MP-C2'
+    'select_hosts_from_cluster_that_are_from_hardware_island_1': ''
+    'select_hosts_from_cluster_that_are_from_hardware_island_2': ''
+    'select_hardward_island_3': 'HWI-SEA-01'
+    'select_unprepared_recovery_cluster': 'SEA-MP-C2'
+
+edit_cluster_site:
+    - cluster:
+      site:
+      hwi:
+
+edit_cluster_hwi:
+    - cluster:
+      hwi_1:
+      hwi_2:
+
+delete_hwi:
+    del_reasons: del
+    del_description: del hwi001
+    del_performed_active: Delete Hardware Island
+    isdel_obj: Confirm
+
+provision_cloud_storage:
+    [{'description':'Provision Cloud Storage',
+      'reasons':'pcs',
+      'cluster_name':'NY-BOS-CA-C1',
+      'hwi_name':'NY-HWI-1',
+      'storage_type':'VMFS DR-Enabled',
+      'vipr_storage_tier':'',
+      'size_in_gb':'200',
+      'request': ,
+    }]
+
+added_cloud_storage:
+    hwi_name: 'NY-HWI-1'
+    cluster_name: 'NY-BOS-CA-C1'
+    name: [PPIndigo02_10GB,bb]
+    srp: []
+
+get_arr_from_vro:
+    available_arr: []
+
+get_asr_from_vro:
+    available_asr: []
+
+delete_datastore:
+    [{'description':'Delete Logic',
+      'reasons':'dellogin',
+      'request': ,
+    }]
+
+delete_sites:
+    'description': 'deletesite'
+    'action_to_be_performed': 'Delete Site'
+    'please_pick_a_site_to_delete':
+    'please_confirm_that_you_wish_to_delete_this_site': 'Confirm'
+
+add_vcenter_relationship:
+    description: add_vcenter_relationship02
+    reasons: reasons01
+    please_select_the_operation: Add SRMDR vCenter Relationship
+    protected_vcenter_information:
+        protected_vcenter: cloud-vcs01
+        protected_vcenter_username: administrator@vsphere.local
+        protected_vcenter_password: Emsee123!
+    recovery_vcenter_information:
+        recovery_vcenter: cloud-vcs03
+        recovery_vcenter_username: administrator@vsphere.local
+        recovery_vcenter_password: Emsee123!
+    nsx_available_for_this_setup: Yes
+    protected_site_nsx_configurations:
+        enter_protected_site_nsx_manager_fqdn: cloud-nsxm01.ppindigo.lab.local
+        protected_site_nsx_manager_username: admin
+        protected_site_nsx_manager_password: Emsee123!
+    recovery_site_nsx_configurations:
+        enter_recovery_site_nsx_manager_fqdn: cloud-nsxm03.ppindigo.lab.local
+        recovery_site_nsx_manager_username: admin
+        recovery_site_nsx_manager_password: Emsee123!
+    srm_plugin_protected_site:
+        select_protected_srm_site: cloud-vcs01.ppindigo.lab.local
+        protected_srm_username_with_privileges_to_srm: app_vro_vcenter@ppindigo.lab.local
+        srm_protected_password: Emsee123!
+    srm_plugin_recovery_site:
+        select_recovery_srm_site: cloud-vcs03.ppindigo.lab.local
+        recovery_srm_username_with_privileges_to_srm: app_vro_vcenter@ppindigo.lab.local
+        srm_recovery_password: Emsee123!
+    srm_sql_protected_site:
+        srm_protected_site_sql_database_host: core-ny-sql01.ppindigo.lab.local
+        protected_site_sql_database_port: 1433
+        protected_select_authentication_type: Domain
+        protected_site_sql_username: app_vro_sql
+        protected_site_sql_password: Emsee123!
+        protected_site_sql_user_domain: ppindigo.lab.local
+        protected_site_sql_database_name: PPINDIGO_NY_SRM
+    srm_sql_recovery_site:
+        srm_recovery_site_sql_database_host: core-sea-sql01.ppindigo.lab.local
+        recovery_site_sql_database_port: 1433
+        recovery_select_authentication_type: Domain
+        recovery_site_sql_username: app_vro_sql
+        recovery_site_sql_password: Emsee123!
+        recovery_site_sql_user_domain: ppindigo.lab.local
+        recovery_site_sql_database_name: PPINDIGO_SEA_SRM
+    protected_srm:
+        protected_srm_soap_host_fqdn: core-ny-srm01.ppindigo.lab.local
+        protected_srm_soap_username: app_vro_vcenter@ppindigo.lab.local
+        protected_srm_soap_password: Emsee123!
+    recovery_srm:
+        recovery_srm_soap_host_fqdn: core-sea-srm01.ppindigo.lab.local
+        recovery_srm_soap_username: app_vro_vcenter@ppindigo.lab.local
+        recovery_srm_soap_password: Emsee123!
+
+delete_vcenter_relatinship:
+    description: del_vcenter_relationship02
+    reasons: delrelationship
+    please_select_the_operation: Delete vCenter Relationship
+    protected_vcenter: cloud-vcs01
+    recovery_vcenter: cloud-vcs03
+
+create_reservation_policy:
+    names: ['CA2SNoDP']
+
+create_reservation:
+ -
+    reservation_name: NY-BOS-CA-C1-Res-9-CA2SNodDP
+    reservation_priority: 1
+    memory: 100
+    storage_size: 200
+    storage_priority: 1
+    network_path: unknown
+    network_profile: unknown
+
+added_reservation_policy:
+    []
+
+added_reservation:
+    []
+
+assign_reservation_policy_to_reservation:
+    reservation_names: ['BOS-HWI-1-C1-Res-2 Jason demo']
+    reservation_policy_names: [Benson-dev10]
+
+assign_reservation_policy_to_blueprint:
+    reservation_policy_name: CA2SNoDP
+
+added_avamar_site_relationship:
+    asr_name: ASR00002
+    backup_env_type: 2C2VC
+    site:
+       [NewYork, Seattle]
+
+cluster_asr_to_associate:
+    description: associate cluster to ASR
+    reasons: testing
+    cluster_action: Associate Cluster to ASR
+
+associated_cluster_asr:
+    []
+
+avamar_proxies_cluster_to_associate:
+    [{
+    description: associate avamar proxies with cluster,
+    reasons: testing,
+    cluster_action: Associate Avamar Proxies with Cluster,
+    cluster_name: NY-BOS-CA-C1,
+    avamar_proxies:
+    [
+        /clients/ny-av2-p2.ppindigo.lab.local,
+        /clients/ny-av2-p4.ppindigo.lab.local,
+    ]
+    }]
+
+associated_avamar_proxy_cluster:
+    []
+
+
+add_an_avamar_replication_relationship:
+    description: 'add arr'
+    operation_type: 'Add Avamar Replication Relationship'
+    avamar_site_relationship_name: "ASR00006-[2C2VC-NewYork-Seattle]"
+    site1_avamar_grid:
+    site2_avamar_grid:
+    site3_avamar_grid:
+
+added_avamar_replication_relationship:
+    [
+    ]
+
+edit_avamar_replication_relationship:
+    'arr':
+    'admin_full':
+
+add_avamar_site_relationship:
+  description: add avamar site relationship CA2S
+  action: Add an ASR
+  backup_env_type: CA2S
+  site_first: Cork
+  site_second: London
+  site_third:
+
+edit_avamar_site_relationship:
+  site_first: London
+  site_second: Cork
+  site_third: ''
+
+added_avamar_grid:
+    [NY-AV1,SEA-AV1,BOS-AV1]
+
+onboard_cluster_type: CA2S
+
+delete_avamar_replication_relationship:
+    'description': 'delete arr'
+    'operation_type': 'Delete Avamar Replication Relationship'
+    'delete_arr':
+
+add_backup_service_level:
+    [{'description': 'jason_add_backup_service_level10',
+    'reasons': 'reasons',
+    'please_select_action_for_backup_service_level': 'Add Backup Service Level',
+    'specify_the_service_level_name': 'dev57-010',
+    'select_backup_schedule': 'Weekly',
+    'weekday': 'Sunday',
+    'regular_retention_policy': 'for',
+    'retention_for_number': '3',
+    'retention_custom_phrase': 'weeks',
+    'long_term_retention_policy': '2',
+    'select_replication_schedule': 'Weekly',
+    'replication_week_day': 'Monday',
+    },
+    {'description': 'jason_add_backup_service_level11',
+    'reasons': 'reasons',
+    'please_select_action_for_backup_service_level': 'Add Backup Service Level',
+    'specify_the_service_level_name': 'dev57-011',
+    'select_backup_schedule': 'Weekly',
+    'weekday': 'Sunday',
+    'regular_retention_policy': 'for',
+    'retention_for_number': '3',
+    'retention_custom_phrase': 'weeks',
+    'long_term_retention_policy': '2',
+    'select_replication_schedule': 'Weekly',
+    'replication_week_day': 'Monday',
+    }
+    ]
+
+added_backup_service_level:
+  {
+    'backup_to_operate_vm': 'dev57-001',
+    'backup_to_set_backup_service': ''
+  }
+
+display_backup_service_level:
+    please_select_action_for_backup_service_level: Display Backup Service Levels
+    email: Confirm
+
+delete_backup_service_level:
+    [{'description': 'delete_backup_service_level10',
+    'reasons': 'reasons',
+    'please_select_action_for_backup_service_level': 'Delete Backup Service Level',
+    'select_backup_service_level_to_delete': ,
+    'confirm_deletion_of_backup_service_level': Yes,
+    },
+    {'description': 'delete_backup_service_leve011',
+    'reasons': 'reasons',
+    'please_select_action_for_backup_service_level': 'Delete Backup Service Level',
+    'select_backup_service_level_to_delete': ,
+    'confirm_deletion_of_backup_service_level': Yes,
+    }
+    ]
+
+add_avamar_grid:
+    [{'description':'add avamargrid01',
+      'select_operation_type':'Add Avamar Grid',
+      'avamar_grid_name':'NY-AV1',
+      'avamar_grid_fqdn_name':'ny-av2.ppindigo.lab.local',
+      'admin_user_name':'root',
+      'admin_password':'Emsee123!',
+      'soap_user_name':'root',
+      'soap_password':'Emsee123',
+      'request':'unknown',
+      'site_name':'NewYork',
+    },
+    {'description':'add avamargrid02',
+      'select_operation_type':'Add Avamar Grid',
+      'avamar_grid_name':'SEA-AV1',
+      'avamar_grid_fqdn_name':'sea-av1.ppindigo.lab.local',
+      'admin_user_name':'root',
+      'admin_password':'Emsee123!',
+      'soap_user_name':'root',
+      'soap_password':'Emsee123',
+      'request':'unknown',
+      'site_name':'Boston',
+    }]
+
+delete_avamar_site_relationship:
+  description: delete avamar site relationship demo
+  action: Delete an ASR
+
+deleted_avamar_site_relationship:
+    []
+
+delete_avamar_grid:
+    description: delete_avamar_grid
+    select_operation_type: Delete Avamar Grid
+    confirmation: Confirm
+
+set_backup_service_level:
+    backup_service_level_name:
+
+get_vrpa_clusters_from_vro:
+    available_vrpa_clusters: []
+
+run_admin_report:
+  description: run admin report
+  reasons: run reason
+  select_a_backup_service_level_name: dev57_001
+  select_pdf_page_orientation: Portrait
+  select_one_or_more_reports_to_run:
+  select_a_time_frame: Last Day
+  email_results: Yes
+  email_address: Dengpan.Zhang@emc.com
+
+operate_vm:
+    basic_action_list:
+      ['Power On', 'Power Off', 'Reboot']

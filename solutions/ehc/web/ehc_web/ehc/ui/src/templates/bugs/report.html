@@ -1,0 +1,40 @@
+<div class="row panel-default">
+  <div class="modal-header panel-heading">
+    <h3 class="modal-title">Report a bug</h3>
+  </div>
+  <div class="modal-body form-horizontal">
+    <div>
+      <div class="form-group">
+        <label class="col-sm-3 control-label">Package name:</label>
+        <div class="col-sm-9">
+          {{ _nav.pack.meta.name }}
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-3 control-label">Package version:</label>
+        <div class="col-sm-9">
+          {{ _nav.pack.version }}
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-3 control-label">Package URL:</label>
+        <div class="col-sm-9">
+          <input ng-model="bug.html_url" class="form-control">
+        </div>
+
+      </div>
+      <div class="form-group">
+        <label class="col-sm-3 control-label">Why:</label>
+        <div class="col-sm-9">
+          <textarea ng-model="bug.why" class="form-control" rows="3"></textarea>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="summitTheBug()">Summit</button>
+    <button class="btn btn-warning" type="button" ng-click="cancelBugReportModal()">Cancel</button>
+  </div>
+</div>

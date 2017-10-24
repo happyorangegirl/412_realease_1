@@ -1,0 +1,45 @@
+# added RP4VM vcenter relationship (copied from E2EWF-102-RP4VM-DP.config.yaml)
+shared:
+    RP4VM_related_vCenters:
+        protected_vCenter: vcs01
+        recovery_vCenter: vcs03
+
+# extend RP4VM vcenter relationship (copied from E2EWF-1-DR2S.config.yaml)
+extend_vcenter_relationship:
+    description: extend_vcenter_relationship
+    reasons: reasons01
+    please_select_the_operation: Extend RP4VM vCenter Relationship with SRMDR
+    protected_vcenter_name: vcs01
+    recovery_vcenter_name: vcs03
+    srm_plugin_protected_site:
+        select_protected_srm_site: vcs01.vlab.local
+        protected_srm_username_with_privileges_to_srm: administrator@vsphere.local
+        srm_protected_password: Password123!
+    srm_plugin_recovery_site:
+        select_recovery_srm_site: vcs03.vlab.local
+        recovery_srm_username_with_privileges_to_srm: administrator@vsphere.local
+        srm_recovery_password: Password123!
+    srm_sql_protected_site:
+        srm_protected_site_sql_database_host: sql01.vlab.local
+        protected_site_sql_database_port: 1433
+        protected_select_authentication_type: Domain
+        protected_site_sql_username: ehc_sysadmin
+        protected_site_sql_password: Password123!
+        protected_site_sql_user_domain: vlab.local
+        protected_site_sql_database_name: srm_a
+    srm_sql_recovery_site:
+        srm_recovery_site_sql_database_host: sql02.vlab.local
+        recovery_site_sql_database_port: 1433
+        recovery_select_authentication_type: Domain
+        recovery_site_sql_username: ehc_sysadmin
+        recovery_site_sql_password: Password123!
+        recovery_site_sql_user_domain: vlab.local
+        recovery_site_sql_database_name: srm_b
+    protected_srm:
+        protected_srm_soap_host_fqdn: srm01.vlab.local
+        protected_srm_soap_username: app_vco_vcenter@vlab.local
+        protected_srm_soap_password: Password123!
+    recovery_srm:
+        recovery_srm_soap_host_fqdn: srm02.vlab.local
+        recovery_srm_soap_username: app_vco_vcenter@vlab.local
+        recovery_srm_soap_password: Password123!

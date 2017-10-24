@@ -1,0 +1,72 @@
+<div class="row" ng-show="$stateParams.componentId && $stateParams.repoId && !$stateParams.packId && !($state.$current.name === 'components.show.rv.show.pv.new')">
+  <div class="row pull-right">
+    <button type="button" class="btn btn-default" ui-sref="components.show.rv.show.pv.new({
+    componentId: $stateParams.componentId,
+    repoId: $stateParams.repoId})">
+      Add Package Manually
+    </button>
+  </div>
+  <table class="table table-striped">
+    <thead>
+    <th>
+    <td>Actions</td>
+    <td><a ng-click="sortType = 'pack.name'; sortReverse = !sortReverse;" class="btn-link">Package Name</a></td>
+    <td><a ng-click="sortType = 'version'; sortReverse = !sortReverse;">Version</a></td>
+    <td><a ng-click="sortType = 'pack.language'; sortReverse = !sortReverse;" class="btn-link">Language</a></td>
+    <!--<td>Homepage</td>-->
+    <td><a ng-click="sortType = 'source_url'; sortReverse = !sortReverse;" class="btn-link">Source URL</a></td>
+    <td><a ng-click="sortType = 'licenses'; sortReverse = !sortReverse;" class="btn-link">Sim Ratio</a></td>
+    <td><a ng-click="sortType = 'licenses'; sortReverse = !sortReverse;" class="btn-link">Licenses</a></td>
+    <td><a ng-click="sortType = 'status'; sortReverse = !sortReverse;" class="btn-link">Status</a></td>
+    </th>
+    </thead>
+    <tbody>
+    <tr ng-repeat="pv in repo.packs | orderBy: sortType: sortReverse">
+      <td>
+        <a ng-click="runPackTask(pv.id)" title="Run" class="btn-link">
+          <i class="fa" ng-class="{'fa-play': pv.status < 40, 'fa-repeat': pv.status >= 40}"></i>
+        </a>
+      </td>
+      <td>
+        <a ui-sref="components.show.rv.show.pv.show({
+          componentId: $stateParams.componentId,
+          repoId: $stateParams.repoId,
+          packId: pv.id
+          })">
+          {{pv.meta.name}}
+        </a>
+      </td>
+      <td>
+        <span title="{{pv.version}}">{{pv.version | limitTo : 9 : 0 }}</span></td>
+      <td>{{pv.meta.language}}</td>
+      <!--<td>{{pv.meta.homepage}}</td>-->
+      <td style="word-break: break-all; word-wrap:break-word;">
+        <a href="{{pv.source_url}}" target="_blank" >{{pv.source_url}}</a>
+      </td>
+      <td><div ng-repeat="license in pv.licenses">
+        <span title="Similarity Ratio"
+              ng-class="{'text-success': license.sim_ratio >= 0.8, 'text-danger': license.sim_ratio <= 0.4, 'text-warning': license.sim_ratio > 0.4 &amp;&amp; license.sim_ratio < 0.8, 'hide': l.sim_ratio === null}" class="ng-binding text-success">{{license.sim_ratio | percentage:2}}</span>
+      </div></td>
+      <td style="word-break: break-all; word-wrap:break-word;"><div ng-repeat="license in pv.licenses">{{license.name}}</div></td>
+      <td>
+        <uib-progress ng-show="pv.status>=40">
+          <uib-bar value="100" type="success"><span>{{pv.status}}</span></uib-bar>
+        </uib-progress>
+        <uib-progress ng-show="pv.status>29&&pv.status<40">
+          <uib-bar value="100" type="warning"><span>{{pv.status}}</span></uib-bar>
+        </uib-progress>
+        <uib-progress ng-show="pv.status<=29">
+          <uib-bar value="100" type="danger"><span>{{pv.status}}</span></uib-bar>
+        </uib-progress>
+      </td>
+    </tr>
+    <tr ng-hide="repo.packs.length">
+      <td colspan="8" class="text-center">No contents</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="row" ng-show="$stateParams.packId || ($state.$current.name === 'components.show.rv.show.pv.new')">
+  <ui-view/>
+</div>

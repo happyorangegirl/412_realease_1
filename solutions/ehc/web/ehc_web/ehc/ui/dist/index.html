@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en" ng-app="RDash">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>E2E Admin</title>
+  <!-- STYLES -->
+  <link rel="stylesheet" href="lib/css/main.min.css"/>
+
+  <link rel="stylesheet" href="css/dashboard.css">
+
+  <!-- SCRIPTS -->
+  <script src="lib/js/main.min.js"></script>
+  <!-- Custom Scripts -->
+  <script type="text/javascript" src="js/dashboard.min.js"></script>
+</head>
+<body ng-controller="MasterCtrl">
+  <div id="page-wrapper" ng-class="{'open': toggle}" ng-cloak>
+
+    <!-- Sidebar -->
+    <div id="sidebar-wrapper">
+      <ul class="sidebar">
+        <li class="sidebar-main">
+          <a ui-sref="index">EHC E2E Automation <i style="font-size: 8px;">0.2</i></a>
+        </li>
+        <!--<li class="sidebar-list">
+          <a title="Dashboard" ui-sref="index" ng-class="{'active':($state.current.name == 'index')}" 
+             ng-show="globals.currentUser.authdata != null">
+             Dashboard<span class="menu-icon fa fa-tachometer"></span>
+          </a>
+        </li>-->
+
+        <li class="sidebar-list">
+          <a title="Workflow Configuration" ui-sref="demo.workflow"
+             ng-class="{'active':($state.current.name.indexOf('demo.workflow') >= 0)}" ng-show="globals.currentUser.authdata != null">
+            <span ng-class="{'active':($state.current.name.indexOf('demo.workflow') >= 0)}" >Workflow</span>
+            <span class="menu-icon fa fa-code"></span>
+          </a>
+        </li>
+          <li class="sidebar-list">
+          <a title="Scenario Configuration" ui-sref="demo.scenario"
+             ng-class="{'active':($state.current.name.indexOf('demo.scenario') >= 0)}" ng-show="globals.currentUser.authdata != null">
+            <span ng-class="{'active':($state.current.name.indexOf('demo.scenario') >= 0)}">Scenario</span>
+            <span class="menu-icon fa fa-code"></span>
+          </a>
+        </li>
+          <li class="sidebar-list">
+          <a title="Tools Operation" ui-sref="demo.tools"
+             ng-class="{'active':($state.current.name.indexOf('demo.tools') >= 0)}" ng-show="globals.currentUser.authdata != null">
+            <span ng-class="{'active':($state.current.name.indexOf('demo.tools') >= 0)}">Tools</span>
+            <span class="menu-icon fa fa-code"></span>
+          </a>
+        </li>
+
+        <!--<li class="sidebar-list">
+          <a title="Release" ui-sref="run.wf"
+             ng-class="{'active':($state.current.name.indexOf('run') >= 0)}" 
+             ng-show="globals.currentUser.authdata != null">
+            <span ng-class="{'active':($state.current.name == 'run.wf')}">Run Wrokflow</span>
+            <span class="menu-icon fa fa-code"></span>
+          </a>
+        </li>
+        <li class="sidebar-list">
+          <a title="Release" ui-sref="resource"
+             ng-class="{'active':($state.current.name.indexOf('resource') >= 0)}"
+             ng-show="globals.currentUser.authdata != null">
+            <span ng-class="{'active':($state.current.name == 'resource')}">Resource Pool</span>
+            <span class="menu-icon fa fa-code"></span>
+          </a>
+        </li>-->
+        <li class="sidebar-list pull-right">
+          <a title="Login" ui-sref="login()" ng-if="globals.currentUser == null"
+             ng-class="{'active': $state.current.name == 'login'}">
+            <span>Login</span>
+          </a>
+          <a title="Profile" ui-sref="profile" ng-if="globals.currentUser != null"
+             ng-class="{'active': $state.current.name == 'profile'}">
+            <i class="fa fa-user"></i>
+            <span>{{globals.currentUser.username}}</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <!-- End Sidebar -->
+
+    <div id="content-wrapper">
+      <div class="page-content">
+
+        <!-- Header Bar -->
+        <!-- End Header Bar -->
+
+        <!-- Main Content -->
+        <div ui-view></div>
+
+      </div><!-- End Page Content -->
+    </div><!-- End Content Wrapper -->
+
+    <div class="sidebar-footer hide">
+      <div class="col-xs-4 hide">
+        <a href="https://slack.com" target="_blank">
+          Slack
+        </a>
+      </div>
+      <div class="col-xs-6 hide">
+        <a href="https://bitbucket.org/license-auto/license_ui" target="_blank">
+          About
+        </a>
+      </div>
+      <div class="col-xs-12">
+        <a ui-sref="support">
+          Support
+        </a>
+      </div>
+    </div>
+  </div><!-- End Page Wrapper -->
+</body>
+</html>

@@ -1,0 +1,97 @@
+<div class="row">
+
+  <ui-view></ui-view>
+
+  <!-- Licenses list -->
+  <div class="license-show panel panel-default" ng-repeat="l in nav.pack.licenses">
+    <div class="panel-heading btn-container-right"
+         ng-init="l.editMode = false">
+      <!-- Attribute id is for $anchorScroll-->
+      <div class="col-md-2" id="license-{{$index + 1}}">License #{{$index + 1}}</div>
+
+      <!--FIXME: If click the `cancel` button in half way of editing mode, the origin model wont revert back-->
+
+      <button type="button" class="btn btn-default btn-sm"
+              ng-if="!isLicenseEditOrCreateMode(l)" ng-click="l.editMode = true;">Edit</button>
+      <button type="button" class="btn btn-danger btn-sm"
+              ng-if="l.id && !isLicenseEditOrCreateMode(l)" ng-click="deleteLicense(l)">Delete</button>
+      <!-- If new license view -->
+      <button type="button" class="btn btn-primary btn-sm"
+              ng-if="isLicenseEditOrCreateMode(l)" ng-click="createOrUpdateLicense(l)">Save</button>
+      <button type="button" class="btn btn-danger btn-sm"
+              ng-if="!l.id" ng-click="cancelNewLicenseView()">Cancel</button>
+      <button type="button" class="btn btn-danger btn-sm"
+              ng-if="l.id && isLicenseEditOrCreateMode(l)"
+              ng-click="l.editMode = false; l.nameConflict = false; l = licenseEditBackup;">Cancel</button>
+    </div>
+    <!-- License body -->
+    <ul class="list-group form-inline">
+      <li class="list-group-item">
+        <label>Name:</label>
+        <div ng-class="{'has-error':l.nameConflict}">
+          <select class="form-control" ng-model="l.name" ng-show="l.is_standard === true" ng-disabled="!isLicenseEditOrCreateMode(l)"
+                  ng-change="licenseNameChange(l)">
+            <option ng-repeat="obj in availableOpts.licenses"
+                    ng-selected="{{obj.name == l.name}}">
+              {{obj.name}}
+            </option>
+          </select>
+          
+          &nbsp;&nbsp;
+          <input class="form-control" ng-model="l.name" ng-show="l.is_standard === false" ng-disabled="!isLicenseEditOrCreateMode(l)">
+          &nbsp;&nbsp;
+          <span ng-show="l.nameConflict" class="help-inline">The same License already exists</span>
+          <!-- TODO: 1. Edit it; 2.click the sim_ratio text, and show diff between standard license with this one -->
+          <span title="Similarity Ratio"
+                ng-class="{'text-success': l.sim_ratio >= 0.8, 'text-danger': l.sim_ratio <= 0.4, 'text-warning': l.sim_ratio > 0.4 && l.sim_ratio < 0.8, 'hide': l.sim_ratio === null}"> {{l.sim_ratio | percentage:2}}</span>
+          &nbsp;&nbsp;
+          <button ng-show="isLicenseEditOrCreateMode(l) && l.is_standard === true" class="btn btn-link" ng-click="l.is_standard = false">Input License Name</button>
+          <button ng-show="isLicenseEditOrCreateMode(l) && l.is_standard === false" class="btn btn-link" ng-click="l.is_standard = true">Select Standard License Name</button>
+        </div>
+      </li>
+      <li class="list-group-item">
+        <label>License URL:</label>
+        <span ng-if="!isLicenseEditOrCreateMode(l)">
+          <a target="_blank" href="{{l.license_url}}">{{l.license_url}}</a></span>
+        <input ng-if="l.editMode" class="form-control url"
+               ng-model="l.license_url"
+               ng-keypress="fetchRemoteLicenseTextEventHandle($event, l)">
+        <button ng-if="isLicenseEditOrCreateMode(l)" class="btn btn-primary btn-sm" ng-click="fetchRemoteLicenseText(l)"
+                ng-disabled="!l.license_url">
+          Fetch
+        </button>
+      </li>
+      <li class="list-group-item">
+        <label>License Text:</label>
+        <textarea name="license_text" ng-model="l.license_text"
+                  ng-disabled="!l.editMode"
+                  class="form-control url" style="height: 200px;"></textarea>
+        <i ng-if="l.fetchingRemoteLicenseText === true;" class="fa fa-refresh fa-spin"></i>
+      </li>
+      <!-- Apache NOTICE file -->
+      <li class="list-group-item" ng-show="l.name.indexOf('Apache') > -1">
+        <label>NOTICE Text:</label>
+        <textarea name="license_text"
+                  ng-disabled="!l.editMode"
+                  ng-model="l.notice" class="form-control url" style="height: 150px;"></textarea>
+        <i ng-if="l.fetchingRemoteLicenseText === true;" class="fa fa-refresh fa-spin"></i>
+      </li>
+    </ul>
+  </div>
+
+  <!--Bugs, TODO: remove bug-->
+  <div class="license-show panel panel-default" ng-repeat="bug in nav.pack.bugs">
+    <div class="panel-body bg-danger" id="bug-{{$index + 1}}">
+      <div class="col-md-1">Bug #{{$index + 1}}: </div>
+      <div class="col-md-11 text-left">
+        {{bug.why}}
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <button class="btn btn-link pull-right" ng-click="openBugReportModal()">The result is error? Report a bug{{a}}</button>
+  </div>
+
+
+</div>

@@ -1,0 +1,59 @@
+# ################################ Configuration section #############################################################
+# Automation user only needs to update the parameters in this section
+# mandatory parameters : you must update with the right ones in your environment.
+# optional parameters : you can suggested to update with your own, but not mandatory.
+
+mandatory:
+  Virtual machine blueprint:
+    # Blueprint name you configure in the automation environment
+    blueprint_name:            &blueprint_name            'Blueprints'
+    # virtual machine name you configure in the automation environment
+    vSphere_Machine_ID:      &vSphere_Machine_ID         'ABC'
+  # DP
+  Backup_service_level:
+    backup_service_to_operate_vm:           &backup_service_to_operate_vm           'operate-vm-backup-svc-CA1S-DP'
+    backup_service_to_set_backup_service:   &backup_service_to_set_backup_service   'set-backup-svc-CA1S-DP'
+    
+################################# Configuration section #############################################################
+# no need to write
+blueprints:
+    - *blueprint_name
+
+blueprint_machine_pairs:
+    {*blueprint_name: *vSphere_Machine_ID}
+
+deploy_vm:
+    description: 'deploy_vm'
+    with_dp: True
+    number_of_vm: 1
+    backup_service_level: *backup_service_to_operate_vm
+    SRM_power_on_priority:
+    reason_for_request: 'test deploy_vm'
+
+operate_vm:
+    basic_action_list:
+        - 'Power On'
+        - 'Power Off'
+        - 'Reboot'
+    user_action_list:
+        - 'Power Off'
+
+added_backup_service_level:
+  {
+    backup_to_operate_vm: *backup_service_to_operate_vm,
+    backup_to_set_backup_service: *backup_service_to_set_backup_service
+  }
+
+run_admin_report:
+    description: run admin report
+    reasons: run reason
+    select_a_backup_service_level_name:
+    select_pdf_page_orientation: Portrait
+    select_one_or_more_reports_to_run:
+    select_a_time_frame: Last Day
+    email_results: Yes
+    email_address: 123@emc.com
+
+display_backup_service_level:
+    please_select_action_for_backup_service_level: Display Backup Service Levels
+    email: Confirm

@@ -1,0 +1,65 @@
+# ################################ Configuration section #############################################################
+# Automation user only needs to update the parameters in this section
+# [Mandatory] parameters : you must update with the right ones in your environment.
+# [Optional] parameters : you can suggested to update with your own, but not mandatory.
+mandatory:
+    Virtual machine blueprint:
+        blueprint_name:            &blueprint_name            'yinl1-blue'
+        vSphere_Machine_ID:        &vSphere_Machine_ID        'vSphere_Machine_1'
+optional:
+    Backup Service Level:
+        1-backup_service_level_name:  &backup_service_level_name 'operate-vm-backup-svc-DR2S-DP'
+        2-set_backup_service_level_name: &set_backup_service_level_name 'set-backup-svc-DR2S-DP'
+        3-additional_email:              &additional_email                   'louis.yin@emc.com'
+################################# Configuration section #############################################################
+onboard_cluster_type: DR2S
+
+blueprints:
+    - *blueprint_name
+
+blueprint_machine_pairs:
+    {*blueprint_name: *vSphere_Machine_ID}
+
+added_backup_service_level:
+  {
+    'backup_to_operate_vm': *backup_service_level_name,
+    'backup_to_set_backup_service': *set_backup_service_level_name
+  }
+
+deploy_vm:
+    with_dp: True
+    description: deploy vm
+    number_of_vm: 1
+    backup_service_level:
+    SRM_power_on_priority:
+    reason_for_request: test dp
+
+deployed_vms:
+    []
+
+operate_vm:
+    basic_action_list:
+      - Power On
+      - Power Off
+      - Reboot
+    user_action_list:
+      - Power Off
+
+set_backup_service_level:
+    backup_service_level_name:
+
+display_backup_service_level:
+    please_select_action_for_backup_service_level: Display Backup Service Levels
+    additional_email: *additional_email
+    email: Confirm
+
+run_admin_report:
+    description: run admin report
+    reasons: run reason
+    select_a_backup_service_level_name:
+    select_pdf_page_orientation: Portrait
+    select_one_or_more_reports_to_run:
+    select_a_time_frame: Last Day
+    email_results: 'Yes'
+    email_address: *additional_email
+

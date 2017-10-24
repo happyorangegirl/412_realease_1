@@ -1,0 +1,62 @@
+shared:
+    current_browser:
+        type:
+        instance:
+        launched: False
+        current_user:
+        is_login: False
+
+launch_browser:
+    browserType: Chrome
+    baseUrl: https://auto-vra-vip.ppindigo.lab.local/vcac/org/dev59
+login:
+    primary:
+        user: cloud_admin
+        username: cloud_admin
+        password: Password123!
+        role:
+        domain: vlab.local
+    secondary:
+        username:
+        password:
+        role:
+
+vro:
+    address: 10.103.201.117
+    username: app_vro_vcenter@ppindigo.lab.local
+    password: Emsee123!
+
+add_avamar_site_relationship:
+  description: add avamar site relationship demo
+  action: Add an ASR
+  backup_env_type: 2C2VC
+  site_first: NewYork
+  site_second: Seattle
+  site_third:
+
+added_avamar_site_relationship: ['ASR00008-[2C2VC-NewYork-Seattle]']
+
+delete_avamar_site_relationship:
+  description: delete avamar site relationship demo
+  action: Delete an ASR
+
+deleted_avamar_site_relationship:
+    []
+
+deploy_vm:
+    with_dp: True
+    description: 'deployvm22'
+    number_of_vm: 1
+    backup_service_level: dev10-crys-00001
+    SRM_power_on_priority: 2
+    reason_for_request: test dp
+
+blueprints:
+    'jason_demo_2016_6_6'
+
+blueprint_machine_pairs:
+    {'jason_demo_2016_6_6': 'vSphere_Machine_1'}
+
+operate_vm:
+    basic_action_list:
+      ['Power On', 'Power Off', 'Reboot']

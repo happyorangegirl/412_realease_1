@@ -1,0 +1,37 @@
+{
+    "value": {
+        "array": {
+            "elements": [
+                {
+                    "sdk-object": {
+                        "type": "VC:Datacenter",
+                        "href": "https://192.168.3.166:8281/vco/api/catalog/VC/Datacenter/vcs04.vlab.local%252Fdatacenter-21/",
+                        "id": "vcs04.vlab.local/datacenter-21"
+                    }
+                },
+                {
+                    "sdk-object": {
+                        "type": "VC:Datacenter",
+                        "href": "https://192.168.3.166:8281/vco/api/catalog/VC/Datacenter/vcs02.vlab.local%252Fdatacenter-21/",
+                        "id": "vcs02.vlab.local/datacenter-21"
+                    }
+                },
+                {
+                    "sdk-object": {
+                        "type": "VC:Datacenter",
+                        "href": "https://192.168.3.166:8281/vco/api/catalog/VC/Datacenter/vcs03.vlab.local%252Fdatacenter-21/",
+                        "id": "vcs03.vlab.local/datacenter-21"
+                    }
+                },
+                {
+                    "sdk-object": {
+                        "type": "VC:Datacenter",
+                        "href": "https://192.168.3.166:8281/vco/api/catalog/VC/Datacenter/vcs01.vlab.local%252Fdatacenter-21/",
+                        "id": "vcs01.vlab.local/datacenter-21"
+                    }
+                }
+            ]
+        }
+    },
+    "type": "Array/VC:Datacenter"
+}

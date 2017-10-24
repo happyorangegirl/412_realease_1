@@ -1,0 +1,41 @@
+<div class="row alerts-container" data-ng-controller="AlertsCtrl" data-ng-show="alerts.length">
+  <div class="col-xs-12">
+    <!-- <alert data-ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert> -->
+  </div>
+</div>
+
+<div class="row">
+	<div class="col-lg-3 col-md-6 col-xs-12 hide">
+		
+	</div>
+	<div class="col-lg-4 col-md-6 col-xs-12" ng-controller="PieCtrl">
+		<h3>Workflow Report:</h3>
+		<canvas id="pie" class="chart chart-pie"
+		  chart-data="data" chart-labels="labels" chart-options="options"
+		  chart-colors="colors">
+		</canvas>
+	</div>
+	<div class="col-lg-3 col-md-6 col-xs-12 hide">
+		<rd-widget>
+			<rd-widget-body>
+				<div class="widget-icon orange pull-left">
+					<i class="fa fa-sitemap"></i>
+				</div>
+				<div class="title">1234</div>
+				<div class="comment text-center">Master Ticket</div>
+			</rd-widget-body>
+		</rd-widget>
+	</div>
+	<div class="col-lg-3 col-md-6 col-xs-12 hide">
+		<rd-widget>
+			<rd-widget-body>
+				<div class="widget-icon blue pull-left">
+					<i class="fa fa-support"></i>
+				</div>
+				<div class="title">62</div>
+				<div class="comment text-center">Use Tickets</div>
+			</rd-widget-body>
+		</rd-widget>
+	</div>
+</div>
+

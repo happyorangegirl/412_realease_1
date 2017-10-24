@@ -1,0 +1,300 @@
+# ################################ Configuration section #############################################################
+# Automation user only needs to update the parameters in this section
+# [Mandatory] parameters : you must update with the right ones in your environment.
+# [Optional] parameters : you can suggested to update with your own, but not mandatory.
+mandatory:
+  Cluster:
+    # CA1S Cluster name
+    cluster_name:              &cluster_name             'SIT-VB1-Tenant06-CA1S'
+    cluster_name2:             &cluster_name2            'CRK-CRK-CA-C1'
+  VCenter:
+    vcenter_fqdn:              &vcenter_fqdn             'sit-vb1-vc01.sit.lab.local'
+    # Datacenter name in vCenter you configure
+    datacenter:                &datacenter               'SIT-VB1'
+  Reservation:
+    # Computer resource (Cluster) you want to configure in reservation
+    computer_resource:         &computer_resource        'SIT-VB1-Tenant06-CA1S'
+    memory_in_GB:              &mem                       2
+    storage_size_GB:           &res_storage_size          32
+    # Network path you want to configure in reservation
+    network_path:              &network_path             'sit-vb1-sys-esx-mgmt'
+  Storage:
+    # vArray in ViPR, the vArray must has physical connection to the vCenter you configure above
+    vipr_varray01:               &vipr_varray01          'SIT-VB1-HWI1-VA'
+    vipr_varray02:               &vipr_varray02          'SIT-VB1-HWI2-VA'
+    #ViPR Storage tier you want to select to provision cloud storage
+    vipr_storage_tier:         &vipr_storage_tier        'SIT-VB1-HWI1-CA-VNX-1'
+  Virtual machine blueprint:
+    # Blueprint name you configure in the automation environment
+    blueprint_name:            &blueprint_name            'LinuxCA'
+    # virtual machine name you configure in the automation environment
+    virtual_machine_name:      &vSphere_Machine_ID        'Linux_CA'
+
+
+################################# Configuration section #############################################################
+    # no need to write
+optional:
+    vra:
+        baseurl:              &base_url           https://vra-vip.vlab.local/vcac/org/
+        tenant:               &tenant             dev026
+        business_group:       &bg                 dev026_BG
+        username:             &vra_user           ehc_sysadmin
+        password:             &vra_pwd            Password123!
+        domain:               &vra_domain         vlab.local
+    vro:
+        host:                 &vro_host           192.168.7.126
+        username:             &vro_user           vlab\zhoum9
+        password:             &vro_pwd            Password123!
+
+    site_name:                 &site_name                'CA1S-site1'
+    vcenter_name:              &vcenter_name             'CA1S-vcenter01'
+    new_site_name:             &new_site_name            'CA1S-site-new'
+    new_vcenter_name:          &new_vcenter_name         'CA1S-vCenter01-new'
+    hardware_islands:
+      hwi_name01:           &hwi_name01         'CA1S-HWI-1'
+      hwi_name02:           &hwi_name02         'CA1S-HWI-2'
+      storage_typea:        &storage_type_a     BLOCK
+      storage_typeb:        &storage_type_b     VSAN
+      new_hwiname:          &new_hwi_name       CA1S-HWI-1-new
+    cluster_type:              &cluster_type             'CA1S'
+    inter_site_vs_intra_site:  &inter_vs_intra           'Intra-site'
+    reasons: &reasons deploy CA1S cluster
+    provision_stoarge:
+      storage_type:       &storage_type              'VMFS CA-Enabled'
+      size:               &size                      50
+    reservation_data:
+      reservation_name:   &reservation_name         'E2E_Res_CA1S'
+      network_profile:    &network_profile          'unknown'
+    reservation_policy_name:   &reservation_policy_name  ['E2E_Res_Policy_CA1S']
+    variables to make debug easier:
+      test11111: &added_site_1    [CA1S-site]
+      added_site: &added_site    [CA1S-site]
+      added_vcenter: &added_vcenter [CA1S-vcenter01]
+      added_hwi: &added_hwi [CA1S-HWI-1, CA1S-HWI-2]
+      existed_clusters: &existed_clusters [CRK-CRK-CA-C1]
+      added_reservation_name: &added_reservation_name []
+      added_reservation_policy_name: &added_reservation_policy_name []
+      assigned_buleprint: &assigned_buleprint []
+      assigned_reservation: &assigned_reservation []
+      datastorage_name: &datastorage_name []
+      srp_name:  &srp_name []
+      deployed_vm: &deployed_vms []
+
+#################################################################################################################
+# no need to write
+
+shared:
+    current_browser:
+        type:
+        instance:
+        launched: False
+        current_user:
+        is_login: False
+
+launch_browser:
+    browserType: Chrome
+    baseUrl: *base_url
+
+vra:
+    tenant: *tenant
+    business_group: *bg
+
+vro:
+    address: *vro_host
+    username: *vro_user
+    password: *vro_pwd
+
+login:
+    primary:
+        user: *vra_user
+        username: *vra_user
+        password: *vra_pwd
+        role:
+        domain: *vra_domain
+    secondary:
+        username:
+        password:
+        role:
+
+onboard_cluster_type: *cluster_type
+
+blueprints:
+    - *blueprint_name
+blueprint_machine_pairs:
+   {*blueprint_name: *vSphere_Machine_ID}
+
+deploy_vm:
+    with_dp: False
+    description: deployvm
+    number_of_vm: 1
+    backup_service_level:
+    SRM_power_on_priority:
+    reason_for_request: test
+
+deployed_vms:
+ *deployed_vms
+
+existed_clusters:
+  - *cluster_name
+
+add_sites:
+    - *site_name
+
+added_sites:
+   *added_site
+
+edit_sites:
+    - site_name: *site_name
+      new_site_name: *site_name
+
+add_vcenter:
+    -
+      select_operation: Add vCenter
+      name_for_vcenter_endpoint: *vcenter_name
+      select_vc_fqdn_to_add: *vcenter_fqdn
+      new_vcenter_associated_sites:
+                                  - *site_name
+      select_datacenter_to_add: *datacenter
+
+added_vcenter:
+  *added_vcenter
+
+update_vcenter:
+  -
+    select_operation: Edit vCenter
+    existing_vcenter_object: *vcenter_name
+    vcenter_name: *new_vcenter_name
+    vcenter_fqdn: *vcenter_fqdn
+    datacenter: *datacenter
+    sites:
+        - *site_name
+    vcenter_username: administrator@vsphere.local
+    vcenter_password: Password123!
+
+delete_vcenter:
+    select_operation: Delete vCenter
+    select_vcenter:
+    ensure_delete_info: Confirm
+
+add_hwi:
+   -
+      hwi_name: *hwi_name01
+      performed_active: Add VxRack(Flex)/VxBlock based Hardware Island
+      vcenter_name_active: *vcenter_name
+      site_name_active: *site_name
+      storage_type: *storage_type_a
+      vipr_active: ViPR
+      vipr_active_check: [*vipr_varray01]
+   -
+      hwi_name: *hwi_name02
+      performed_active: Add VxRack(Flex)/VxBlock based Hardware Island
+      vcenter_name_active: *vcenter_name
+      site_name_active: *site_name
+      storage_type: *storage_type_a
+      vipr_active: ViPR
+      vipr_active_check: [*vipr_varray02]
+
+added_hwi:
+  *added_hwi
+
+update_hwi:
+    -
+      old_hwi_name: *hwi_name01
+      edit_hwi_name: *new_hwi_name
+      performed_active: Edit VxRack(Flex)/VxBlock based Hardware Island
+      edit_vcenter_name_active: *vcenter_name
+      edit_site_name_active: *site_name
+      vipr_active: ViPR
+      vipr_active_check:
+              - *vipr_varray01
+
+onboard_ca_cluster:
+   select_hardward_island_1: *hwi_name01
+   select_unprepared_cluster: *cluster_name
+   choose_inter_site_vs_intra_site: *inter_vs_intra
+   select_hardward_island_2: *hwi_name02
+   select_hosts_for_hardware_island_1:
+   select_hosts_for_hardware_island_2:
+
+operate_vm:
+    basic_action_list:
+      - Power On
+      - Power Off
+      - Reboot
+    user_action_list:
+      - Power Off
+
+delete_cluster:
+    []
+
+provision_cloud_storage:
+    - description: Provision Cloud Storage
+      reasons: *reasons
+      cluster_name: *cluster_name
+      storage_type: *storage_type
+      vipr_storage_tier: *vipr_storage_tier
+      size_in_gb: *size
+      hwi_name: *hwi_name01
+      request: unknown
+
+added_cloud_storage:
+    -
+      hwi_name: *hwi_name01
+      cluster_name: *cluster_name
+      name:
+        *datastorage_name
+      srp: *srp_name
+
+create_reservation_policy:
+    names: *reservation_policy_name
+
+create_reservation:
+  -
+    reservation_name: *reservation_name
+    reservation_type: vSphere
+    reservation_priority: 1
+    computer_resource: *computer_resource
+    memory: *mem
+    storage_size: *res_storage_size
+    storage_priority: 1
+    network_path: *network_path
+    network_profile: *network_profile
+
+added_reservation_policy:
+  *added_reservation_policy_name
+
+added_reservation:
+  *added_reservation_name
+
+assigned_reservation_policy_reservations:
+  *added_reservation_name
+
+assign_reservation_policy_to_reservation:
+    reservation_names: *added_reservation_name
+    reservation_policy_names: *added_reservation_policy_name
+
+assign_reservation_policy_to_blueprint:
+    blueprint_names: []
+    reservation_policy_name:
+
+delete_datastore:
+    - description: Delete Logic
+      reasons: del logic
+      request: unknown
+
+edit_cluster_hwi:
+    - cluster: *cluster_name
+      hwi_1: *hwi_name02
+      hwi_2: *hwi_name01
+
+delete_hwi:
+    del_reasons: tear down
+    del_description: delete hwi
+    del_performed_active: Delete Hardware Island
+    isdel_obj: Confirm
+
+delete_sites:
+    description: deletesite
+    action_to_be_performed: Delete Site
+    please_pick_a_site_to_delete:
+    please_confirm_that_you_wish_to_delete_this_site: Confirm

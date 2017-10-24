@@ -1,0 +1,44 @@
+# ################################ Configuration section #############################################################
+# Automation user only needs to update the parameters in this section
+# mandatory parameters : you must update with the right ones in your environment.
+# optional parameters : you can suggested to update with your own, but not mandatory.
+
+mandatory:
+  Virtual machine blueprint:
+    # Blueprint name you configure in the automation environment
+    blueprint_name:            &blueprint_name            'Blueprints'
+    # virtual machine name you configure in the automation environment
+    vSphere_Machine_ID:      &vSphere_Machine_ID         'ABC'
+
+################################# Configuration section #############################################################
+# no need to write
+blueprints:
+    - *blueprint_name
+
+blueprint_machine_pairs:
+    {*blueprint_name: *vSphere_Machine_ID}
+
+deploy_vm:
+    description: 'deploy_vm'
+    with_dp: False
+    number_of_vm: 1
+    SRM_power_on_priority:
+    reason_for_request: 'test deploy_vm'
+
+operate_vm:
+    basic_action_list:
+        - 'Power On'
+        - 'Power Off'
+        - 'Reboot'
+    user_action_list:
+        - 'Power Off'
+
+deployed_vms:
+    []
+
+operate_vm:
+    basic_action_list:
+      - 'Power On'
+      - 'Power Off'
+      - 'Reboot'
+
